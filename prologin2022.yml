@@ -53,7 +53,14 @@ constant:
 
 enum: []
 
-struct: []
+struct:
+  -
+    str_name: position
+    str_summary: Position dans le labyrinthe, donnée par deux coordonnées
+    str_tuple: yes
+    str_field:
+      - [x, int, "Coordonnée : x"]
+      - [y, int, "Coordonnée : y"]
 
 function: []
 
