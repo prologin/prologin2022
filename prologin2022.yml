@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (c) 2022 Association Prologin <association@prologin.org>
+
+name: prologin2021
+rules_type: turnbased
+
+constant: []
+
+enum: []
+
+struct: []
+
+function: []
+
+user_function: []
