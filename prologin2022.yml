@@ -3,8 +3,53 @@
 
 name: prologin2021
 rules_type: turnbased
+player_count: 2
 
-constant: []
+constant:
+  -
+    cst_name: TAILLE_LABYRINTHE
+    cst_val: 80
+    cst_comment: Largeur et hauteur du labyrinthe
+  -
+    cst_name: NB_TOURS
+    cst_val: 400
+    cst_comment: Nombre de tours à jouer avant la fin de la partie
+  -
+    cst_name: NB_BASES
+    cst_val: 10
+    cst_comment: Nombre de bases
+  -
+    cst_name: NB_SPAWNERS
+    cst_val: 4
+    cst_comment: Nombre de spawners
+  -
+    cst_name: TAILLE_DEPART
+    cst_val: 5
+    cst_comment: Taille de départ des joueurs
+  -
+    cst_name: TAILLE_MIN
+    cst_val: 3
+    cst_comment: Taille minimale qu'un joueur peut avoir avant de mourir
+  -
+    cst_name: FREQ_POMMES
+    cst_val: 4
+    cst_comment: Fréquence d'apparition des pommes
+  -
+    cst_name: FREQ_TUNNEL
+    cst_val: 1
+    cst_comment: Nombre de tunnels qu'un joueur peut creuser par tour
+  -
+    cst_name: PTS_MOUVEMENTS
+    cst_val: 20
+    cst_comment: Nombre de déplacements que peut faire un joueur en un tour
+  -
+    cst_name: COUT_CROISSANCE
+    cst_val: 10
+    cst_comment: Coût en points de mouvement d'un incrément de 1 de la taille
+  -
+    cst_name: COUT_MUR
+    cst_val: 3
+    cst_comment: Coût en pommes de l'ajout d'un mur
 
 enum: []
 
