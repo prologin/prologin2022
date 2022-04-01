@@ -51,7 +51,15 @@ constant:
     cst_val: 3
     cst_comment: Coût en pommes de l'ajout d'un mur
 
-enum: []
+enum:
+  -
+    enum_name: direction
+    enum_summary: "Dirrections possibles"
+    enum_field:
+      - [haut, "En haut"]
+      - [bas, "En bas"]
+      - [droite, "À droite"]
+      - [gauche, "À gauche"]
 
 struct:
   -
@@ -59,8 +67,18 @@ struct:
     str_summary: Position dans le labyrinthe, donnée par deux coordonnées
     str_tuple: yes
     str_field:
-      - [x, int, "Coordonnée : x"]
-      - [y, int, "Coordonnée : y"]
+      - [x, int, "Abscisse"]
+      - [y, int, "Ordonnée"]
+  -
+    str_name: serpent
+    str_summary: Un serpent
+    str_tuple: no
+    str_field:
+      - [tete, position, "Position de la tête du serpent"]
+      - [corps, position array, "Position des éléments du corps du serpent,
+                                 incluant la tête"]
+      - [taille, int, "Taille du serpent"]
+      - [direction, direction, "Direction du serpent"]
 
 function: []
 
