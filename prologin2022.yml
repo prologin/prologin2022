@@ -67,8 +67,8 @@ struct:
     str_summary: Position dans le labyrinthe, donnée par deux coordonnées
     str_tuple: yes
     str_field:
-      - [x, int, "Abscisse"]
-      - [y, int, "Ordonnée"]
+      - [colonne, int, "Abscisse"]
+      - [ligne, int, "Ordonnée"]
   -
     str_name: serpent
     str_summary: Un serpent
