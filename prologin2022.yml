@@ -54,7 +54,7 @@ constant:
 enum:
   -
     enum_name: direction
-    enum_summary: "Dirrections possibles"
+    enum_summary: "Directions possibles"
     enum_field:
       - [haut, "En haut"]
       - [bas, "En bas"]
