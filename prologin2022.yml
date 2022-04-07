@@ -79,7 +79,7 @@ struct:
     str_field:
       - [maman, position, "Position de la maman canard"]
       - [canards, position array, "Position des différents canards de la troupe,
-                                   incluant la maman"]
+                                   incluant la maman en première position"]
       - [taille, int, "Taille de la troupe"]
       - [direction, direction, "Direction de la troupe"]
 
