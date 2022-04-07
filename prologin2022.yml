@@ -15,14 +15,6 @@ constant:
     cst_val: 400
     cst_comment: Nombre de tours à jouer avant la fin de la partie
   -
-    cst_name: NB_BASES
-    cst_val: 10
-    cst_comment: Nombre de bases
-  -
-    cst_name: NB_SPAWNERS
-    cst_val: 4
-    cst_comment: Nombre de spawners
-  -
     cst_name: TAILLE_DEPART
     cst_val: 5
     cst_comment: Taille de départ des joueurs
