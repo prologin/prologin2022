@@ -85,4 +85,19 @@ struct:
 
 function: []
 
-user_function: []
+user_function:
+  -
+    fct_name: partie_init
+    fct_summary: Fonction appelée au début de la partie.
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: jouer_tour
+    fct_summary: Fonction appelée à chaque tour.
+    fct_ret_type: void
+    fct_arg: []
+  -
+    fct_name: partie_fin
+    fct_summary: Fonction appelée à la fin de la partie.
+    fct_ret_type: void
+    fct_arg: []
