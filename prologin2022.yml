@@ -7,9 +7,13 @@ player_count: 2
 
 constant:
   -
-    cst_name: TAILLE_LABYRINTHE
+    cst_name: HAUTEUR
     cst_val: 80
-    cst_comment: Largeur et hauteur du labyrinthe
+    cst_comment: Nombre de lignes dans la carte
+  -
+    cst_name: LARGEUR
+    cst_val: 80
+    cst_comment: Nombre de colonnes dans la carte
   -
     cst_name: NB_TOURS
     cst_val: 400
@@ -23,9 +27,9 @@ constant:
     cst_val: 3
     cst_comment: Taille minimale qu'un joueur peut avoir avant de mourir
   -
-    cst_name: FREQ_POMMES
+    cst_name: INTERVALLE_DISTRIB
     cst_val: 4
-    cst_comment: Fréquence d'apparition des pommes
+    cst_comment: Intervalle de distribution de pains par les papys
   -
     cst_name: FREQ_TUNNEL
     cst_val: 1
@@ -39,38 +43,41 @@ constant:
     cst_val: 10
     cst_comment: Coût en points de mouvement d'un incrément de 1 de la taille
   -
-    cst_name: COUT_MUR
+    cst_name: COUT_BUISSON
     cst_val: 3
-    cst_comment: Coût en pommes de l'ajout d'un mur
+    cst_comment: Coût en pains de la pose de buisson
 
 enum:
   -
     enum_name: direction
     enum_summary: "Directions possibles"
     enum_field:
-      - [haut, "En haut"]
-      - [bas, "En bas"]
-      - [droite, "À droite"]
-      - [gauche, "À gauche"]
+      - [nord, "Sens positif pour les lignes"]
+      - [sud, "Sens négatif pour les lignes"]
+      - [est, "Sens positif pour les colonnes"]
+      - [ouest, "Sens négatif pour les colonnes"]
+      - [haut, "Sens positif pour le niveau"]
+      - [bas, "Sens négatif pour le niveau"]
 
 struct:
   -
     str_name: position
-    str_summary: Position dans le labyrinthe, donnée par deux coordonnées
+    str_summary: Position dans la carte, donnée par trois coordonnées
     str_tuple: yes
     str_field:
       - [colonne, int, "Abscisse"]
       - [ligne, int, "Ordonnée"]
+      - [niveau, int, "Niveau"]
   -
-    str_name: serpent
-    str_summary: Un serpent
+    str_name: troupe
+    str_summary: Une troupe, composée de la maman canard et de ses canetons
     str_tuple: no
     str_field:
-      - [tete, position, "Position de la tête du serpent"]
-      - [corps, position array, "Position des éléments du corps du serpent,
-                                 incluant la tête"]
-      - [taille, int, "Taille du serpent"]
-      - [direction, direction, "Direction du serpent"]
+      - [maman, position, "Position de la maman canard"]
+      - [canards, position array, "Position des différents canards de la troupe,
+                                   incluant la maman"]
+      - [taille, int, "Taille de la troupe"]
+      - [direction, direction, "Direction de la troupe"]
 
 function: []
 
