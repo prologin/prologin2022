@@ -41,11 +41,15 @@ constant:
   -
     cst_name: COUT_CROISSANCE
     cst_val: 10
-    cst_comment: Coût en points de mouvement d'un incrément de 1 de la taille
+    cst_comment: Nombre de points de mouvement recquis pour incrémenter la taille
   -
     cst_name: COUT_BUISSON
     cst_val: 3
     cst_comment: Coût en pains de la pose de buisson
+  -
+    cst_name: TOUR_FERMETURE
+    cst_val: 100
+    cst_comment: Tour au moment duquel les barières s'ouvrent ou se ferment
 
 enum:
   -
