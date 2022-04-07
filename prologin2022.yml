@@ -21,11 +21,11 @@ constant:
   -
     cst_name: TAILLE_DEPART
     cst_val: 5
-    cst_comment: Taille de départ des joueurs
+    cst_comment: Taille de départ d'une troupe
   -
     cst_name: TAILLE_MIN
     cst_val: 3
-    cst_comment: Taille minimale qu'un joueur peut avoir avant de mourir
+    cst_comment: Taille minimale qu'une troupe peut avoir avant de se disperser
   -
     cst_name: INTERVALLE_DISTRIB
     cst_val: 4
@@ -37,7 +37,7 @@ constant:
   -
     cst_name: PTS_MOUVEMENTS
     cst_val: 20
-    cst_comment: Nombre de déplacements que peut faire un joueur en un tour
+    cst_comment: Nombre de déplacements que peut faire une troupe en un tour
   -
     cst_name: COUT_CROISSANCE
     cst_val: 10
@@ -81,7 +81,7 @@ struct:
       - [canards, position array, "Position des différents canards de la troupe,
                                    incluant la maman en première position"]
       - [taille, int, "Taille de la troupe"]
-      - [direction, direction, "Direction de la troupe"]
+      - [dir, direction, "Direction de la troupe"]
 
 function: []
 
