@@ -62,6 +62,37 @@ enum:
       - [ouest, "Sens négatif pour les colonnes"]
       - [haut, "Sens positif pour le niveau"]
       - [bas, "Sens négatif pour le niveau"]
+  -
+    enum_name: type_case
+    enum_summary: "Type de l'élément présent sur une case"
+    enum_fields:
+      - [vide, "Absence d'élément"]
+      - [buisson, "Obstacle impossible à traverser"]
+      - [barriere, "Élément pouvant être ouvert ou fermé. Une barrière fermée
+                    est infranchissable alors qu'une barrière ouverte est
+                    analogue à une case vide"]
+      - [nid, "Élément traversable permettant à la troupe de déposer son
+               inventaire en échange de points"]
+      - [papy, "Élément traversable générant de manière périodique des miches
+                de pain"]
+      - [trou, "Interface entre le niveau principal est le niveau sous-terrain"]
+  -
+    enum_name: etat_barriere
+    enum_summary: "État d'une barrière, soit ouvert, soit fermé, soit
+                   non-applicable"
+    enum_fields:
+      - [ouverte, "La barrière est ouverte"]
+      - [fermee, "La barrière est fermée"]
+      - [pas_de_barrièere, "L'élément dont on requiert l'état n'est pas une
+                            barrière"]
+  -
+    enum_name: etat_nid
+    enum_summary: "Joueur auquel appartient un nid"
+    enum_fields:
+      - [libre, "Le nid n'a pas été attribué"]
+      - [joueur_0, "Joueur 0"]
+      - [joueur_1, "Joueur 1"]
+      - [pas_de_nid, "L'élément dont on requiert l'état n'est pas un nid"]
 
 struct:
   -
