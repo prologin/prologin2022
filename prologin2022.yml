@@ -52,6 +52,19 @@ constant:
     cst_comment: Tour au moment duquel les barières s'ouvrent ou se ferment
 
 enum:
+  - enum_name: erreur
+    enum_summary: "Erreurs possibles après avoir effectué une action"
+    enum_field:
+      - [ok, "L'action a été effectuée avec succès"]
+      - [hors_tour, "Aucune action n'est possible hors de joueur_tour"]
+      - [mouvements_insuffisants, "Il ne reste plus assez de points de
+                                  mouvements pour effectuer l'action requise"]
+      - [trop_grandi, "La troupe a déjà trop grandi pendant le tour"]
+      - [trop_creusé, "Trop de trous ont déjà été creusés pendant le tour"]
+      - [non_constructible, "La zone demandée n'est pas constructible"]
+      - [pains_insuffisants, "La troupe n'a pas assez de pains pour construire
+                              un buisson"]
+      - [position_invalide, "La position demandée est hors du parc"]
   -
     enum_name: direction
     enum_summary: "Directions possibles"
