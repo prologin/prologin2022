@@ -126,6 +126,14 @@ struct:
                                    incluant la maman en première position"]
       - [taille, int, "Taille de la troupe"]
       - [dir, direction, "Direction de la troupe"]
+  -
+    str_name: case
+    str_summary: Élément constituant le parc
+    str_field:
+      - [pos, position, "Position de la case. Le niveau vaut nécessairement 0"]
+      - [type, type_case, "Type de la case"]
+      - [est_constructible, bool, "La case est constructible"]
+      - [contient_pain, bool, "La case contient une miche de pain"]
 
 function: []
 
