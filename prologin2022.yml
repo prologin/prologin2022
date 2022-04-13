@@ -135,7 +135,81 @@ struct:
       - [est_constructible, bool, "La case est constructible"]
       - [contient_pain, bool, "La case contient une miche de pain"]
 
-function: []
+function:
+# Actions
+# TODO
+# Fonctions de requête de l'état du jeu
+  - fct_name: info_case
+    fct_summary: Renvoie les informations concernant une case
+    fct_ret_type: case
+    fct_arg:
+      - [colonne, int, "Colonne de la case"]
+      - [ligne, int, "Ligne de la case"]
+  - fct_name: info_barriere
+    fct_summary: Renvoie les informations d'état d'une barrière
+    fct_ret_type: etat_barriere
+    fct_arg:
+      - [colonne, int, "Colonne de la barrière"]
+      - [ligne, int, "Ligne de la barrière"]
+  - fct_name: info_nid
+    fct_summary: Renvoie les informations d'état d'un nid
+    fct_ret_type: etat_nid
+    fct_arg:
+      - [colonne, int, "Colonne du nid"]
+      - [ligne, int, "Ligne du nid"]
+  -
+    fct_name: papy_tours_restants
+    fct_summary: Renvoie le nombre de tours restants avant qu'un papy dépose une
+                 miche de pain. Retourne -1 si aucun papy ne se trouve à la
+                 position demandée
+    fct_ret_type: int
+    fct_arg:
+      - [colonne, int, "Colonne du papy"]
+      - [ligne, int, "Ligne du papy"]
+  - fct_name: est_vide
+    fct_summary: Renvoie vrai si une case du sous-terrain est creusée
+    fct_ret_type: bool
+    fct_arg:
+      - [colonne, int, "Colonne"]
+      - [ligne, int, "Ligne"]
+  -
+    fct_name: troupe_joueur
+    fct_summary: Renvoie la troupe d'un joueur.
+                 Si le joueur est invalide, tous les champs valent -1.
+    fct_ret_type: troupe
+    fct_arg: [id_joueur, int, "Numéro du joueur concerné"]
+
+# Utilitaire
+  -
+    fct_name: gain
+    fct_summary: Renvoie le gain en score que le nombre de pains passé en entrée
+                 rapporterait s'ils étaient tous déposés d'un coup dans un nid
+    fct_ret_type: int
+    fct_arg:
+      - [nb_pains, int, "Nombre de miches de pain déposées"]
+# Autres
+  -
+    fct_name: moi
+    fct_summary: Renvoie votre numéro de joueur.
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: adversaire
+    fct_summary: Renvoie le numéro du joueur adverse.
+    fct_ret_type: int
+    fct_arg: []
+  -
+    fct_name: score
+    fct_summary: Renvoie le score du joueur `id_joueur`.
+                 Renvoie -1 si le joueur est invalide.
+    fct_ret_type: int
+    fct_arg:
+      - [id_joueur, int, "Numéro du joueur concerné"]
+  -
+    fct_name: tour_actuel
+    fct_summary: Retourne le numéro du tour actuel.
+    fct_ret_type: int
+    fct_arg: []
 
 user_function:
   -
