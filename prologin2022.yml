@@ -89,6 +89,8 @@ enum:
       - [papy, "Élément traversable générant de manière périodique des miches
                 de pain"]
       - [trou, "Interface entre le niveau principal est le niveau sous-terrain"]
+      - [tunnel, "Bloc du sous-terrain ayant été creusé"]
+      - [terre, "Bloc du sous-terrain n'ayant pas encore été creusé"]
   -
     enum_name: etat_barriere
     enum_summary: "État d'une barrière, soit ouvert, soit fermé, soit
@@ -96,7 +98,7 @@ enum:
     enum_fields:
       - [ouverte, "La barrière est ouverte"]
       - [fermee, "La barrière est fermée"]
-      - [pas_de_barrièere, "L'élément dont on requiert l'état n'est pas une
+      - [pas_de_barrière, "L'élément dont on requiert l'état n'est pas une
                             barrière"]
   -
     enum_name: etat_nid
@@ -143,20 +145,17 @@ function:
     fct_summary: Renvoie les informations concernant une case
     fct_ret_type: case
     fct_arg:
-      - [colonne, int, "Colonne de la case"]
-      - [ligne, int, "Ligne de la case"]
+      - [pos, position, "Position de la case"]
   - fct_name: info_barriere
     fct_summary: Renvoie les informations d'état d'une barrière
     fct_ret_type: etat_barriere
     fct_arg:
-      - [colonne, int, "Colonne de la barrière"]
-      - [ligne, int, "Ligne de la barrière"]
+      - [pos, position, "Position de la barrière"]
   - fct_name: info_nid
     fct_summary: Renvoie les informations d'état d'un nid
     fct_ret_type: etat_nid
     fct_arg:
-      - [colonne, int, "Colonne du nid"]
-      - [ligne, int, "Ligne du nid"]
+      - [pos, position, "Position du nid"]
   -
     fct_name: papy_tours_restants
     fct_summary: Renvoie le nombre de tours restants avant qu'un papy dépose une
@@ -164,14 +163,7 @@ function:
                  position demandée
     fct_ret_type: int
     fct_arg:
-      - [colonne, int, "Colonne du papy"]
-      - [ligne, int, "Ligne du papy"]
-  - fct_name: est_vide
-    fct_summary: Renvoie vrai si une case du sous-terrain est creusée
-    fct_ret_type: bool
-    fct_arg:
-      - [colonne, int, "Colonne"]
-      - [ligne, int, "Ligne"]
+      - [pos, position, "Position du papy"]
   -
     fct_name: troupe_joueur
     fct_summary: Renvoie la troupe d'un joueur.
