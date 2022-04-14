@@ -61,6 +61,7 @@ enum:
                                   mouvements pour effectuer l'action requise"]
       - [trop_grandi, "La troupe a déjà trop grandi pendant le tour"]
       - [trop_creusé, "Trop de trous ont déjà été creusés pendant le tour"]
+      - [non_creusable, "Il n'est pas possible de creuser à la position demandée"]
       - [non_constructible, "La zone demandée n'est pas constructible"]
       - [pains_insuffisants, "La troupe n'a pas assez de pains pour construire
                               un buisson"]
@@ -147,19 +148,53 @@ struct:
 
 function:
 # Actions
-# TODO
+avancer -> direction -> erreur
+grandir -> erreur
+poser_buisson -> position -> erreur
+creuser_tunnel -> position -> erreur
+  -
+    fct_name: avancer
+    fct_summary: La troupe avance d'une case vers une direction donnée
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_args:
+      - [dir, direction, "Direction vers laquelle avancer"]
+  -
+    fct_name: grandir
+    fct_summary: La troupe grandit
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_args: []
+  -
+    fct_name: construire_buisson
+    fct_summary: Construit un buisson à la position donnée
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_args:
+      - [pos, position, "Position où construire le buisson"]
+  -
+    fct_name: creuser_tunnel
+    fct_summary: Creuse un tunnel à la position donnée
+    fct_ret_type: erreur
+    fct_action: yes
+    fct_args:
+      - [pos, position, "Position de la case à creuser"]
+
 # Fonctions de requête de l'état du jeu
-  - fct_name: info_case
+  -
+    fct_name: info_case
     fct_summary: Renvoie les informations concernant une case
     fct_ret_type: case
     fct_arg:
       - [pos, position, "Position de la case"]
-  - fct_name: info_barriere
+  -
+    fct_name: info_barriere
     fct_summary: Renvoie les informations d'état d'une barrière
     fct_ret_type: etat_barriere
     fct_arg:
       - [pos, position, "Position de la barrière"]
-  - fct_name: info_nid
+  -
+    fct_name: info_nid
     fct_summary: Renvoie les informations d'état d'un nid
     fct_ret_type: etat_nid
     fct_arg:
