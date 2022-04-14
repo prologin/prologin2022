@@ -170,6 +170,11 @@ function:
                  Si le joueur est invalide, tous les champs valent -1.
     fct_ret_type: troupe
     fct_arg: [id_joueur, int, "Numéro du joueur concerné"]
+  -
+    fct_name: pains
+    fct_summary: Renvoie la position des pains récupérables
+    fct_ret_type: position array
+    fct_arg: []
 
 # Utilitaire
   -
