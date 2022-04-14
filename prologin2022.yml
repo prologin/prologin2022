@@ -138,7 +138,7 @@ struct:
       - [taille, int, "Taille de la troupe"]
       - [dir, direction, "Direction de la troupe"]
   -
-    str_name: case_info
+    str_name: etat_case
     str_summary: Élément constituant le parc
     str_field:
       - [pos, position, "Position de la case. Le niveau vaut nécessairement 0"]
@@ -180,7 +180,7 @@ function:
   -
     fct_name: info_case
     fct_summary: Renvoie les informations concernant une case
-    fct_ret_type: case_info
+    fct_ret_type: etat_case
     fct_arg:
       - [pos, position, "Position de la case"]
   -

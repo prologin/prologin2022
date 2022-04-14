@@ -46,7 +46,7 @@ extern "C" erreur api_creuser_tunnel(position pos)
     return api->creuser_tunnel(pos);
 }
 
-extern "C" case_info api_info_case(position pos)
+extern "C" etat_case api_info_case(position pos)
 {
     return api->info_case(pos);
 }
@@ -146,9 +146,9 @@ extern "C" void api_afficher_troupe(troupe v)
     api->afficher_troupe(v);
 }
 
-extern "C" void api_afficher_case_info(case_info v)
+extern "C" void api_afficher_etat_case(etat_case v)
 {
-    api->afficher_case_info(v);
+    api->afficher_etat_case(v);
 }
 
 std::ostream& operator<<(std::ostream& os, erreur v)
@@ -367,7 +367,7 @@ extern "C" void api_afficher_troupe(troupe v)
 {
     std::cerr << v << std::endl;
 }
-std::ostream& operator<<(std::ostream& os, case_info v)
+std::ostream& operator<<(std::ostream& os, etat_case v)
 {
     os << "{ ";
     os << "pos"
@@ -385,7 +385,7 @@ std::ostream& operator<<(std::ostream& os, case_info v)
     return os;
 }
 
-extern "C" void api_afficher_case_info(case_info v)
+extern "C" void api_afficher_etat_case(etat_case v)
 {
     std::cerr << v << std::endl;
 }

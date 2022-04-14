@@ -16,7 +16,7 @@ Api::Api(std::unique_ptr<GameState> game_state,
     api = this;
 }
 
-case_info Api::info_case(position pos)
+etat_case Api::info_case(position pos)
 {
     // TODO
     abort();
@@ -111,7 +111,7 @@ void Api::afficher_troupe(troupe v)
     // TODO
     abort();
 }
-void Api::afficher_case_info(case_info v)
+void Api::afficher_etat_case(etat_case v)
 {
     // TODO
     abort();

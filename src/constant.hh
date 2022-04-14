@@ -121,10 +121,10 @@ typedef struct troupe
 } troupe;
 
 /// Élément constituant le parc
-typedef struct case_info
+typedef struct etat_case
 {
     position pos; ///< Position de la case. Le niveau vaut nécessairement 0
     type_case contenu; ///< Type de la case
     bool est_constructible; ///< La case est constructible
     bool contient_pain; ///< La case contient une miche de pain
-} case_info;
+} etat_case;

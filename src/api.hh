@@ -38,7 +38,7 @@ public:
     ApiActionFunc<ActionCreuserTunnel> creuser_tunnel{this};
 
     /// Renvoie les informations concernant une case
-    case_info info_case(position pos);
+    etat_case info_case(position pos);
 
     /// Renvoie les informations d'état d'une barrière
     etat_barriere info_barriere(position pos);
@@ -101,7 +101,7 @@ public:
     /// Affiche le contenu d'une valeur de type troupe
     void afficher_troupe(troupe v);
 
-    /// Affiche le contenu d'une valeur de type case_info
-    void afficher_case_info(case_info v);
+    /// Affiche le contenu d'une valeur de type etat_case
+    void afficher_etat_case(etat_case v);
 
 };
