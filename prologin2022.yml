@@ -60,7 +60,7 @@ enum:
       - [mouvements_insuffisants, "Il ne reste plus assez de points de
                                   mouvements pour effectuer l'action requise"]
       - [trop_grandi, "La troupe a déjà trop grandi pendant le tour"]
-      - [trop_creusé, "Trop de trous ont déjà été creusés pendant le tour"]
+      - [trop_creuse, "Trop de trous ont déjà été creusés pendant le tour"]
       - [non_creusable, "Il n'est pas possible de creuser à la position demandée"]
       - [non_constructible, "La zone demandée n'est pas constructible"]
       - [pains_insuffisants, "La troupe n'a pas assez de pains pour construire
@@ -79,7 +79,7 @@ enum:
   -
     enum_name: type_case
     enum_summary: "Type de l'élément présent sur une case"
-    enum_fields:
+    enum_field:
       - [vide, "Absence d'élément"]
       - [buisson, "Obstacle impossible à traverser"]
       - [barriere, "Élément pouvant être ouvert ou fermé. Une barrière fermée
@@ -96,15 +96,15 @@ enum:
     enum_name: etat_barriere
     enum_summary: "État d'une barrière, soit ouvert, soit fermé, soit
                    non-applicable"
-    enum_fields:
+    enum_field:
       - [ouverte, "La barrière est ouverte"]
       - [fermee, "La barrière est fermée"]
-      - [pas_de_barrière, "L'élément dont on requiert l'état n'est pas une
+      - [pas_de_barriere, "L'élément dont on requiert l'état n'est pas une
                             barrière"]
   -
     enum_name: etat_nid
     enum_summary: "Joueur auquel appartient un nid"
-    enum_fields:
+    enum_field:
       - [libre, "Le nid n'a pas été attribué"]
       - [joueur_0, "Joueur 0"]
       - [joueur_1, "Joueur 1"]
@@ -112,7 +112,7 @@ enum:
   -
     enum_name: pigeon_debug
     enum_summary: "Type de pigeon de debug"
-    enum_fields:
+    enum_field:
       - [aucun_pigeon, "Aucun pigeon, enlève le pigeon présent"]
       - [pigeon_bleu, "Pigeon bleu"]
       - [pigeon_jaune, "Pigeon jaune"]
@@ -138,11 +138,11 @@ struct:
       - [taille, int, "Taille de la troupe"]
       - [dir, direction, "Direction de la troupe"]
   -
-    str_name: case
+    str_name: case_info
     str_summary: Élément constituant le parc
     str_field:
       - [pos, position, "Position de la case. Le niveau vaut nécessairement 0"]
-      - [type, type_case, "Type de la case"]
+      - [contenu, type_case, "Type de la case"]
       - [est_constructible, bool, "La case est constructible"]
       - [contient_pain, bool, "La case contient une miche de pain"]
 
@@ -153,34 +153,34 @@ function:
     fct_summary: La troupe avance d'une case vers une direction donnée
     fct_ret_type: erreur
     fct_action: yes
-    fct_args:
+    fct_arg:
       - [dir, direction, "Direction vers laquelle avancer"]
   -
     fct_name: grandir
     fct_summary: La troupe grandit
     fct_ret_type: erreur
     fct_action: yes
-    fct_args: []
+    fct_arg: []
   -
     fct_name: construire_buisson
     fct_summary: Construit un buisson à la position donnée
     fct_ret_type: erreur
     fct_action: yes
-    fct_args:
+    fct_arg:
       - [pos, position, "Position où construire le buisson"]
   -
     fct_name: creuser_tunnel
     fct_summary: Creuse un tunnel à la position donnée
     fct_ret_type: erreur
     fct_action: yes
-    fct_args:
+    fct_arg:
       - [pos, position, "Position de la case à creuser"]
 
 # Fonctions de requête de l'état du jeu
   -
     fct_name: info_case
     fct_summary: Renvoie les informations concernant une case
-    fct_ret_type: case
+    fct_ret_type: case_info
     fct_arg:
       - [pos, position, "Position de la case"]
   -
@@ -208,7 +208,8 @@ function:
     fct_summary: Renvoie la troupe d'un joueur.
                  Si le joueur est invalide, tous les champs valent -1.
     fct_ret_type: troupe
-    fct_arg: [id_joueur, int, "Numéro du joueur concerné"]
+    fct_arg: 
+      - [id_joueur, int, "Numéro du joueur concerné"]
   -
     fct_name: pains
     fct_summary: Renvoie la position des pains récupérables
