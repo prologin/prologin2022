@@ -148,10 +148,6 @@ struct:
 
 function:
 # Actions
-avancer -> direction -> erreur
-grandir -> erreur
-poser_buisson -> position -> erreur
-creuser_tunnel -> position -> erreur
   -
     fct_name: avancer
     fct_summary: La troupe avance d'une case vers une direction donnée
