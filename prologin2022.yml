@@ -41,7 +41,7 @@ constant:
   -
     cst_name: COUT_CROISSANCE
     cst_val: 10
-    cst_comment: Nombre de points de mouvement recquis pour incrémenter la taille
+    cst_comment: Nombre de points de mouvement requis pour incrémenter la taille
   -
     cst_name: COUT_BUISSON
     cst_val: 3
@@ -49,7 +49,7 @@ constant:
   -
     cst_name: TOUR_FERMETURE
     cst_val: 100
-    cst_comment: Tour au moment duquel les barières s'ouvrent ou se ferment
+    cst_comment: Tour au moment duquel les barrières s'ouvrent ou se ferment
 
 enum:
   - enum_name: erreur
@@ -58,7 +58,7 @@ enum:
       - [ok, "L'action a été effectuée avec succès"]
       - [hors_tour, "Aucune action n'est possible hors de joueur_tour"]
       - [mouvements_insuffisants, "Il ne reste plus assez de points de
-                                  mouvements pour effectuer l'action requise"]
+                                  mouvements pour effectuer l'action demandée"]
       - [trop_grandi, "La troupe a déjà trop grandi pendant le tour"]
       - [trop_creuse, "Trop de trous ont déjà été creusés pendant le tour"]
       - [non_creusable, "Il n'est pas possible de creuser à la position demandée"]
@@ -89,9 +89,9 @@ enum:
                inventaire en échange de points"]
       - [papy, "Élément traversable générant de manière périodique des miches
                 de pain"]
-      - [trou, "Interface entre le niveau principal est le niveau sous-terrain"]
-      - [tunnel, "Bloc du sous-terrain ayant été creusé"]
-      - [terre, "Bloc du sous-terrain n'ayant pas encore été creusé"]
+      - [trou, "Interface entre le niveau principal est le niveau souterrain"]
+      - [tunnel, "Bloc du souterrain ayant été creusé"]
+      - [terre, "Bloc du souterrain n'ayant pas encore été creusé"]
   -
     enum_name: etat_barriere
     enum_summary: "État d'une barrière, soit ouvert, soit fermé, soit
