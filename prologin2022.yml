@@ -165,7 +165,7 @@ struct:
     str_tuple: no
     str_field:
       - [action_type, type_action, "Type de l'action"]
-      - [id, int, "Identifiant de la troupe"]
+      - [troupe_id, int, "Identifiant de la troupe"]
       - [dir, direction, "Direction de l'action"]
       - [pos, position, "Position de l'action"]
 
