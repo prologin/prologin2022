@@ -12,8 +12,9 @@
 class ActionAvancer : public rules::Action<GameState>
 {
 public:
-    ActionAvancer(direction dir, int player_id)
-        : dir_(dir)
+    ActionAvancer(int id, direction dir, int player_id)
+        : id_(id)
+        , dir_(dir)
         , player_id_(player_id)
     {
     }
@@ -24,6 +25,7 @@ public:
 
     void handle_buffer(utils::Buffer& buf) override
     {
+        buf.handle(id_);
         buf.handle(dir_);
         buf.handle(player_id_);
     }
@@ -32,6 +34,7 @@ public:
     uint32_t id() const override { return ID_ACTION_AVANCER; }
 
 private:
+    int id_;
     direction dir_;
     int player_id_;
 };

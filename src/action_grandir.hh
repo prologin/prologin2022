@@ -12,8 +12,9 @@
 class ActionGrandir : public rules::Action<GameState>
 {
 public:
-    ActionGrandir(int player_id)
-        : player_id_(player_id)
+    ActionGrandir(int id, int player_id)
+        : id_(id)
+        , player_id_(player_id)
     {
     }
     ActionGrandir() {} // for register_action()
@@ -23,6 +24,7 @@ public:
 
     void handle_buffer(utils::Buffer& buf) override
     {
+        buf.handle(id_);
         buf.handle(player_id_);
     }
 
@@ -30,6 +32,7 @@ public:
     uint32_t id() const override { return ID_ACTION_GRANDIR; }
 
 private:
+    int id_;
     int player_id_;
 };
 

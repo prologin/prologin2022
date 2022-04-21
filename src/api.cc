@@ -36,12 +36,17 @@ int Api::papy_tours_restants(position pos)
     // TODO
     abort();
 }
-troupe Api::troupe_joueur(int id_joueur)
+std::vector<troupe> Api::troupes_joueur(int id_joueur)
 {
     // TODO
     abort();
 }
 std::vector<position> Api::pains()
+{
+    // TODO
+    abort();
+}
+std::vector<action_hist> Api::historique()
 {
     // TODO
     abort();
@@ -62,6 +67,11 @@ int Api::adversaire()
     abort();
 }
 int Api::score(int id_joueur)
+{
+    // TODO
+    abort();
+}
+bool Api::annuler()
 {
     // TODO
     abort();
@@ -101,6 +111,11 @@ void Api::afficher_pigeon_debug(pigeon_debug v)
     // TODO
     abort();
 }
+void Api::afficher_type_action(type_action v)
+{
+    // TODO
+    abort();
+}
 void Api::afficher_position(position v)
 {
     // TODO
@@ -112,6 +127,11 @@ void Api::afficher_troupe(troupe v)
     abort();
 }
 void Api::afficher_etat_case(etat_case v)
+{
+    // TODO
+    abort();
+}
+void Api::afficher_action_hist(action_hist v)
 {
     // TODO
     abort();
