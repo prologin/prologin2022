@@ -32,6 +32,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1650501692,
+        "narHash": "sha256-ApKf0/dc0SyB7zZ6yiiOQgcXAhCXxbSDyihHfRDIzx0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9887f024766aa27704d1f89f623efd1d063da92a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-21.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1650143261,
         "narHash": "sha256-KI3IDHAtXG/7Uu1gNuuy6ovKqP/d6OhV0HwCWIKx0Aw=",
         "owner": "NixOS",
@@ -49,13 +65,14 @@
     "root": {
       "inputs": {
         "futils": "futils",
+        "nixpkgs": "nixpkgs",
         "stechec2": "stechec2"
       }
     },
     "stechec2": {
       "inputs": {
         "futils": "futils_2",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1650282935,
