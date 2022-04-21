@@ -166,8 +166,8 @@ struct:
     str_field:
       - [action_type, type_action, "Type de l'action"]
       - [troupe_id, int, "Identifiant de la troupe"]
-      - [dir, direction, "Direction de l'action"]
-      - [pos, position, "Position de l'action"]
+      - [action_dir, direction, "Direction de l'action"]
+      - [action_pos, position, "Position de l'action"]
 
 
 function:
