@@ -8,7 +8,7 @@
 
 #include <constant.hh>
 #include <player_info.hh>
-#include <case.hh>
+#include <map.hh>
 
 class GameState final : public rules::GameState
 {
@@ -21,7 +21,7 @@ public:
 
     GameState* copy() const override;
 private:
-    std::array<Case, 2 * LARGEUR * HAUTEUR> carte_;
+    Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_; // Note : 1 round = 2 tours
 };
