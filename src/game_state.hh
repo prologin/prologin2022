@@ -6,6 +6,9 @@
 #include <rules/game-state.hh>
 #include <rules/player.hh>
 
+#include <constant.hh>
+#include <player_info.hh>
+
 class GameState final : public rules::GameState
 {
 public:
@@ -16,4 +19,8 @@ public:
     ~GameState();
 
     GameState* copy() const override;
+private:
+    std::array<std::array<etat_case, LARGEUR>, HAUTEUR> carte_;
+    std::array<PlayerInfo, 2> players_;
+    int round_; // Note : 1 round = 2 tours
 };
