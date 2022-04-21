@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <rules/player.hh>
+
 #include "constant.hh"
 #include "history.hh"
 #include "utils.hh"
