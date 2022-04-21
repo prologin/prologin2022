@@ -1,14 +1,10 @@
 #pragma once
 
-#include "constant.hh"
-#include "utils.hh"
-
-
-class Case
+struct Case
 {
-public:
-    Case();
-    etat_case etat() const;
-    etat_nid nid() const;
-    etat_barriere barriere() const;
+    type_case type;
+    etat_barriere barriere;
+    etat_nid nid;
+    pigeon_debug pigeon;
+    int papy;
 };
