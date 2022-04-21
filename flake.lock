@@ -1,0 +1,78 @@
+{
+  "nodes": {
+    "futils": {
+      "locked": {
+        "lastModified": 1649676176,
+        "narHash": "sha256-OWKJratjt2RW151VUlJPRALb7OU2S5s+f0vLj4o1bHM=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "a4b154ebbdc88c8498a5c7b01589addc9e9cb678",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "futils_2": {
+      "locked": {
+        "lastModified": 1649676176,
+        "narHash": "sha256-OWKJratjt2RW151VUlJPRALb7OU2S5s+f0vLj4o1bHM=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "a4b154ebbdc88c8498a5c7b01589addc9e9cb678",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1650143261,
+        "narHash": "sha256-KI3IDHAtXG/7Uu1gNuuy6ovKqP/d6OhV0HwCWIKx0Aw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0a862f558d4001c62f15f652b1b907002dc1e9b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-21.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "futils": "futils",
+        "stechec2": "stechec2"
+      }
+    },
+    "stechec2": {
+      "inputs": {
+        "futils": "futils_2",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1650282935,
+        "narHash": "sha256-HYxztTfTuhbD1XQTYsWClWkesLKukYrehY45XpjVAJI=",
+        "owner": "prologin",
+        "repo": "stechec2",
+        "rev": "4ccde77d919720ee06b576176fb1893d22a86115",
+        "type": "github"
+      },
+      "original": {
+        "owner": "prologin",
+        "ref": "nix-stechec",
+        "repo": "stechec2",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
