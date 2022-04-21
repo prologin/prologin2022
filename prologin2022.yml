@@ -186,7 +186,7 @@ function:
     fct_ret_type: erreur
     fct_action: yes
     fct_arg:
-      - [id, int "Identifiant de la troupe à faire grandir"]
+      - [id, int, "Identifiant de la troupe à faire grandir"]
   -
     fct_name: construire_buisson
     fct_summary: Construit un buisson à la position donnée
