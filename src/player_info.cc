@@ -23,6 +23,11 @@ const std::string& PlayerInfo::get_name() const
     return rules_player_->name;
 }
 
+const std::vector<position> troupe() const
+{
+    return troupe_;
+}
+
 const std::vector<internal_action>& PlayerInfo::get_internal_history() const
 {
     return internal_hist_;

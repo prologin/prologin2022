@@ -22,6 +22,6 @@ public:
     GameState* copy() const override;
 private:
     std::array<Case, 2 * LARGEUR * HAUTEUR> carte_;
-    std::array<PlayerInfo, 2> players_;
+    std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_; // Note : 1 round = 2 tours
 };

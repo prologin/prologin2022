@@ -18,6 +18,7 @@ public:
     int get_key() const;
     int get_score() const;
     const std::string& get_name() const;
+    const std::vector<position> troupe() const;
 
     // History
     const std::vector<internal_action>& get_internal_history() const;
@@ -31,4 +32,5 @@ private:
     std::vector<internal_cation> internal_hist_;
 
     int score_;
+    std::vector<position> troupe_;
 };
