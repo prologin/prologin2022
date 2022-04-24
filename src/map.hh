@@ -6,8 +6,6 @@
 
 #include "constant.hh"
 
-
-
 typedef struct Case
 {
     etat_case etat;          ///< Position, type, constructible et pain

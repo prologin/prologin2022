@@ -6,9 +6,9 @@
 #include <rules/game-state.hh>
 #include <rules/player.hh>
 
-#include <constant.hh>
-#include <player_info.hh>
-#include <map.hh>
+#include "constant.hh"
+#include "player_info.hh"
+#include "map.hh"
 
 class GameState final : public rules::GameState
 {

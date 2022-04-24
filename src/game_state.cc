@@ -10,7 +10,9 @@ GameState::GameState(const rules::Players& players)
 }
 
 GameState::GameState(const GameState& st)
-    : rules::GameState(st)
+    : rules::GameState(st),
+      map_(st.map_),
+      round_(st.round_)
 {
     // FIXME
 }

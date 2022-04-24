@@ -7,7 +7,6 @@
 
 #include "constant.hh"
 #include "history.hh"
-#include "utils.hh"
 
 class PlayerInfo
 {
@@ -21,15 +20,15 @@ public:
     const std::vector<position> troupe() const;
 
     // History
-    const std::vector<internal_action>& get_internal_history() const;
-    void add_internal_action(internal_action action);
+    const std::vector<InternalAction>& get_internal_history() const;
+    void add_InternalAction(InternalAction action);
     void reset_internal_history();
 
     void sync_score();
 
 private:
     std::shared_ptr<rules::Player> rules_player_;
-    std::vector<internal_cation> internal_hist_;
+    std::vector<InternalAction> internal_hist_;
 
     int score_;
     std::vector<position> troupe_;
