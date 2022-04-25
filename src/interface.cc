@@ -75,8 +75,12 @@ extern "C" std::vector<position> api_pains()
     return api->pains();
 }
 
+<<<<<<< HEAD
 extern "C" pigeon_debug api_debug_poser_pigeon(position pos,
                                                pigeon_debug pigeon)
+=======
+extern "C" erreur api_debug_poser_pigeon(position pos, pigeon_debug pigeon)
+>>>>>>> a47ce80... regenerating some files from corrected yaml('ya mel')
 {
     return api->debug_poser_pigeon(pos, pigeon);
 }
@@ -305,8 +309,8 @@ std::ostream& operator<<(std::ostream& os, pigeon_debug v)
 {
     switch (v)
     {
-    case AUCUN_PIGEON:
-        os << "AUCUN_PIGEON";
+    case PAS_DE_PIGEON:
+        os << "PAS_DE_PIGEON";
         break;
     case PIGEON_BLEU:
         os << "PIGEON_BLEU";
