@@ -13,6 +13,7 @@ typedef struct Case
     etat_nid nid;            ///< Informations d'état d'un nid
     pigeon_debug pigeon;     ///< Informations d'état du pigeon de debug
     int papy_tours_restants; ///< Tours restants avant la pose d'un pain
+    bool point_spawn;        ///< La case est un point de spawn
 } Case;
 
 class Map
@@ -22,5 +23,7 @@ public:
     Map(const Map& map);
 
 private:
+    void load_map_cells(std::istream& stream);
+
     std::array<Case, 2 * LARGEUR * HAUTEUR> map_;
 };
