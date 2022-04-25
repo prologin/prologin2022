@@ -65,9 +65,9 @@ void Map::load_map_cells(std::istream& stream)
                 default:
                     int tours = cell - '0';
                     if (tours < 0 || tours > 9)
-                        FATAL("map: invalid cell type"
+                        FATAL("map: invalid cell type '%c'"
                               "line %d column %d",
-                              ligne + 1, colonne + 1);
+                              cell, ligne + 1, colonne + 1);
                     get_cell(pos).etat = etat_case(pos, PAPY, false, false);
                     get_cell(pos).papy_tours_restants = tours;
                     break;
