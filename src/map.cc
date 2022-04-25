@@ -16,6 +16,31 @@ Case& Map::get_cell(const position& pos)
     return map_[indice];
 }
 
+const position& Map::get_spawn_toward(const direction& dir)
+{
+    switch (dir)
+    {
+        case HAUT:
+        case NORD:
+            for (position pos: spawns)
+                if (pos.ligne == 0) return pos;
+            break;
+        case BAS:
+        case SUD:
+            for (position pos: spawns)
+                if (pos.ligne == HAUTEUR-1) return pos;
+            break;
+        case EST:
+            for (position pos: spawns)
+                if (pos.colonne == LARGEUR-1) return pos;
+            break;
+        case OUEST:
+            for (position pos: spawns)
+                if (pos.colonne == 0) return pos;
+    }
+    throw invalid_argument("map: get_spawn_toward : Assertion error");
+}
+
 void Map::load_map_cells(std::istream& stream)
 {
     int niveau = 0;
