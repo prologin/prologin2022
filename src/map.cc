@@ -16,7 +16,7 @@ Case& Map::get_cell(const position& pos)
     return map_[indice];
 }
 
-const position& Map::get_spawn_toward(const direction& dir)
+const position& Map::get_spawn_toward(const direction& dir) const
 {
     switch (dir)
     {
