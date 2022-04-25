@@ -26,14 +26,14 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& arr)
 }
 
 
-extern "C" erreur api_avancer(direction dir)
+extern "C" erreur api_avancer(int id, direction dir)
 {
-    return api->avancer(dir);
+    return api->avancer(id, dir);
 }
 
-extern "C" erreur api_grandir()
+extern "C" erreur api_grandir(int id)
 {
-    return api->grandir();
+    return api->grandir(id);
 }
 
 extern "C" erreur api_construire_buisson(position pos)
@@ -66,9 +66,9 @@ extern "C" int api_papy_tours_restants(position pos)
     return api->papy_tours_restants(pos);
 }
 
-extern "C" troupe api_troupe_joueur(int id_joueur)
+extern "C" std::vector<troupe> api_troupes_joueur(int id_joueur)
 {
-    return api->troupe_joueur(id_joueur);
+    return api->troupes_joueur(id_joueur);
 }
 
 extern "C" std::vector<position> api_pains()
@@ -79,6 +79,11 @@ extern "C" std::vector<position> api_pains()
 extern "C" pigeon_debug api_debug_poser_pigeon(position pos, pigeon_debug pigeon)
 {
     return api->debug_poser_pigeon(pos, pigeon);
+}
+
+extern "C" std::vector<action_hist> api_historique()
+{
+    return api->historique();
 }
 
 extern "C" int api_gain(int nb_pains)
@@ -99,6 +104,11 @@ extern "C" int api_adversaire()
 extern "C" int api_score(int id_joueur)
 {
     return api->score(id_joueur);
+}
+
+extern "C" bool api_annuler()
+{
+    return api->annuler();
 }
 
 extern "C" int api_tour_actuel()
@@ -136,6 +146,11 @@ extern "C" void api_afficher_pigeon_debug(pigeon_debug v)
     api->afficher_pigeon_debug(v);
 }
 
+extern "C" void api_afficher_type_action(type_action v)
+{
+    api->afficher_type_action(v);
+}
+
 extern "C" void api_afficher_position(position v)
 {
     api->afficher_position(v);
@@ -149,6 +164,11 @@ extern "C" void api_afficher_troupe(troupe v)
 extern "C" void api_afficher_etat_case(etat_case v)
 {
     api->afficher_etat_case(v);
+}
+
+extern "C" void api_afficher_action_hist(action_hist v)
+{
+    api->afficher_action_hist(v);
 }
 
 std::ostream& operator<<(std::ostream& os, erreur v)
@@ -325,6 +345,30 @@ extern "C" void api_afficher_pigeon_debug(pigeon_debug v)
 {
     std::cerr << v << std::endl;
 }
+std::ostream& operator<<(std::ostream& os, type_action v)
+{
+    switch (v)
+    {
+    case ACTION_AVANCER:
+        os << "ACTION_AVANCER";
+        break;
+    case ACTION_GRANDIR:
+        os << "ACTION_GRANDIR";
+        break;
+    case ACTION_CONSTRUIRE:
+        os << "ACTION_CONSTRUIRE";
+        break;
+    case ACTION_CREUSER:
+        os << "ACTION_CREUSER";
+        break;
+    }
+    return os;
+}
+
+extern "C" void api_afficher_type_action(type_action v)
+{
+    std::cerr << v << std::endl;
+}
 
 std::ostream& operator<<(std::ostream& os, position v)
 {
@@ -359,6 +403,9 @@ std::ostream& operator<<(std::ostream& os, troupe v)
     os << ", ";
     os << "dir"
        << "=" << v.dir;
+    os << ", ";
+    os << "id"
+       << "=" << v.id;
     os << " }";
     return os;
 }
@@ -386,6 +433,28 @@ std::ostream& operator<<(std::ostream& os, etat_case v)
 }
 
 extern "C" void api_afficher_etat_case(etat_case v)
+{
+    std::cerr << v << std::endl;
+}
+std::ostream& operator<<(std::ostream& os, action_hist v)
+{
+    os << "{ ";
+    os << "action_type"
+       << "=" << v.action_type;
+    os << ", ";
+    os << "troupe_id"
+       << "=" << v.troupe_id;
+    os << ", ";
+    os << "action_dir"
+       << "=" << v.action_dir;
+    os << ", ";
+    os << "action_pos"
+       << "=" << v.action_pos;
+    os << " }";
+    return os;
+}
+
+extern "C" void api_afficher_action_hist(action_hist v)
 {
     std::cerr << v << std::endl;
 }

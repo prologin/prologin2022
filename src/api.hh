@@ -50,15 +50,20 @@ public:
     /// de pain. Retourne -1 si aucun papy ne se trouve à la position demandée
     int papy_tours_restants(position pos);
 
-    /// Renvoie la troupe d'un joueur. Si le joueur est invalide, tous les
+    /// Renvoie les troupes d'un joueur. Si le joueur est invalide, tous les
     /// champs valent -1.
-    troupe troupe_joueur(int id_joueur);
+    std::vector<troupe> troupes_joueur(int id_joueur);
 
     /// Renvoie la position des pains récupérables
     std::vector<position> pains();
 
     /// Pose un pigeon de debug sur la case indiquée
     ApiActionFunc<ActionDebugPoserPigeon> debug_poser_pigeon{this};
+
+    /// Renvoie la liste des actions effectuées par l'adversaire durant son
+    /// tour, dans l'ordre chronologique. Les actions de débug n'apparaissent
+    /// pas dans cette liste.
+    std::vector<action_hist> historique();
 
     /// Renvoie le gain en score que le nombre de pains passé en entrée
     /// rapporterait s'ils étaient tous déposés d'un coup dans un nid
@@ -73,6 +78,10 @@ public:
     /// Renvoie le score du joueur `id_joueur`. Renvoie -1 si le joueur est
     /// invalide.
     int score(int id_joueur);
+
+    /// Annule la dernière action. Renvoie faux quand il n'y a pas d'action à
+    /// annuler ce tour-ci
+    bool annuler();
 
     /// Retourne le numéro du tour actuel.
     int tour_actuel();
@@ -95,6 +104,9 @@ public:
     /// Affiche le contenu d'une valeur de type pigeon_debug
     void afficher_pigeon_debug(pigeon_debug v);
 
+    /// Affiche le contenu d'une valeur de type type_action
+    void afficher_type_action(type_action v);
+
     /// Affiche le contenu d'une valeur de type position
     void afficher_position(position v);
 
@@ -103,5 +115,8 @@ public:
 
     /// Affiche le contenu d'une valeur de type etat_case
     void afficher_etat_case(etat_case v);
+
+    /// Affiche le contenu d'une valeur de type action_hist
+    void afficher_action_hist(action_hist v);
 
 };
