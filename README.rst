@@ -1,4 +1,4 @@
-Prologin 2019
+Prologin 2022
 =============
 
 This is the final game (2022 edition) of the French national computing contest
