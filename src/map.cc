@@ -85,6 +85,14 @@ void Map::load_map_cells(std::istream& stream)
                     get_cell(pos).papy_tours_restants = -1;
                     get_cell(pos).point_spawn = false;
                     break;
+                case 'X':
+                    get_cell(pos).etat = etat_case(pos, TROU, false, false);
+                    get_cell(pos).barriere = OUVERTE;
+                    get_cell(pos).nid = PAS_DE_NID;
+                    get_cell(pos).pigeon = PAS_DE_PIGEON;
+                    get_cell(pos).papy_tours_restants = -1;
+                    get_cell(pos).point_spawn = false;
+                    break
                 default:
                     int tours = cell - '0';
                     if (tours < 0 || tours > 9)
