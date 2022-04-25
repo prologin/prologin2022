@@ -11,7 +11,7 @@ Api* api;
 
 Api::Api(std::unique_ptr<GameState> game_state,
          std::shared_ptr<rules::Player> player)
-    : rules::Api<GameState, error>(std::move(game_state), player)
+    : rules::Api<GameState, erreur>(std::move(game_state), player)
 {
     api = this;
 }
@@ -81,58 +81,69 @@ int Api::tour_actuel()
     // TODO
     abort();
 }
+
+std::ostream& operator<<(std::ostream& os, erreur v);
 void Api::afficher_erreur(erreur v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, direction v);
 void Api::afficher_direction(direction v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, type_case v);
 void Api::afficher_type_case(type_case v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, etat_barriere v);
 void Api::afficher_etat_barriere(etat_barriere v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, etat_nid v);
 void Api::afficher_etat_nid(etat_nid v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, pigeon_debug v);
 void Api::afficher_pigeon_debug(pigeon_debug v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, type_action v);
 void Api::afficher_type_action(type_action v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, position v);
 void Api::afficher_position(position v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, troupe v);
 void Api::afficher_troupe(troupe v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, etat_case v);
 void Api::afficher_etat_case(etat_case v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }
+
+std::ostream& operator<<(std::ostream& os, action_hist v);
 void Api::afficher_action_hist(action_hist v)
 {
-    // TODO
-    abort();
+    std::cerr << v << std::endl;
 }

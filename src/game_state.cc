@@ -3,14 +3,39 @@
 
 #include "game_state.hh"
 
-GameState::GameState(const rules::Players& players)
+namespace
+{
+std::array<PlayerInfo, 2> init_players(const rules::Players& players,
+                                       const Map& map)
+{
+    std::vector<PlayerInfo> result;
+
+    for (const auto& player : players)
+    {
+        if (player->type != rules::PLAYER)
+            continue;
+
+        auto playerInfo = PlayerInfo(player, map);
+        result.emplace_back(playerInfo);
+    }
+
+    return {result[0], result[1]};
+}
+} // namespace
+
+GameState::GameState(std::istream& map_stream, const rules::Players& players)
     : rules::GameState(players)
+    , map_(map_stream)
+    , players_(init_players(players, map_))
 {
     // FIXME
 }
 
 GameState::GameState(const GameState& st)
     : rules::GameState(st)
+    , map_(st.map_)
+    , round_(st.round_)
+    , players_(st.players_)
 {
     // FIXME
 }
