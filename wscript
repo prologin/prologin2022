@@ -57,25 +57,6 @@ def build(bld):
                      'MODULE_NAME="prologin2022"'],
         )
 
-    abs_pattern = os.path.join(bld.path.abspath(), 'src/tests/test-*.cc')
-    for test_src in glob.glob(abs_pattern):
-
-        test_name = os.path.split(test_src)[-1]
-        test_name = test_name[5:-3]
-
-        # Waf requires a relative path for the source
-        src_relpath = os.path.relpath(test_src, bld.path.abspath())
-
-        bld.program(
-            features = 'gtest',
-            source = src_relpath,
-            target = 'prologin2022-test-{}'.format(test_name),
-            use = ['prologin2022', 'stechec2-utils'],
-            includes = ['.'],
-            defines = ['MODULE_COLOR=ANSI_COL_PURPLE',
-            'MODULE_NAME="prologin2022"'],
-            )
-
     bld.install_files('${PREFIX}/share/stechec2/prologin2022', [
         'prologin2022.yml',
     ])
