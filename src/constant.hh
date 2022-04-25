@@ -99,7 +99,7 @@ typedef enum etat_nid
 /// Type de pigeon de debug
 typedef enum pigeon_debug
 {
-    AUCUN_PIGEON, ///< Aucun pigeon, enlève le pigeon présent
+    PAS_DE_PIGEON, ///< Aucun pigeon, enlève le pigeon présent
     PIGEON_BLEU, ///< Pigeon bleu
     PIGEON_JAUNE, ///< Pigeon jaune
     PIGEON_ROUGE, ///< Pigeon rouge
