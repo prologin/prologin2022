@@ -75,12 +75,7 @@ extern "C" std::vector<position> api_pains()
     return api->pains();
 }
 
-<<<<<<< HEAD
-extern "C" pigeon_debug api_debug_poser_pigeon(position pos,
-                                               pigeon_debug pigeon)
-=======
 extern "C" erreur api_debug_poser_pigeon(position pos, pigeon_debug pigeon)
->>>>>>> a47ce80... regenerating some files from corrected yaml('ya mel')
 {
     return api->debug_poser_pigeon(pos, pigeon);
 }
