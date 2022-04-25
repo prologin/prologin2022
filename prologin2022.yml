@@ -117,7 +117,7 @@ enum:
     enum_name: pigeon_debug
     enum_summary: "Type de pigeon de debug"
     enum_field:
-      - [aucun_pigeon, "Aucun pigeon, enlève le pigeon présent"]
+      - [pas_de_pigeon, "Aucun pigeon, enlève le pigeon présent"]
       - [pigeon_bleu, "Pigeon bleu"]
       - [pigeon_jaune, "Pigeon jaune"]
       - [pigeon_rouge, "Pigeon rouge"]
@@ -246,7 +246,7 @@ function:
   -
     fct_name: debug_poser_pigeon
     fct_summary: Pose un pigeon de debug sur la case indiquée
-    fct_ret_type: pigeon_debug
+    fct_ret_type: erreur
     fct_action: yes
     fct_arg:
       - [pos, position, "Case où poser le pigeon"]
