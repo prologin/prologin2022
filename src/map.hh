@@ -22,6 +22,8 @@ public:
     Map(std::istream& stream);
     Map(const Map& map);
 
+    std::vector<position> spawns;
+
 private:
     void load_map_cells(std::istream& stream);
 
