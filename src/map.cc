@@ -21,37 +21,51 @@ void Map::load_map_cells(std::istream& stream)
 {
     int niveau = 0;
     vector<position> spawns;
-    for (int ligne = 0; y < HAUTEUR; y++)
+    for (int ligne = 0; ligne < HAUTEUR; ligne ++)
     {
-        for (int colonne = 0; x < LARGEUR; x++)
+        for (int colonne = 0; colonne < LARGEUR; colonne ++)
         {
+            bool border = (colonne == 0 || colonne == LARGEUR-1)
+                    || (ligne == 0 || ligne == HAUTEUR-1);
+            bool corner = (colonne == 0 || colonne == LARGEUR-1)
+                    && (ligne == 0 || ligne == HAUTEUR-1);
             position pos(colonne, ligne, niveau);
             std::char cell;
             stream >> cell;
             switch (cell)
             {
                 case ' ':
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
                     get_cell(pos).etat = etat_case(pos, VIDE, false, false);
                     break;
                 case '.':
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
                     get_cell(pos).etat = etat_case(pos, VIDE, true, false);
                     break;
                 case 'S':
                     get_cell(pos).etat = etat_case(pos, VIDE, false, false);
                     get_cell(pos).point_spawn = true;
-                    if (colonne > 0 && colonne < LARGEUR-1 
-                            && ligne > 0 && ligne < HAUTEUR-1)
+                    if (not border)
                         FATAL("map: spawns should be at the border of the map"
                               "line %d column %d",
                               ligne + 1, colonne + 1);
-                    if ((colonne == 0 || colonne == LARGEUR - 1)
-                            && (ligne == 0 || ligne == HAUTEUR - 1))
+                    if (corner)
                         FATAL("map: spawns should not be in a corner"
                               "line %d column %d",
                               ligne + 1, colonne + 1);
                     spawns.push_back(pos);
                     break;
                 case 'N':
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
                     get_cell(pos).etat = etat_case(pos, NID, false, false);
                     get_cell(pos).nid = LIBRE;
                     break;
@@ -59,25 +73,41 @@ void Map::load_map_cells(std::istream& stream)
                     get_cell(pos).etat = etat_case(pos, BUISSON, false, false);
                     break;
                 case 'B':
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
                     get_cell(pos).etat = etat_case(pos, BARRIERE, false, false);
                     get_cell(pos).barriere = FERMEE;
                     break;
                 case 'b':
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
                     get_cell(pos).etat = etat_case(pos, BARRIERE, false, false);
                     get_cell(pos).barriere = OUVERTE;
                     break;
                 case 'X':
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
                     get_cell(pos).etat = etat_case(pos, TROU, false, false);
                     break
                 default:
-                        int tours = cell - '0';
-                        if (tours < 0 || tours > 9)
-                            FATAL("map: invalid cell type '%c'"
-                                    "line %d column %d",
-                                    cell, ligne + 1, colonne + 1);
-                        get_cell(pos).etat = etat_case(pos, PAPY, false, false);
-                        get_cell(pos).papy_tours_restants = tours;
-                        break;
+                    if (border)
+                        FATAL("map: empty cell found at the border of the map"
+                              "'%c' found line %d column %d",
+                              cell, ligne + 1, colonne + 1)
+                    int tours = cell - '0';
+                    if (tours < 0 || tours > 9)
+                        FATAL("map: invalid cell type '%c'"
+                                "line %d column %d",
+                                cell, ligne + 1, colonne + 1);
+                    get_cell(pos).etat = etat_case(pos, PAPY, false, false);
+                    get_cell(pos).papy_tours_restants = tours;
+                    break;
             }
         }
         std::char check;
