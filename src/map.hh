@@ -26,6 +26,7 @@ public:
 
     const Case& get_cell(const position& pos) const;
     Case& get_cell(const position& pos);
+    const position& get_spawn_toward(const direction& dir) const;
 
 private:
     void load_map_cells(std::istream& stream);
