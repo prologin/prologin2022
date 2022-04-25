@@ -4,5 +4,5 @@
 
 TEST(Foo, Bar)
 {
-    ASSERT_EQ(1, 1);
+    ASSERT_EQ(0, 1);
 }
