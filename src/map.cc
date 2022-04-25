@@ -19,7 +19,8 @@ Cell& Map::get_cell(const position& pos)
 
 void Map::load_map_cells(std::istream& stream)
 {
-    niveau = 0;
+    int niveau = 0;
+    int spawns = 0;
     for (int ligne = 0; y < HAUTEUR; y++)
     {
         for (int colonne = 0; x < LARGEUR; x++)
@@ -48,6 +49,7 @@ void Map::load_map_cells(std::istream& stream)
                         FATAL("map: spawns should not be in a corner"
                               "line %d column %d",
                               ligne + 1, colonne + 1);
+                    spawns++;
                     break;
                 case 'N':
                     get_cell(pos).etat = etat_case(pos, NID, false, false);
@@ -86,6 +88,12 @@ void Map::load_map_cells(std::istream& stream)
                     ligne + 1, LARGEUR + 1);
 
     }
+    // spawn points checks
+    if (spawns != 4)
+        FATAL("map: invalid number of spawn points"
+              "found %d expected 4",
+              spawns);
+
 
 
 }
