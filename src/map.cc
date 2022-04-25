@@ -38,6 +38,16 @@ void Map::load_map_cells(std::istream& stream)
                 case 'S':
                     get_cell(pos).etat = etat_case(pos, VIDE, false, false);
                     get_cell(pos).point_spawn = true;
+                    if (colonne > 0 && colonne < LARGEUR-1 
+                            && ligne > 0 && ligne < HAUTEUR-1)
+                        FATAL("map: spawns should be at the border of the map"
+                              "line %d column %d",
+                              ligne + 1, colonne + 1);
+                    if ((colonne == 0 || colonne == LARGEUR - 1)
+                            && (ligne == 0 || ligne == HAUTEUR - 1))
+                        FATAL("map: spawns should not be in a corner"
+                              "line %d column %d",
+                              ligne + 1, colonne + 1);
                     break;
                 case 'N':
                     get_cell(pos).etat = etat_case(pos, NID, false, false);
