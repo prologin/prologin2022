@@ -24,8 +24,8 @@ public:
 
     std::vector<position> spawns;
 
-    const Case& Map::get_cell(const position& pos) const;
-    Case& Map::get_cell(const position& pos);
+    const Case& get_cell(const position& pos) const;
+    Case& get_cell(const position& pos);
 
 private:
     void load_map_cells(std::istream& stream);
