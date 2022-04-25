@@ -38,7 +38,7 @@ const position& Map::get_spawn_toward(const direction& dir)
             for (position pos: spawns)
                 if (pos.colonne == 0) return pos;
     }
-    throw invalid_argument("map: get_spawn_toward : Assertion error");
+    __builtin_unreachable();
 }
 
 void Map::load_map_cells(std::istream& stream)
