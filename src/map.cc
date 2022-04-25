@@ -19,7 +19,8 @@ Cell& Map::get_cell(const position& pos)
 
 void Map::load_map_cells(std::istream& stream)
 {
-    niveau = 0;
+    int niveau = 0;
+    vector<position> spawns;
     for (int ligne = 0; y < HAUTEUR; y++)
     {
         for (int colonne = 0; x < LARGEUR; x++)
@@ -38,6 +39,17 @@ void Map::load_map_cells(std::istream& stream)
                 case 'S':
                     get_cell(pos).etat = etat_case(pos, VIDE, false, false);
                     get_cell(pos).point_spawn = true;
+                    if (colonne > 0 && colonne < LARGEUR-1 
+                            && ligne > 0 && ligne < HAUTEUR-1)
+                        FATAL("map: spawns should be at the border of the map"
+                              "line %d column %d",
+                              ligne + 1, colonne + 1);
+                    if ((colonne == 0 || colonne == LARGEUR - 1)
+                            && (ligne == 0 || ligne == HAUTEUR - 1))
+                        FATAL("map: spawns should not be in a corner"
+                              "line %d column %d",
+                              ligne + 1, colonne + 1);
+                    spawns.push_back(pos);
                     break;
                 case 'N':
                     get_cell(pos).etat = etat_case(pos, NID, false, false);
@@ -76,6 +88,31 @@ void Map::load_map_cells(std::istream& stream)
                     ligne + 1, LARGEUR + 1);
 
     }
+    // spawn points checks
+    if (spawns.size() != 4)
+        FATAL("map: invalid number of spawn points"
+              "found %d expected 4",
+              spawns.size());
+    bool found[] = {false, false, false, false}
+    for (position pos: spawns) {
+        if (pos.ligne == 0)
+            found[0] = true;
+        if (pos.ligne == HAUTEUR-1)
+            found[1] = true;
+        if (pos.colonne == 0)
+            found[2] = true;
+        if (pos.colonne == LARGEUR-1)
+            found[3] = true;
+    }
+    if (not found[0])
+        FATAL("map: expected one spawner at the top of the map");
+    if (not found[1])
+        FATAL("map: expected one spawner at the bottom of the map");
+    if (not found[2])
+        FATAL("map: expected one spawner at the left of the map");
+    if (not found[3])
+        FATAL("map: expected one spawner at the right of the map");
+
 
 
 }
@@ -104,3 +141,6 @@ Map::Map(std::istream& stream)
     load_map_cells(stream);
 }
 
+Map::Map(const Map& map) : map_(map.map_)
+{
+}
