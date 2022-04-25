@@ -114,3 +114,6 @@ Map::Map(std::istream& stream)
     load_map_cells(stream);
 }
 
+Map::Map(const Map& map) : map_(map.map_)
+{
+}
