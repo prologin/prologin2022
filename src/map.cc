@@ -27,11 +27,6 @@ void Map::load_map_cells(std::istream& stream)
             position pos(colonne, ligne, niveau);
             std::char cell;
             stream >> cell;
-            get_cell(pos).barriere = PAS_DE_BARRIERE;
-            get_cell(pos).nid = PAS_DE_NID;
-            get_cell(pos).pigeon = PAS_DE_PIGEON;
-            get_cell(pos).papy_tours_restants = -1;
-            get_cell(pos).point_spawn = false;
             switch (cell)
             {
                 case ' ':
@@ -63,14 +58,14 @@ void Map::load_map_cells(std::istream& stream)
                     get_cell(pos).etat = etat_case(pos, TROU, false, false);
                     break
                 default:
-                    int tours = cell - '0';
-                    if (tours < 0 || tours > 9)
-                        FATAL("map: invalid cell type '%c'"
-                              "line %d column %d",
-                              cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case(pos, PAPY, false, false);
-                    get_cell(pos).papy_tours_restants = tours;
-                    break;
+                        int tours = cell - '0';
+                        if (tours < 0 || tours > 9)
+                            FATAL("map: invalid cell type '%c'"
+                                    "line %d column %d",
+                                    cell, ligne + 1, colonne + 1);
+                        get_cell(pos).etat = etat_case(pos, PAPY, false, false);
+                        get_cell(pos).papy_tours_restants = tours;
+                        break;
             }
         }
         std::char check;
@@ -82,16 +77,30 @@ void Map::load_map_cells(std::istream& stream)
 
     }
 
-    for (int ligne = 0; ligne < HAUTEUR; ligne++) {
-        for (int colonne = 0; colonne < LARGEUR; colonne++) {
-            position pos(colonne, ligne, -1);
-            get_cell(pos).etat = etat_case(pos, TERRE, false, false);
-            get_cell(pos).barriere = PAS_DE_BARRIERE;
-            get_cell(pos).nid = PAS_DE_NID;
-            get_cell(pos).pigeon = PAS_DE_PIGEON;
-            get_cell(pos).papy_tours_restants = -1;
-            get_cell(pos).point_spawn = false;
+
+}
+
+Map::Map(std::istream& stream)
+{
+    INFO("Loading map");
+
+    for (int niveau = -1; niveau <= 0; niveau++) {
+        for (int ligne = 0; ligne < HAUTEUR; ligne++) {
+            for (int colonne = 0; colonne < LARGEUR; colonne++) {
+                position pos(colonne, ligne, niveau);
+                if (niveau == -1)
+                    get_cell(pos).etat = etat_case(pos, TERRE, false, false);
+                else
+                    get_cell(pos).etat = etat_case(pos, VIDE, false, false);
+                get_cell(pos).barriere = PAS_DE_BARRIERE;
+                get_cell(pos).nid = PAS_DE_NID;
+                get_cell(pos).pigeon = PAS_DE_PIGEON;
+                get_cell(pos).papy_tours_restants = -1;
+                get_cell(pos).point_spawn = false;
+            }
         }
     }
 
+    load_map_cells(stream);
 }
+
