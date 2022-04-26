@@ -34,8 +34,8 @@ GameState::GameState(std::istream& map_stream, const rules::Players& players)
 GameState::GameState(const GameState& st)
     : rules::GameState(st)
     , map_(st.map_)
-    , round_(st.round_)
     , players_(st.players_)
+    , round_(st.round_)
 {
     // FIXME
 }

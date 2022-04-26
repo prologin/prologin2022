@@ -50,6 +50,6 @@ private:
 
     int score_;
     std::vector<position> troupes_;
-    int mouvements_;
     int pains_;
+    int mouvements_;
 };
