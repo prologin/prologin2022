@@ -14,11 +14,28 @@ class PlayerInfo
 public:
     PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map);
 
-    // Getters
+    // Id
     int get_key() const;
+
+    // Score
     int get_score() const;
+    void increase_score(int delta);
+
+    // Name
     const std::string& get_name() const;
+    void set_name(const std::string& name);
+
+    // Troupes
     const std::vector<position> troupes() const;
+
+    // Actions
+    int mouvements() const;
+
+    // Inventaire
+    int get_pains() const;
+    void increment_pains();
+    bool remove_pain(int delta);
+    void clear_pains();
 
     // History
     const std::vector<InternalAction>& get_internal_history() const;
@@ -33,4 +50,6 @@ private:
 
     int score_;
     std::vector<position> troupes_;
+    int mouvements_;
+    int pains_;
 };
