@@ -38,24 +38,66 @@ inline position get_delta_pos(const direction& dir)
     position delta = {.colonne = 0, .ligne = 0, .niveau = 0};
     switch (dir)
     {
-        case NORD:
-            delta.ligne = 1;
-            break;
-        case SUD:
-            delta.ligne = -1;
-            break;
-        case EST:
-            delta.colonne = 1;
-            break;
-        case OUEST:
-            delta.colonne = -1;
-            break;
-        case HAUT:
-            delta.niveau = 1;
-            break;
-        case BAS:
-            delta.niveau -= 1;
-            break;
+    case NORD:
+        delta.ligne = 1;
+        break;
+    case SUD:
+        delta.ligne = -1;
+        break;
+    case EST:
+        delta.colonne = 1;
+        break;
+    case OUEST:
+        delta.colonne = -1;
+        break;
+    case HAUT:
+        delta.niveau = 1;
+        break;
+    case BAS:
+        delta.niveau -= 1;
+        break;
     }
     return delta;
+}
+
+inline direction inverse_dir(direction dir)
+{
+    switch (dir)
+    {
+    case NORD:
+        return SUD;
+    case SUD:
+        return NORD;
+    case EST:
+        return OUEST;
+    case OUEST:
+        return EST;
+    case HAUT:
+        return BAS;
+    case BAS:
+        return HAUT;
+    }
+
+    __builtin_unreachable();
+}
+
+inline direction clockwise_dir(direction dir)
+{
+    switch (dir)
+    {
+    case NORD:
+        return EST;
+    case SUD:
+        return OUEST;
+    case EST:
+        return SUD;
+    case OUEST:
+        return NORD;
+    case HAUT:
+        return BAS;
+    case BAS:
+        return HAUT;
+    }
+
+    __builtin_unreachable();
 }

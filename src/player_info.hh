@@ -26,7 +26,7 @@ public:
     void set_name(const std::string& name);
 
     // Troupes
-    const std::vector<position> troupes() const;
+    const std::array<troupe, NB_TROUPES> troupes() const;
 
     // Actions
     int mouvements() const;
@@ -49,7 +49,7 @@ private:
     std::vector<InternalAction> internal_hist_;
 
     int score_;
-    std::vector<position> troupes_;
+    std::array<troupe, NB_TROUPES> troupes_;
     int pains_;
     int mouvements_;
 };

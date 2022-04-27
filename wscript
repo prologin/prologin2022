@@ -61,7 +61,6 @@ def build(bld):
 
         # Waf requires a relative path for the source
         src_relpath = os.path.relpath(test_src, bld.path.abspath())
-        print(src_relpath)
 
         bld.program(
             features='gtest',

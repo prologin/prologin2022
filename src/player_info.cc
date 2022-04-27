@@ -1,9 +1,34 @@
 #include "player_info.hh"
+#include "position.hh"
+
+namespace
+{
+std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
+                                            const Map& map)
+{
+    std::array<troupe, NB_TROUPES> troupes;
+
+    rules::Player other;
+
+    auto dir = player.id < other.id ? NORD : SUD;
+    for (int i = 1; i < NB_TROUPES; i++, dir = clockwise_dir(dir))
+    {
+        auto head = map.get_spawn_toward(dir);
+        std::vector<position> body;
+        for (int j = 1; j < TAILLE_DEPART; j++)
+            body.push_back(head);
+
+        troupes[i - 1] = troupe{head, body, TAILLE_DEPART, inverse_dir(dir), i};
+    }
+
+    return troupes;
+}
+} // namespace
 
 PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
     : rules_player_(std::move(player))
     , score_(0)
-    , troupes_(map.spawns)
+    , troupes_(init_troupes(*rules_player_, map))
     , pains_(0)
     , mouvements_(PTS_MOUVEMENTS)
 {
@@ -35,7 +60,7 @@ void PlayerInfo::set_name(const std::string& name)
     rules_player_->name = name;
 }
 
-const std::vector<position> PlayerInfo::troupes() const
+const std::array<troupe, NB_TROUPES> PlayerInfo::troupes() const
 {
     return troupes_;
 }
