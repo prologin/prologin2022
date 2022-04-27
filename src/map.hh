@@ -14,6 +14,8 @@ typedef struct Case
     pigeon_debug pigeon;     ///< Informations d'état du pigeon de debug
     int papy_tours_restants; ///< Tours restants avant la pose d'un pain
     bool point_spawn;        ///< La case est un point de spawn
+
+    bool case_praticable() const;
 } Case;
 
 class Map
@@ -27,6 +29,7 @@ public:
     const Case& get_cell(const position& pos) const;
     Case& get_cell(const position& pos);
     const position& get_spawn_toward(const direction& dir) const;
+    bool case_praticable(const position& pos) const;
 
 private:
     void load_map_cells(std::istream& stream);

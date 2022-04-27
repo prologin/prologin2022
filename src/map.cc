@@ -2,6 +2,17 @@
 
 #include "map.hh"
 
+bool Case::case_praticable() const
+{
+    return etat.contenu != BUISSON && etat.contenu != TERRE &&
+            barriere != FERMEE;
+} 
+
+bool Map::case_praticable(const position& pos) const
+{
+    return get_cell(pos).case_praticable();
+}
+
 const Case& Map::get_cell(const position& pos) const
 {
     int indice =

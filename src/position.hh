@@ -32,3 +32,30 @@ inline bool inside_map(const position& pos)
     return pos.ligne >= 0 && pos.ligne < HAUTEUR && pos.colonne >= 0 &&
            pos.colonne < LARGEUR && pos.niveau <= 0 && pos.niveau >= -1;
 }
+
+inline position get_delta_pos(const direction& dir)
+{
+    position delta = {.colonne = 0, .ligne = 0, .niveau = 0};
+    switch (dir)
+    {
+        case NORD:
+            delta.ligne = 1;
+            break;
+        case SUD:
+            delta.ligne = -1;
+            break;
+        case EST:
+            delta.colonne = 1;
+            break;
+        case OUEST:
+            delta.colonne = -1;
+            break;
+        case HAUT:
+            delta.niveau = 1;
+            break;
+        case BAS:
+            delta.niveau -= 1;
+            break;
+    }
+    return delta;
+}
