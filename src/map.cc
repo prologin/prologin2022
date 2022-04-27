@@ -20,23 +20,27 @@ const position& Map::get_spawn_toward(const direction& dir) const
 {
     switch (dir)
     {
-        case HAUT:
-        case NORD:
-            for (position pos: spawns)
-                if (pos.ligne == 0) return pos;
-            break;
-        case BAS:
-        case SUD:
-            for (position pos: spawns)
-                if (pos.ligne == HAUTEUR-1) return pos;
-            break;
-        case EST:
-            for (position pos: spawns)
-                if (pos.colonne == LARGEUR-1) return pos;
-            break;
-        case OUEST:
-            for (position pos: spawns)
-                if (pos.colonne == 0) return pos;
+    case HAUT:
+    case NORD:
+        for (position pos : spawns)
+            if (pos.ligne == 0)
+                return pos;
+        break;
+    case BAS:
+    case SUD:
+        for (position pos : spawns)
+            if (pos.ligne == HAUTEUR - 1)
+                return pos;
+        break;
+    case EST:
+        for (position pos : spawns)
+            if (pos.colonne == LARGEUR - 1)
+                return pos;
+        break;
+    case OUEST:
+        for (position pos : spawns)
+            if (pos.colonne == 0)
+                return pos;
     }
     __builtin_unreachable();
 }
@@ -46,6 +50,13 @@ void Map::load_map_cells(std::istream& stream)
     int niveau = 0;
     for (int ligne = 0; ligne < HAUTEUR; ligne++)
     {
+        std::string line;
+        if (!std::getline(stream, line))
+            FATAL("map: couldn't read from the input stream (line %d)",
+                  ligne + 1);
+        if (line.size() != LARGEUR)
+            FATAL("map: line %d has %d columns, expected %d", ligne,
+                  line.size(), LARGEUR);
         for (int colonne = 0; colonne < LARGEUR; colonne++)
         {
             bool border = (colonne == 0 || colonne == LARGEUR - 1) ||
@@ -53,8 +64,7 @@ void Map::load_map_cells(std::istream& stream)
             bool corner = (colonne == 0 || colonne == LARGEUR - 1) &&
                           (ligne == 0 || ligne == HAUTEUR - 1);
             position pos{colonne, ligne, niveau};
-            char cell;
-            stream >> cell;
+            char cell = line[colonne];
             switch (cell)
             {
             case ' ':
@@ -133,12 +143,6 @@ void Map::load_map_cells(std::istream& stream)
                 break;
             }
         }
-        char check;
-        stream >> check;
-        if (check != '\n')
-            FATAL("map: invalid line length"
-                  "EoL expected line %d column %d",
-                  ligne + 1, LARGEUR + 1);
     }
     // spawn points checks
     if (spawns.size() != 4)

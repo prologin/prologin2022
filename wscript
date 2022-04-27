@@ -4,6 +4,7 @@
 
 import glob
 import os.path
+import shutil
 
 from wafgenerator import generator_player_install
 
@@ -16,7 +17,18 @@ def configure(cfg):
     pass
 
 
+def _copy_assets(source_dir, build_dir):
+    assets = [
+        'src/tests/map.txt'
+    ]
+    for asset in assets:
+        src_path = os.path.join(source_dir, asset)
+        dst_path = os.path.join(build_dir, asset)
+        shutil.copyfile(src_path, dst_path)
+
+
 def build(bld):
+    TARGET = 'prologin2022'
     bld.shlib(
         source='''
             src/action_avancer.cc
@@ -34,9 +46,12 @@ def build(bld):
             src/history.cc
         ''',
         defines=['MODULE_COLOR=ANSI_COL_BROWN', 'MODULE_NAME="rules"'],
-        target='prologin2022',
+        target=TARGET,
         use=['stechec2'],
     )
+    source_dir = os.path.join(bld.run_dir, 'games', TARGET)
+    build_dir = os.path.join(bld.out_dir, 'games', TARGET)
+    _copy_assets(source_dir, build_dir)
 
     abs_pattern = os.path.join(bld.path.abspath(), 'src/tests/test-*.cc')
     for test_src in glob.glob(abs_pattern):
@@ -46,6 +61,7 @@ def build(bld):
 
         # Waf requires a relative path for the source
         src_relpath = os.path.relpath(test_src, bld.path.abspath())
+        print(src_relpath)
 
         bld.program(
             features='gtest',

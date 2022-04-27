@@ -34,8 +34,8 @@ GameState::GameState(std::istream& map_stream, const rules::Players& players)
 GameState::GameState(const GameState& st)
     : rules::GameState(st)
     , map_(st.map_)
-    , round_(st.round_)
     , players_(st.players_)
+    , round_(st.round_)
 {
     // FIXME
 }
@@ -48,4 +48,29 @@ GameState::~GameState()
 GameState* GameState::copy() const
 {
     return new GameState(*this);
+}
+
+const PlayerInfo& GameState::get_player(int id) const
+{
+    for (const auto& player : players_)
+    {
+        if (player.get_key() == id)
+            return player;
+    }
+    FATAL("player_info: no player with id %d", id);
+}
+
+PlayerInfo& GameState::get_player(int id)
+{
+    for (auto& player : players_)
+    {
+        if (player.get_key() == id)
+            return player;
+    }
+    FATAL("player_info: no player with id %d", id);
+}
+
+const Map& GameState::get_map() const
+{
+    return map_;
 }
