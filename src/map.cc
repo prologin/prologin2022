@@ -5,8 +5,8 @@
 bool Case::case_praticable() const
 {
     return etat.contenu != BUISSON && etat.contenu != TERRE &&
-            barriere != FERMEE;
-} 
+           barriere != FERMEE;
+}
 
 bool Map::case_praticable(const position& pos) const
 {
@@ -33,23 +33,23 @@ const position& Map::get_spawn_toward(const direction& dir) const
     {
     case HAUT:
     case NORD:
-        for (position pos : spawns)
+        for (const auto& pos : spawns)
             if (pos.ligne == 0)
                 return pos;
         break;
     case BAS:
     case SUD:
-        for (position pos : spawns)
+        for (const auto& pos : spawns)
             if (pos.ligne == HAUTEUR - 1)
                 return pos;
         break;
     case EST:
-        for (position pos : spawns)
+        for (const auto& pos : spawns)
             if (pos.colonne == LARGEUR - 1)
                 return pos;
         break;
     case OUEST:
-        for (position pos : spawns)
+        for (const auto& pos : spawns)
             if (pos.colonne == 0)
                 return pos;
     }
