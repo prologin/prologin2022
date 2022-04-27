@@ -26,7 +26,8 @@ public:
     void set_name(const std::string& name);
 
     // Troupes
-    const std::array<troupe, NB_TROUPES> troupes() const;
+    const std::array<troupe, NB_TROUPES>& troupes() const;
+    std::array<troupe, NB_TROUPES>& troupes();
 
     // Actions
     int mouvements() const;

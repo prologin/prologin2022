@@ -12,9 +12,23 @@ int ActionConstruireBuisson::check(const GameState& st) const
     if (!st.get_map().get_cell(pos_).etat.est_constructible)
         return NON_CONSTRUCTIBLE;
 
-    auto& player = st.get_player(player_id_);
+    // make sure that there is not already something built
+    if (st.get_map().get_cell(pos_).etat.contenu != VIDE)
+        return NON_CONSTRUCTIBLE;
 
-    if (player.get_pains() < COUT_BUISSON)
+    PlayerInfo players[] = {
+        st.get_player(player_id_),
+        st.get_other(player_id_),
+    };
+
+    // make sure that the position does not overlap with a duck
+    for (const auto& player : players)
+        for (auto& troupe : player.troupes())
+            for (auto& canard : troupe.canards)
+                if (canard == pos_)
+                    return NON_CONSTRUCTIBLE;
+
+    if (players[0].get_pains() < COUT_BUISSON)
         return PAINS_INSUFFISANTS;
 
     return OK;

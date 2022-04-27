@@ -62,12 +62,24 @@ const PlayerInfo& GameState::get_player(int id) const
 
 PlayerInfo& GameState::get_player(int id)
 {
-    for (auto& player : players_)
+    const auto& const_this = *this;
+    return const_cast<PlayerInfo&>(const_this.get_player(id));
+}
+
+const PlayerInfo& GameState::get_other(int id) const
+{
+    for (const auto& player : players_)
     {
-        if (player.get_key() == id)
+        if (player.get_key() != id)
             return player;
     }
-    FATAL("player_info: no player with id %d", id);
+    FATAL("player_info: no other id than %d", id);
+}
+
+PlayerInfo& GameState::get_other(int id)
+{
+    const auto& const_this = *this;
+    return const_cast<PlayerInfo&>(const_this.get_other(id));
 }
 
 const Map& GameState::get_map() const

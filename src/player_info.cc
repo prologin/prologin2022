@@ -60,7 +60,12 @@ void PlayerInfo::set_name(const std::string& name)
     rules_player_->name = name;
 }
 
-const std::array<troupe, NB_TROUPES> PlayerInfo::troupes() const
+std::array<troupe, NB_TROUPES>& PlayerInfo::troupes()
+{
+    return troupes_;
+}
+
+const std::array<troupe, NB_TROUPES>& PlayerInfo::troupes() const
 {
     return troupes_;
 }

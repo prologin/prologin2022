@@ -4,12 +4,11 @@ namespace
 {
 const int PAINS_INIT = 2 * COUT_BUISSON;
 
-void init_pains(const std::array<ApiTest::Player, 2>& players, GameState& st)
+void init_pains(const std::array<ApiTest::Player, 2>& players)
 {
     for (auto& player : players)
     {
-        int player_id = player.id;
-        auto& player_info = st.get_player(player_id);
+        auto& player_info = player.api->game_state().get_player(player.id);
         for (int i = 0; i < PAINS_INIT; ++i)
             player_info.increment_pains();
     }
@@ -28,7 +27,7 @@ TEST_F(ApiTest, ActionConstruireBuisson_PainsInsuffisants)
 
 TEST_F(ApiTest, ActionConstruireBuisson_PositionInvalide)
 {
-    init_pains(players, *st);
+    init_pains(players);
 
     const position positions[] = {
         {0, HAUTEUR, 0}, {LARGEUR, 0, 0}, {0, 0, 1},
@@ -41,25 +40,37 @@ TEST_F(ApiTest, ActionConstruireBuisson_PositionInvalide)
             auto err = player.api->construire_buisson(position);
             ASSERT_EQ(POSITION_INVALIDE, err);
         }
+        ASSERT_EQ(PAINS_INIT,
+                  player.api->game_state().get_player(player.id).get_pains());
     }
 }
 
 TEST_F(ApiTest, ActionConstruireBuisson_NonConstructible)
 {
-    init_pains(players, *st);
+    init_pains(players);
 
-    const position positions[] = {
+    position positions[] = {
         {0, 0, 0},
         {1, 1, 0},
         {5, 2, -1},
+        {5, 2, 0},
     };
     for (auto& player : players)
-        for (auto& player : players)
+        player.api->game_state()
+            .get_player(players[0].id)
+            .troupes()[0]
+            .canards[0] = position{5, 2, 0};
+
+    for (auto& player : players)
+    {
+        for (const auto& position : positions)
         {
-            for (const auto& position : positions)
-            {
-                auto err = player.api->construire_buisson(position);
-                ASSERT_EQ(NON_CONSTRUCTIBLE, err);
-            }
+            auto err = player.api->construire_buisson(position);
+            ASSERT_EQ(NON_CONSTRUCTIBLE, err);
         }
+        ASSERT_EQ(PAINS_INIT,
+                  player.api->game_state().get_player(player.id).get_pains());
+    }
 }
+
+TEST_F(ApiTest, ActionConstruireBuisson_Ok) {}

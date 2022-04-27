@@ -47,7 +47,7 @@ protected:
 
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
         auto gs_players = make_players(player_id_1, player_id_2);
-        st = std::unique_ptr<GameState>(
+        std::unique_ptr<GameState> st(
             make_test_gamestate(test_map_path, gs_players));
 
         players[0].id = player_id_1;
@@ -58,6 +58,5 @@ protected:
             std::unique_ptr<GameState>(st->copy()), gs_players[1]);
     }
 
-    std::unique_ptr<GameState> st;
     std::array<Player, 2> players;
 };

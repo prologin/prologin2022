@@ -24,6 +24,8 @@ public:
     // Player infos
     const PlayerInfo& get_player(int id) const;
     PlayerInfo& get_player(int id);
+    const PlayerInfo& get_other(int id) const;
+    PlayerInfo& get_other(int id);
 
     // Map
     const Map& get_map() const;
