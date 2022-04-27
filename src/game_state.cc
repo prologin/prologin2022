@@ -49,3 +49,28 @@ GameState* GameState::copy() const
 {
     return new GameState(*this);
 }
+
+const PlayerInfo& GameState::get_player(int id) const
+{
+    for (const auto& player : players_)
+    {
+        if (player.get_key() == id)
+            return player;
+    }
+    FATAL("player_info: no player with id %d", id);
+}
+
+PlayerInfo& GameState::get_player(int id)
+{
+    for (auto& player : players_)
+    {
+        if (player.get_key() == id)
+            return player;
+    }
+    FATAL("player_info: no player with id %d", id);
+}
+
+const Map& GameState::get_map() const
+{
+    return map_;
+}

@@ -31,6 +31,13 @@ static GameState* make_test_gamestate(std::string map_path,
 
 class ApiTest : public ::testing::Test
 {
+public:
+    struct Player
+    {
+        int id;
+        std::unique_ptr<Api> api;
+    };
+
 protected:
     virtual void SetUp()
     {
@@ -40,7 +47,7 @@ protected:
 
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
         auto gs_players = make_players(player_id_1, player_id_2);
-        std::unique_ptr<GameState> st(
+        st = std::unique_ptr<GameState>(
             make_test_gamestate(test_map_path, gs_players));
 
         players[0].id = player_id_1;
@@ -51,10 +58,6 @@ protected:
             std::unique_ptr<GameState>(st->copy()), gs_players[1]);
     }
 
-    struct Player
-    {
-        int id;
-        std::unique_ptr<Api> api;
-    };
+    std::unique_ptr<GameState> st;
     std::array<Player, 2> players;
 };

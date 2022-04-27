@@ -21,6 +21,13 @@ public:
 
     GameState* copy() const override;
 
+    // Player infos
+    const PlayerInfo& get_player(int id) const;
+    PlayerInfo& get_player(int id);
+
+    // Map
+    const Map& get_map() const;
+
 private:
     Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
