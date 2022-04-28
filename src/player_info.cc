@@ -28,9 +28,8 @@ std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
 PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
     : rules_player_(std::move(player))
     , score_(0)
-    , troupes_(init_troupes(*rules_player_, map))
     , pains_(0)
-    , mouvements_(PTS_MOUVEMENTS)
+    , troupes_(init_troupes(*rules_player_, map))
 {
     rules_player_->score = 0;
 }
@@ -70,9 +69,34 @@ const std::array<troupe, NB_TROUPES>& PlayerInfo::troupes() const
     return troupes_;
 }
 
-int PlayerInfo::mouvements() const
+int PlayerInfo::mouvements(int troupe_id) const
 {
-    return mouvements_;
+    for (int i = 0; i < troupes_.size(); ++i)
+        if (troupes_[i].id == troupe_id)
+            return mouvements_[i];
+}
+
+void PlayerInfo::reset_mouvements()
+{
+    for (auto& mv : mouvements_)
+        mv = PTS_MOUVEMENTS;
+}
+
+bool PlayerInfo::remove_mouvements(int troupe_id, int delta)
+{
+    for (int i = 0; i < troupes_.size(); ++i)
+    {
+        if (troupes_[i].id == troupe_id)
+        {
+            if (mouvements_[i] < delta)
+                return false;
+
+            mouvements_[i] -= delta;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 int PlayerInfo::get_pains() const

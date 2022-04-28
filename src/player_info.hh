@@ -30,7 +30,9 @@ public:
     std::array<troupe, NB_TROUPES>& troupes();
 
     // Actions
-    int mouvements() const;
+    int mouvements(int troupe_id) const;
+    void reset_mouvements();
+    bool remove_mouvements(int troupe_id, int delta);
 
     // Inventaire
     int get_pains() const;
@@ -50,7 +52,7 @@ private:
     std::vector<InternalAction> internal_hist_;
 
     int score_;
-    std::array<troupe, NB_TROUPES> troupes_;
     int pains_;
-    int mouvements_;
+    std::array<troupe, NB_TROUPES> troupes_;
+    std::array<int, NB_TROUPES> mouvements_;
 };
