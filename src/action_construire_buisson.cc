@@ -36,5 +36,10 @@ int ActionConstruireBuisson::check(const GameState& st) const
 
 void ActionConstruireBuisson::apply_on(GameState* st) const
 {
-    // FIXME
+    // Change the state of the player
+    st->get_player(player_id_).remove_pain(COUT_BUISSON);
+
+    // Change the state of the cell
+    st->get_map().get_cell(pos_).etat.contenu = BUISSON;
+    st->get_map().get_cell(pos_).etat.est_constructible = false;
 }

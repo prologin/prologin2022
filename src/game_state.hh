@@ -29,6 +29,7 @@ public:
 
     // Map
     const Map& get_map() const;
+    Map& get_map();
 
 private:
     Map map_;

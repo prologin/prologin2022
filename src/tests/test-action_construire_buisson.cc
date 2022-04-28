@@ -73,4 +73,29 @@ TEST_F(ApiTest, ActionConstruireBuisson_NonConstructible)
     }
 }
 
-TEST_F(ApiTest, ActionConstruireBuisson_Ok) {}
+TEST_F(ApiTest, ActionConstruireBuisson_Ok)
+{
+    init_pains(players);
+
+    position positions[] = {
+        {5, 2, 0},
+        {53, 52, 0},
+    };
+
+    for (auto& player : players)
+    {
+        INFO("player %d", player.id);
+        const auto& gs = player.api->game_state();
+        auto pains_init = PAINS_INIT;
+        for (const auto& pos : positions)
+        {
+            auto err = player.api->construire_buisson(pos);
+            pains_init -= COUT_BUISSON;
+
+            ASSERT_EQ(OK, err);
+            ASSERT_EQ(BUISSON, gs.get_map().get_cell(pos).etat.contenu);
+            ASSERT_FALSE(gs.get_map().get_cell(pos).etat.est_constructible);
+            ASSERT_EQ(pains_init, gs.get_player(player.id).get_pains());
+        }
+    }
+}

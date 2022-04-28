@@ -87,7 +87,7 @@ void PlayerInfo::increment_pains()
 
 bool PlayerInfo::remove_pain(int delta)
 {
-    if (pains_ <= delta)
+    if (pains_ < delta)
         return false;
 
     pains_ -= delta;

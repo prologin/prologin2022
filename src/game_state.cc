@@ -86,3 +86,8 @@ const Map& GameState::get_map() const
 {
     return map_;
 }
+
+Map& GameState::get_map()
+{
+    return map_;
+}
