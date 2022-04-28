@@ -31,6 +31,11 @@ public:
     const Map& get_map() const;
     Map& get_map();
 
+    // Rounds
+    int get_round() const;
+    void next_round();
+    bool is_finished() const;
+
 private:
     Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.

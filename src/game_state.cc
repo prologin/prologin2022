@@ -91,3 +91,18 @@ Map& GameState::get_map()
 {
     return map_;
 }
+
+int GameState::get_round() const
+{
+    return round_;
+}
+
+void GameState::next_round()
+{
+    round_++;
+}
+
+bool GameState::is_finished() const
+{
+    return round_ >= NB_TOURS;
+}
