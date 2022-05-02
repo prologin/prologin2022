@@ -29,6 +29,7 @@ PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
     : rules_player_(std::move(player))
     , score_(0)
     , pains_(0)
+    , tunnels_(0)
     , troupes_(init_troupes(*rules_player_, map))
 {
     rules_player_->score = 0;
