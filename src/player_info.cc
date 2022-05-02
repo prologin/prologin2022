@@ -123,6 +123,22 @@ void PlayerInfo::clear_pains()
     pains_ = 0;
 }
 
+int PlayerInfo::get_tunnels() const
+{
+    return tunnels_;
+}
+
+void PlayerInfo::increment_tunnels()
+{
+    tunnels_++;
+}
+
+void PlayerInfo::clear_tunnels()
+{
+    // Devrait être appelé une fois au début de chaque tour
+    tunnels_ = 0;
+}
+
 const std::vector<InternalAction>& PlayerInfo::get_internal_history() const
 {
     return internal_hist_;
