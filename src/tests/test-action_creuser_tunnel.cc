@@ -2,7 +2,7 @@
 
 namespace
 {
-const int TUNNELS_INIT = FREQ_TUNNEL;
+const int TUNNELS_INIT = FREQ_TUNNEL - 1;
 
 void init_tunnels(const std::array<ApiTest::Player, 2>& players)
 {
