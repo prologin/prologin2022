@@ -49,7 +49,7 @@ TEST_F(ApiTest, ActionCreuserTunnel_PositionInvalide)
             ASSERT_EQ(POSITION_INVALIDE, err);
         }
         ASSERT_EQ(TUNNELS_INIT,
-                  player.api->game_state().get_player(player.id).get_pains());
+                  player.api->game_state().get_player(player.id).get_tunnels());
     }
 }
 
