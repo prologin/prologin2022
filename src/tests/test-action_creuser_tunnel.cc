@@ -92,7 +92,7 @@ TEST_F(ApiTest, ActionCreuserTunnel_Ok)
         for (const auto& pos : positions)
         {
             auto err = player.api->creuser_tunnel(pos);
-            tunnels_init -= COUT_BUISSON;
+            tunnels_init += 1;
 
             ASSERT_EQ(OK, err);
             ASSERT_EQ(VIDE, gs.get_map().get_cell(pos).etat.contenu);
