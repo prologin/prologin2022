@@ -1,6 +1,7 @@
 #include <utils/log.hh>
 
 #include "map.hh"
+#include "position.hh"
 
 bool Case::case_praticable() const
 {
@@ -10,7 +11,7 @@ bool Case::case_praticable() const
 
 bool Map::case_praticable(const position& pos) const
 {
-    return get_cell(pos).case_praticable();
+    return get_cell(pos).case_praticable() && inside_map(pos);
 }
 
 const Case& Map::get_cell(const position& pos) const

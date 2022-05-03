@@ -99,6 +99,16 @@ bool PlayerInfo::remove_mouvements(int troupe_id, int delta)
     return false;
 }
 
+std::shared_ptr<troupe> PlayerInfo::get_troupe(int troupe_id)
+{
+    for (auto trp : troupes_)
+    {
+        if (trp.id == troupe_id)
+            return std::make_shared<troupe>(trp);
+    } 
+    return nullptr;
+}
+
 int PlayerInfo::get_pains() const
 {
     return pains_;
