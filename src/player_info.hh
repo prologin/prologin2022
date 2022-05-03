@@ -41,6 +41,10 @@ public:
     bool remove_pain(int delta);
     void clear_pains();
 
+    int get_tunnels() const;
+    void increment_tunnels();
+    void clear_tunnels();
+
     // History
     const std::vector<InternalAction>& get_internal_history() const;
     void add_internal_action(InternalAction action);
@@ -54,6 +58,7 @@ private:
 
     int score_;
     int pains_;
+    int tunnels_; // Nombre de tunnels creusés ce tour
     std::array<troupe, NB_TROUPES> troupes_;
     std::array<int, NB_TROUPES> mouvements_;
 };

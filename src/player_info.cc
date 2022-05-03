@@ -29,6 +29,7 @@ PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
     : rules_player_(std::move(player))
     , score_(0)
     , pains_(0)
+    , tunnels_(0)
     , troupes_(init_troupes(*rules_player_, map))
 {
     rules_player_->score = 0;
@@ -71,9 +72,11 @@ const std::array<troupe, NB_TROUPES>& PlayerInfo::troupes() const
 
 int PlayerInfo::mouvements(int troupe_id) const
 {
-    for (int i = 0; i < troupes_.size(); ++i)
+    for (size_t i = 0; i < troupes_.size(); ++i)
         if (troupes_[i].id == troupe_id)
             return mouvements_[i];
+
+    return -1;
 }
 
 void PlayerInfo::reset_mouvements()
@@ -84,7 +87,7 @@ void PlayerInfo::reset_mouvements()
 
 bool PlayerInfo::remove_mouvements(int troupe_id, int delta)
 {
-    for (int i = 0; i < troupes_.size(); ++i)
+    for (size_t i = 0; i < troupes_.size(); ++i)
     {
         if (troupes_[i].id == troupe_id)
         {
@@ -131,6 +134,22 @@ bool PlayerInfo::remove_pain(int delta)
 void PlayerInfo::clear_pains()
 {
     pains_ = 0;
+}
+
+int PlayerInfo::get_tunnels() const
+{
+    return tunnels_;
+}
+
+void PlayerInfo::increment_tunnels()
+{
+    tunnels_++;
+}
+
+void PlayerInfo::clear_tunnels()
+{
+    // Devrait être appelé une fois au début de chaque tour
+    tunnels_ = 0;
 }
 
 const std::vector<InternalAction>& PlayerInfo::get_internal_history() const
