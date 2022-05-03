@@ -24,7 +24,10 @@ def _copy_assets(source_dir, build_dir):
     for asset in assets:
         src_path = os.path.join(source_dir, asset)
         dst_path = os.path.join(build_dir, asset)
-        shutil.copyfile(src_path, dst_path)
+        try:
+            shutil.copyfile(src_path, dst_path)
+        except IOError:
+            pass
 
 
 def build(bld):
