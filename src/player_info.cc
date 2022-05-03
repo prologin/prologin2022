@@ -33,6 +33,7 @@ PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
     , troupes_(init_troupes(*rules_player_, map))
 {
     rules_player_->score = 0;
+    reset_mouvements();
 }
 
 int PlayerInfo::get_key() const
