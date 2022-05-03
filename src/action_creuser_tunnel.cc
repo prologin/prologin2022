@@ -22,5 +22,5 @@ int ActionCreuserTunnel::check(const GameState& st) const
 void ActionCreuserTunnel::apply_on(GameState* st) const
 {
     st->get_player(player_id_).increment_tunnels();
-    st->get_map().get_cell(pos_).etat.contenu = VIDE;
+    st->get_map().get_cell(pos_).etat.contenu = TUNNEL;
 }

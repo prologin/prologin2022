@@ -95,7 +95,7 @@ TEST_F(ApiTest, ActionCreuserTunnel_Ok)
             tunnels_init += 1;
 
             ASSERT_EQ(OK, err);
-            ASSERT_EQ(VIDE, gs.get_map().get_cell(pos).etat.contenu);
+            ASSERT_EQ(TUNNEL, gs.get_map().get_cell(pos).etat.contenu);
             ASSERT_EQ(tunnels_init, gs.get_player(player.id).get_tunnels());
         }
     }
