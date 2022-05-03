@@ -3,13 +3,14 @@
 
 #include "actions.hh"
 #include "constant.hh"
+#include "position.hh"
 
 int ActionCreuserTunnel::check(const GameState& st) const
 {
     if (!inside_map(pos_))
         return POSITION_INVALIDE;
 
-    if (!st.get_map().get_cell(pos_).etat.contenu != TERRE)
+    if (st.get_map().get_cell(pos_).etat.contenu != TERRE)
         return NON_CREUSABLE;
 
     if (st.get_player(player_id_).get_tunnels() >= FREQ_TUNNEL)

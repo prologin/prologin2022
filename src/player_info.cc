@@ -72,9 +72,11 @@ const std::array<troupe, NB_TROUPES>& PlayerInfo::troupes() const
 
 int PlayerInfo::mouvements(int troupe_id) const
 {
-    for (int i = 0; i < troupes_.size(); ++i)
+    for (size_t i = 0; i < troupes_.size(); ++i)
         if (troupes_[i].id == troupe_id)
             return mouvements_[i];
+
+    return -1;
 }
 
 void PlayerInfo::reset_mouvements()
@@ -85,7 +87,7 @@ void PlayerInfo::reset_mouvements()
 
 bool PlayerInfo::remove_mouvements(int troupe_id, int delta)
 {
-    for (int i = 0; i < troupes_.size(); ++i)
+    for (size_t i = 0; i < troupes_.size(); ++i)
     {
         if (troupes_[i].id == troupe_id)
         {

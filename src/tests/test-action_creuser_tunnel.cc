@@ -18,7 +18,7 @@ void init_tunnels(const std::array<ApiTest::Player, 2>& players)
 TEST_F(ApiTest, ActionCreuserTunnel_TropCreuse)
 {
     init_tunnels(players);
-    
+
     for (auto& player : players)
     {
         auto& player_info = player.api->game_state().get_player(player.id);
@@ -28,7 +28,7 @@ TEST_F(ApiTest, ActionCreuserTunnel_TropCreuse)
     const position pos{5, 2, -1};
     for (const auto& player : players)
     {
-        auto err = player.api->creuser_tunnels(pos);
+        auto err = player.api->creuser_tunnel(pos);
         ASSERT_EQ(TROP_CREUSE, err);
     }
 }
@@ -67,7 +67,7 @@ TEST_F(ApiTest, ActionCreuserTunnel_NonCreusable)
     {
         for (const auto& position : positions)
         {
-            auto err = player.api->creuser_tunnels(position);
+            auto err = player.api->creuser_tunnel(position);
             ASSERT_EQ(NON_CREUSABLE, err);
         }
         ASSERT_EQ(TUNNELS_INIT,
