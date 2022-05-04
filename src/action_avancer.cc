@@ -6,7 +6,7 @@
 #include "position.hh"
 #include "troupe.hh"
 
-int avancer_troupe(std::shared_ptr<troupe> trp, const direction& dir, const Map& map)
+int avancer_troupe(troupe *trp, const direction& dir, const Map& map)
 {
     position new_pos = trp->maman + get_delta_pos(dir);
     if (!inside_map(new_pos))
@@ -40,7 +40,8 @@ int ActionAvancer::check(const GameState& st) const
 
 void ActionAvancer::apply_on(GameState* st) const
 {
-    auto trp = st->get_player(player_id_).get_troupe(id_);
+    auto player = st->get_player_ptr(player_id_);
+    auto trp = player->get_troupe(id_);
     
     move_troupe(*trp, dir_);
     if (is_dead(*trp, st->get_map()))

@@ -6,7 +6,6 @@
 
 namespace
 {
-        /*
     void assert_troupe_moved(troupe& trp_after, troupe& trp_before,
                     direction dir, int line)
     {
@@ -22,44 +21,27 @@ namespace
         }
     } 
 
-    erreur test_move_troupe(std::shared_ptr<PlayerInfo>player, 
+    erreur test_move_troupe(PlayerInfo *player, 
                     std::unique_ptr<Api>& api, 
                     int id, direction dir, bool moved, int line)
     {
-        troupe before = *(player->get_troupe(id));
-
-        INFO("Apres maman: %d, %d, %d", before.maman.colonne,
-                    before.maman.ligne,
-                    before.maman.niveau);
-
+        auto before = *(player->get_troupe(id));
+        
         auto err = api->avancer(id, dir); 
         
         troupe after = *(player->get_troupe(id));
-        
-        INFO("Apres maman: %d, %d, %d", after.maman.colonne,
-                    after.maman.ligne,
-                    after.maman.niveau);
-
-        
-        for (int i = 0; i < before.taille; i++)
-        {
-            if(&(before.canards[i]) == &(after.canards[i]))
-                FATAL("chiant %lu", &(before.canards[i]));
-        }
 
         //ASSERT_EQ(err == OK, moved) << "failed line: " << line;
         if (moved)
             assert_troupe_moved(after, before, dir, line);
         return err;
     }
-    */
 }
 
 TEST_F(ApiTest, ActionAvancerAutorisee)
 {
     auto& player = players[0];
-    //auto err = test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
-    auto err = player.api->avancer(1, EST);
+    auto err = test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
     ASSERT_EQ(OK, err);
 }
 

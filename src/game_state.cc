@@ -66,6 +66,18 @@ PlayerInfo& GameState::get_player(int id)
     return const_cast<PlayerInfo&>(const_this.get_player(id));
 }
 
+
+PlayerInfo *GameState::get_player_ptr(int id)
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        auto player = players_.data() + i;
+        if (player->get_key() == id)
+            return player;
+    } 
+    return nullptr;
+}
+
 const PlayerInfo& GameState::get_other(int id) const
 {
     for (const auto& player : players_)

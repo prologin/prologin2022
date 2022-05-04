@@ -27,6 +27,8 @@ public:
     const PlayerInfo& get_other(int id) const;
     PlayerInfo& get_other(int id);
 
+    PlayerInfo *get_player_ptr(int id);
+
     // Map
     const Map& get_map() const;
     Map& get_map();

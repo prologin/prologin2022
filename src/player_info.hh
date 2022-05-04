@@ -28,7 +28,7 @@ public:
     // Troupes
     const std::array<troupe, NB_TROUPES>& troupes() const;
     std::array<troupe, NB_TROUPES>& troupes();
-    std::shared_ptr<troupe> get_troupe(int troupe_id);
+    troupe *get_troupe(int troupe_id);
 
     // Actions
     int mouvements(int troupe_id) const;
