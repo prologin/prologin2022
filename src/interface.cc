@@ -183,6 +183,12 @@ std::ostream& operator<<(std::ostream& os, erreur v)
     case MOUVEMENTS_INSUFFISANTS:
         os << "MOUVEMENTS_INSUFFISANTS";
         break;
+    case JOUEUR_INVALIDE:
+        os << "JOUEUR_INVALIDE";
+        break;
+    case TROUPE_INVALIDE:
+        os << "TROUPE_INVALIDE";
+        break;
     case TROP_GRANDI:
         os << "TROP_GRANDI";
         break;

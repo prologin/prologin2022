@@ -9,7 +9,7 @@
 int avancer_troupe(std::shared_ptr<troupe> trp, const direction& dir, const Map& map)
 {
     position new_pos = trp->maman + get_delta_pos(dir);
-    if (!inside_map(new_pos) || !map.case_praticable(new_pos))
+    if (!inside_map(new_pos))
         return POSITION_INVALIDE;
 
     return OK;
@@ -26,22 +26,22 @@ int ActionAvancer::check(const GameState& st) const
      * vers une position invalide elle meurt :think: ?
      * */
     if (trp == nullptr)
-        return MOUVEMENTS_INSUFFISANTS; // INVALID TROUPE ID 
+        return TROUPE_INVALIDE;
 
     if (player.mouvements(trp->id) <= 0)
         return MOUVEMENTS_INSUFFISANTS;
     
-    auto state = avancer_troupe(trp, dir_, st.get_map());
+   auto state = avancer_troupe(trp, dir_, st.get_map());
 
     if (state != OK)
         return state;
-
     return OK;
 }
 
 void ActionAvancer::apply_on(GameState* st) const
 {
     auto trp = st->get_player(player_id_).get_troupe(id_);
+    
     move_troupe(*trp, dir_);
     if (is_dead(*trp, st->get_map()))
         respawn(*trp);

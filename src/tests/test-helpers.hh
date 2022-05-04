@@ -5,6 +5,7 @@
 
 #include "../api.hh"
 #include "../game_state.hh"
+#include "../player_info.hh"
 
 namespace
 {
@@ -53,9 +54,11 @@ protected:
         players[0].id = player_id_1;
         players[0].api = std::make_unique<Api>(
             std::unique_ptr<GameState>(st->copy()), gs_players[0]);
+
         players[1].id = player_id_2;
         players[1].api = std::make_unique<Api>(
             std::unique_ptr<GameState>(st->copy()), gs_players[1]);
+
     }
 
     std::array<Player, 2> players;

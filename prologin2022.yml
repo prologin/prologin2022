@@ -60,6 +60,8 @@ enum:
     enum_summary: "Erreurs possibles après avoir effectué une action"
     enum_field:
       - [ok, "L'action a été effectuée avec succès"]
+      - [joueur_invalide, "Mauvais numéro de joueur"]
+      - [troupe_invalide, "Mauvais identifiant de troupe"]
       - [hors_tour, "Aucune action n'est possible hors de joueur_tour"]
       - [mouvements_insuffisants, "Il ne reste plus assez de points de
                                   mouvements pour effectuer l'action demandée"]

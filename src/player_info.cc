@@ -15,7 +15,7 @@ std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
     {
         auto head = map.get_spawn_toward(dir);
         std::vector<position> body;
-        for (int j = 1; j < TAILLE_DEPART; j++)
+        for (int j = 0; j < TAILLE_DEPART; j++)
             body.push_back(head);
 
         troupes[i - 1] = troupe{head, body, TAILLE_DEPART, inverse_dir(dir), i};
