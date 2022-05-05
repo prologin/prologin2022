@@ -43,7 +43,5 @@ void ActionAvancer::apply_on(GameState* st) const
     auto player = st->get_player_ptr(player_id_);
     auto trp = player->get_troupe(id_);
     
-    move_troupe(*trp, dir_);
-    if (is_dead(*trp, st->get_map()))
-        respawn(*trp);
+    move_troupe(*trp, dir_, st->get_map()); //Gere la mort de la troupe
 }

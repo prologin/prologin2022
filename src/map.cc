@@ -5,8 +5,9 @@
 
 bool Case::case_praticable() const
 {
-    return etat.contenu != BUISSON && etat.contenu != TERRE &&
-           barriere != FERMEE;
+    return !(etat.contenu == BUISSON ||
+           etat.contenu == TERRE ||
+           (etat.contenu == BARRIERE && barriere == FERMEE));
 }
 
 bool Map::case_praticable(const position& pos) const
@@ -183,6 +184,11 @@ void Map::load_map_cells(std::istream& stream)
         FATAL("map: expected one spawner at the right of the map");
 }
 
+bool Map::case_mortelle(const position& pos) const
+{
+    return get_cell(pos).canard_sur_case || !case_praticable(pos);
+}
+
 Map::Map(std::istream& stream)
 {
     INFO("Loading map");
@@ -208,6 +214,12 @@ Map::Map(std::istream& stream)
     }
 
     load_map_cells(stream);
+}
+
+void Map::delete_troupe(const troupe& trp)
+{
+    for (auto& canard : trp.canards)
+        get_cell(canard).canard_sur_case = false;
 }
 
 Map::Map(const Map& map)

@@ -14,6 +14,7 @@ typedef struct Case
     pigeon_debug pigeon;     ///< Informations d'état du pigeon de debug
     int papy_tours_restants; ///< Tours restants avant la pose d'un pain
     bool point_spawn;        ///< La case est un point de spawn
+    bool canard_sur_case;   ///< Indique la presence ou non d'un canard sur la case    
 
     bool case_praticable() const;
 } Case;
@@ -30,9 +31,10 @@ public:
     Case& get_cell(const position& pos);
     const position& get_spawn_toward(const direction& dir) const;
     bool case_praticable(const position& pos) const;
+    bool case_mortelle(const position& pos) const;
+    void delete_troupe(const troupe& trp);
 
 private:
     void load_map_cells(std::istream& stream);
-
     std::array<Case, 2 * LARGEUR * HAUTEUR> map_;
 };
