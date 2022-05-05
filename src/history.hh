@@ -4,29 +4,52 @@
 
 #include "constant.hh"
 
-enum internal_action_id
+enum class InternalActionType
 {
-   INT_ACTION_AVANCER,
-   INT_ACTION_GRANDIR,
-   INT_ACTION_CONSTRUIRE_BUISSON,
-   INT_ACTION_CREUSER_TUNNEL,
-   INT_ACTION_DEBUG_POSER_PIGEON,
+    /* Actions */
+    action_avancer,            // avancer troupe_id direction
+    action_grandir,            // grandir troupe_id
+    action_construire_buisson, // buisson col ligne
+    action_creuser_tunnel,     // creuser col ligne
+    action_debug_poser_pigeon, // debug col ligne niveau
+    /* Everything that can happen */
+    info_score,           // score player_id new_value
+    info_spawn,           // spawn joueur_id troupe_id col ligne taille
+    info_recup_pains,     // recuperer col ligne niveau
+    info_deposer_pains,   // deposer col ligne niveau
+    info_recup_nid,       // nid col ligne
+    info_lacher_pain,     // lacher col ligne niveau
+    info_ouvrir_barriere, // ouvrir col ligne
+    info_fermer_barriere, // fermer col ligne
+    info_division,        // diviser troupe_id nouvelle_taille
+    info_dispersion,      // disperser troupe_id
 };
 
 class InternalAction
 {
-
 public:
-    InternalAction(internal_action_id id, position pos);
-    InternalAction(internal_action_id id, int colonne, int ligne, int niveau);
+    friend std::ostream& operator<<(std::ostream&, const InternalAction&);
 
-    //Getters
-    internal_action_id get_id() const;
+    InternalAction(InternalActionType act, int id, direction direction);
+    InternalAction(InternalActionType act, int id);
+    InternalAction(InternalActionType act, position pos);
+    InternalAction(InternalActionType act, int id, int value);
+    InternalAction(InternalActionType act, int player_id, int troupe_id,
+                   int value, position pos);
 
-    //Methods
-    std::string to_json();
+    // Getters
+    InternalActionType get_id() const;
 
 private:
-    internal_action_id id_;
+    InternalActionType type_;
+
     position pos_;
+    direction direction_;
+    // Those values can be either player_id, troupe_id, taille, etc.
+    // It's kind of ugly but it works...
+    int int_value1;
+    int int_value2;
+    int int_value3;
 };
+
+std::ostream& operator<<(std::ostream& os, const InternalAction& action);
