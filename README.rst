@@ -16,4 +16,4 @@ License
 -------
 
 Free use of this software is granted under the terms of the GNU General Public
-License version 2+ (GPLv2+). For details see the files COPYING included.
+License version 3+ (GPLv3+). For details see the LICENSE file.
