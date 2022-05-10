@@ -37,9 +37,6 @@ public:
     InternalAction(InternalActionType act, int player_id, int troupe_id,
                    int value, position pos);
 
-    // Getters
-    InternalActionType get_id() const;
-
 private:
     InternalActionType type_;
 
@@ -47,9 +44,9 @@ private:
     direction direction_;
     // Those values can be either player_id, troupe_id, taille, etc.
     // It's kind of ugly but it works...
-    int int_value1;
-    int int_value2;
-    int int_value3;
+    int int_value1_;
+    int int_value2_;
+    int int_value3_;
 };
 
 std::ostream& operator<<(std::ostream& os, const InternalAction& action);
