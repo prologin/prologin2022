@@ -33,7 +33,7 @@ PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
     , troupes_(init_troupes(*rules_player_, map))
 {
     rules_player_->score = 0;
-    reset_mouvements();
+    reset_pts_actions();
 }
 
 int PlayerInfo::get_key() const
@@ -71,31 +71,31 @@ const std::array<troupe, NB_TROUPES>& PlayerInfo::troupes() const
     return troupes_;
 }
 
-int PlayerInfo::mouvements(int troupe_id) const
+int PlayerInfo::pts_actions(int troupe_id) const
 {
     for (size_t i = 0; i < troupes_.size(); ++i)
         if (troupes_[i].id == troupe_id)
-            return mouvements_[i];
+            return pts_actions_[i];
 
     return -1;
 }
 
-void PlayerInfo::reset_mouvements()
+void PlayerInfo::reset_pts_actions()
 {
-    for (auto& mv : mouvements_)
+    for (auto& mv : pts_actions_)
         mv = PTS_MOUVEMENTS;
 }
 
-bool PlayerInfo::remove_mouvements(int troupe_id, int delta)
+bool PlayerInfo::remove_pts_actions(int troupe_id, int delta)
 {
     for (size_t i = 0; i < troupes_.size(); ++i)
     {
         if (troupes_[i].id == troupe_id)
         {
-            if (mouvements_[i] < delta)
+            if (pts_actions_[i] < delta)
                 return false;
 
-            mouvements_[i] -= delta;
+            pts_actions_[i] -= delta;
             return true;
         }
     }
@@ -119,10 +119,20 @@ void PlayerInfo::enfiler_canard(int troupe_id)
     {
         if (troupes_[i].id == troupe_id)
         {
-            auto last_canard = troupes_[i].canards.back();
-            canards_additionnels_[i].emplace(last_canard);
+            auto back = troupes_[i].canards.back();
+            canards_additionnels_[i].push(back);
         }
     }
+}
+
+const std::queue<position>*
+PlayerInfo::canards_additionnels(int troupe_id) const
+{
+    for (size_t i = 0; i < troupes_.size(); ++i)
+        if (troupes_[i].id == troupe_id)
+            return &canards_additionnels_[i];
+
+    return nullptr;
 }
 
 int PlayerInfo::get_pains() const

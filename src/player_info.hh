@@ -30,12 +30,14 @@ public:
     const std::array<troupe, NB_TROUPES>& troupes() const;
     std::array<troupe, NB_TROUPES>& troupes();
     troupe* get_troupe(int troupe_id);
+
     void enfiler_canard(int troupe_id);
+    const std::queue<position>* canards_additionnels(int troupe_id) const;
 
     // Actions
-    int mouvements(int troupe_id) const;
-    void reset_mouvements();
-    bool remove_mouvements(int troupe_id, int delta);
+    int pts_actions(int troupe_id) const;
+    void reset_pts_actions();
+    bool remove_pts_actions(int troupe_id, int delta);
 
     // Inventaire
     int get_pains() const;
@@ -62,6 +64,6 @@ private:
     int pains_;
     int tunnels_; // Nombre de tunnels creusés ce tour
     std::array<troupe, NB_TROUPES> troupes_;
-    std::array<int, NB_TROUPES> mouvements_;
+    std::array<int, NB_TROUPES> pts_actions_;
     std::array<std::queue<position>, NB_TROUPES> canards_additionnels_;
 };
