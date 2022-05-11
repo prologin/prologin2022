@@ -66,15 +66,16 @@ PlayerInfo& GameState::get_player(int id)
     return const_cast<PlayerInfo&>(const_this.get_player(id));
 }
 
-
-PlayerInfo *GameState::get_player_ptr(int id)
+PlayerInfo* GameState::get_player_ptr(int id)
 {
     for (int i = 0; i < 2; ++i)
     {
         auto player = players_.data() + i;
         if (player->get_key() == id)
             return player;
-    } 
+    }
+
+    WARN("player_info: no player with id %d", id);
     return nullptr;
 }
 

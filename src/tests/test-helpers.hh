@@ -36,7 +36,7 @@ public:
     struct Player
     {
         int id;
-        PlayerInfo *info;
+        PlayerInfo* info;
         std::unique_ptr<Api> api;
     };
 
@@ -51,22 +51,19 @@ protected:
         auto gs_players = make_players(player_id_1, player_id_2);
         std::unique_ptr<GameState> st(
             make_test_gamestate(test_map_path, gs_players));
-        
+
         auto state_copy = st->copy();
 
         players[0].id = player_id_1;
         players[0].api = std::make_unique<Api>(
             std::unique_ptr<GameState>(state_copy), gs_players[0]);
-        players[0].info =
-                state_copy->get_player_ptr(players[0].id);
+        players[0].info = state_copy->get_player_ptr(players[0].id);
 
         state_copy = st->copy();
         players[1].id = player_id_2;
         players[1].api = std::make_unique<Api>(
             std::unique_ptr<GameState>(state_copy), gs_players[1]);
-        players[1].info =
-                state_copy->get_player_ptr(players[1].id);
-
+        players[1].info = state_copy->get_player_ptr(players[1].id);
     }
 
     std::array<Player, 2> players;
