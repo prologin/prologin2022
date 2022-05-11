@@ -11,14 +11,14 @@ std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
     rules::Player other;
 
     auto dir = player.id < other.id ? NORD : SUD;
-    for (int i = 1; i < NB_TROUPES; i++, dir = clockwise_dir(dir))
+    for (int i = 0; i < NB_TROUPES; i++, dir = clockwise_dir(dir))
     {
         auto head = map.get_spawn_toward(dir);
         std::vector<position> body;
         for (int j = 0; j < TAILLE_DEPART; j++)
             body.push_back(head);
 
-        troupes[i - 1] = troupe{head, body, TAILLE_DEPART, inverse_dir(dir), i};
+        troupes[i] = troupe{head, body, TAILLE_DEPART, inverse_dir(dir), i + 1};
     }
 
     return troupes;
