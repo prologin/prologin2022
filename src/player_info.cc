@@ -103,14 +103,26 @@ bool PlayerInfo::remove_mouvements(int troupe_id, int delta)
     return false;
 }
 
-troupe *PlayerInfo::get_troupe(int troupe_id)
+troupe* PlayerInfo::get_troupe(int troupe_id)
 {
     for (auto& trp : troupes_)
     {
         if (trp.id == troupe_id)
             return &trp;
-    } 
+    }
     return nullptr;
+}
+
+void PlayerInfo::enfiler_canard(int troupe_id)
+{
+    for (size_t i = 0; i < troupes_.size(); ++i)
+    {
+        if (troupes_[i].id == troupe_id)
+        {
+            auto last_canard = troupes_[i].canards.back();
+            canards_additionnels_[i].emplace(last_canard);
+        }
+    }
 }
 
 int PlayerInfo::get_pains() const

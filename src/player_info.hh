@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <queue>
 #include <vector>
 
 #include <rules/player.hh>
@@ -28,7 +29,8 @@ public:
     // Troupes
     const std::array<troupe, NB_TROUPES>& troupes() const;
     std::array<troupe, NB_TROUPES>& troupes();
-    troupe *get_troupe(int troupe_id);
+    troupe* get_troupe(int troupe_id);
+    void enfiler_canard(int troupe_id);
 
     // Actions
     int mouvements(int troupe_id) const;
@@ -61,4 +63,5 @@ private:
     int tunnels_; // Nombre de tunnels creusés ce tour
     std::array<troupe, NB_TROUPES> troupes_;
     std::array<int, NB_TROUPES> mouvements_;
+    std::array<std::queue<position>, NB_TROUPES> canards_additionnels_;
 };
