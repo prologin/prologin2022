@@ -1,5 +1,5 @@
 {
-  description = "Prologin 2021 Final Game";
+  description = "Prologin 2022 Final Game";
 
   inputs = {
     stechec2.url = "github:prologin/stechec2/nix-stechec";
