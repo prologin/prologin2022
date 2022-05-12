@@ -11,7 +11,9 @@ enum class InternalActionType
     action_grandir,            // grandir troupe_id
     action_construire_buisson, // buisson col ligne
     action_creuser_tunnel,     // creuser col ligne
-    action_debug_poser_pigeon, // debug col ligne niveau
+    /*debugging and errors*/
+    pigeon_debug, // debug col ligne niveau pigeon
+    error,        // erreur type_erreur
     /* Everything that can happen */
     info_score,           // score player_id new_value
     info_spawn,           // spawn joueur_id troupe_id col ligne taille
@@ -36,12 +38,16 @@ public:
     InternalAction(InternalActionType act, int id, int value);
     InternalAction(InternalActionType act, int player_id, int troupe_id,
                    int value, position pos);
+    InternalAction(InternalActionType act, position pos, pigeon_debug pigeon);
+    InternalAction(InternalActionType act, erreur err);
 
 private:
     InternalActionType type_;
 
     position pos_;
     direction direction_;
+    pigeon_debug pigeon_;
+    erreur err_;
     // Those values can be either player_id, troupe_id, taille, etc.
     // It's kind of ugly but it works...
     int int_value1_;
