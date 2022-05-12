@@ -33,7 +33,7 @@
 #define PTS_ACTION 20
 
 /// Nombre de points de mouvement requis pour incrémenter la taille
-#define COUT_CROISSANCE 10
+#define COUT_CROISSANCE 11
 
 /// Coût en score de la pose de buisson
 #define COUT_BUISSON 3

@@ -34,7 +34,7 @@ FREQ_TUNNEL = 1
 PTS_ACTION = 20
 
 # Nombre de points de mouvement requis pour incrémenter la taille
-COUT_CROISSANCE = 10
+COUT_CROISSANCE = 11
 
 # Coût en score de la pose de buisson
 COUT_BUISSON = 3
