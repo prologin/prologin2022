@@ -32,24 +32,24 @@ constant:
     cst_comment: Nombre de troupes que chaque joueur controle
   -
     cst_name: INTERVALLE_DISTRIB
-    cst_val: 4
+    cst_val: 5
     cst_comment: Intervalle de distribution de pains par les papys
   -
     cst_name: FREQ_TUNNEL
     cst_val: 1
     cst_comment: Nombre de tunnels qu'un joueur peut creuser par tour
   -
-    cst_name: PTS_MOUVEMENTS
+    cst_name: PTS_ACTION
     cst_val: 20
     cst_comment: Nombre de déplacements que peut faire une troupe en un tour
   -
     cst_name: COUT_CROISSANCE
-    cst_val: 10
+    cst_val: 11
     cst_comment: Nombre de points de mouvement requis pour incrémenter la taille
   -
     cst_name: COUT_BUISSON
     cst_val: 3
-    cst_comment: Coût en pains de la pose de buisson
+    cst_comment: Coût en score de la pose de buisson
   -
     cst_name: TOUR_FERMETURE
     cst_val: 100
@@ -69,8 +69,7 @@ enum:
       - [trop_creuse, "Trop de trous ont déjà été creusés pendant le tour"]
       - [non_creusable, "Il n'est pas possible de creuser à la position demandée"]
       - [non_constructible, "La zone demandée n'est pas constructible"]
-      - [pains_insuffisants, "La troupe n'a pas assez de pains pour construire
-                              un buisson"]
+      - [score_insuffisant, "Le joueur n'a pas assez de points pour construire un buisson"]
       - [position_invalide, "La position demandée est hors du parc"]
   -
     enum_name: direction
@@ -86,7 +85,7 @@ enum:
     enum_name: type_case
     enum_summary: "Type de l'élément présent sur une case"
     enum_field:
-      - [vide, "Absence d'élément"]
+      - [gazon, "Absence d'élément"]
       - [buisson, "Obstacle impossible à traverser"]
       - [barriere, "Élément pouvant être ouvert ou fermé. Une barrière fermée
                     est infranchissable alors qu'une barrière ouverte est
@@ -151,6 +150,8 @@ struct:
                                    incluant la maman en première position"]
       - [taille, int, "Taille de la troupe"]
       - [dir, direction, "Direction de la troupe"]
+      - [inventaire, int, "Nombre de pains de la troupe"]
+      - [pts_action, int, "Nombre de points d'action de la troupe"]
       - [id, int, "Identifiant de la troupe"]
   -
     str_name: etat_case
@@ -160,7 +161,7 @@ struct:
       - [pos, position, "Position de la case. Le niveau vaut nécessairement 0"]
       - [contenu, type_case, "Type de la case"]
       - [est_constructible, bool, "La case est constructible"]
-      - [contient_pain, bool, "La case contient une miche de pain"]
+      - [nb_pains, int, "Nombre de pains contenus sur la case"]
   -
     str_name: action_hist
     str_summary: Action représentée dans l'historique
