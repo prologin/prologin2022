@@ -86,7 +86,6 @@ TEST_F(ApiTest, ActionCreuserTunnel_Ok)
 
     for (auto& player : players)
     {
-        INFO("player %d", player.id);
         const auto& gs = player.api->game_state();
         auto tunnels_init = TUNNELS_INIT;
         for (const auto& pos : positions)

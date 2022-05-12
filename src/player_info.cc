@@ -18,7 +18,9 @@ std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
         for (int j = 0; j < TAILLE_DEPART; j++)
             body.push_back(head);
 
-        troupes[i] = troupe{head, body, TAILLE_DEPART, inverse_dir(dir), i + 1};
+        troupes[i] = troupe{
+            head, body, TAILLE_DEPART, inverse_dir(dir), 0, 0, i + 1,
+        };
     }
 
     return troupes;

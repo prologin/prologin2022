@@ -139,8 +139,10 @@ typedef struct troupe
         canards; ///< Position des différents canards de la troupe, incluant la
                  ///< maman en première position
     int taille;  ///< Taille de la troupe
-    direction dir; ///< Direction de la troupe
-    int id;        ///< Identifiant de la troupe
+    direction dir;   ///< Direction de la troupe
+    int inventaire;  ///< Nombre de pains de la troupe
+    int pts_actions; ///< Nombre de points d'action de la troupe
+    int id;          ///< Identifiant de la troupe
 } troupe;
 
 /// Élément constituant le parc
