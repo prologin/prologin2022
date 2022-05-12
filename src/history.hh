@@ -7,24 +7,24 @@
 enum class InternalActionType
 {
     /* Actions */
-    action_avancer,            // avancer troupe_id direction
-    action_grandir,            // grandir troupe_id
-    action_construire_buisson, // buisson col ligne
+    action_avancer,            // avancer joueur_id troupe_id direction
+    action_grandir,            // grandir joueur_id troupe_id
+    action_construire_buisson, // buisson joueur_id troupe_id col ligne
     action_creuser_tunnel,     // creuser col ligne
-    /*debugging and errors*/
+    /* Debugging and errors */
     pigeon_debug, // debug col ligne niveau pigeon
-    error,        // erreur type_erreur
+    error,        // erreur joueur_id type_erreur
     /* Everything that can happen */
-    info_score,           // score player_id new_value
+    info_score,           // score joueur_id nouvelle_valeur
     info_spawn,           // spawn joueur_id troupe_id col ligne taille
-    info_recup_pains,     // recuperer col ligne niveau
-    info_deposer_pains,   // deposer col ligne niveau
-    info_recup_nid,       // nid col ligne
-    info_lacher_pain,     // lacher col ligne niveau
+    info_recup_pains,     // recuperer joueur_id troupe_id col ligne niveau
+    info_deposer_pains,   // deposer joueur_id troupe_id col ligne niveau
+    info_recup_nid,       // nid joueur_id troupe_id col ligne
+    info_lacher_pain,     // lacher joueur_id troupe_id col ligne niveau
     info_ouvrir_barriere, // ouvrir col ligne
     info_fermer_barriere, // fermer col ligne
-    info_division,        // diviser troupe_id nouvelle_taille
-    info_dispersion,      // disperser troupe_id
+    info_division,        // diviser joueur_id troupe_id nouvelle_taille
+    info_dispersion,      // disperser joueur_id troupe_id
 };
 
 class InternalAction
@@ -32,14 +32,14 @@ class InternalAction
 public:
     friend std::ostream& operator<<(std::ostream&, const InternalAction&);
 
-    InternalAction(InternalActionType act, int id, direction direction);
-    InternalAction(InternalActionType act, int id);
-    InternalAction(InternalActionType act, position pos);
-    InternalAction(InternalActionType act, int id, int value);
-    InternalAction(InternalActionType act, int player_id, int troupe_id,
-                   int value, position pos);
-    InternalAction(InternalActionType act, position pos, pigeon_debug pigeon);
-    InternalAction(InternalActionType act, erreur err);
+    InternalAction(InternalActionType, int, int, direction);
+    InternalAction(InternalActionType, int, int);
+    InternalAction(InternalActionType, int, int, position);
+    InternalAction(InternalActionType, position);
+    InternalAction(InternalActionType, position, pigeon_debug);
+    InternalAction(InternalActionType, int, erreur);
+    InternalAction(InternalActionType, int, int);
+    InternalAction(InternalActionType, int, int, int);
 
 private:
     InternalActionType type_;
@@ -53,6 +53,7 @@ private:
     int int_value1_;
     int int_value2_;
     int int_value3_;
+    int int_value4_;
 };
 
 std::ostream& operator<<(std::ostream& os, const InternalAction& action);
