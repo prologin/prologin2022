@@ -3,7 +3,7 @@ from api import *
 def display_map():
     case_str = {
             type_case.GAZON: '',
-            type_case.BUISSON: '█',
+            type_case.BUISSON: '█', 
             type_case.BARRIERE: '╳',
             type_case.NID: 'O',
             type_case.PAPY: 'P',

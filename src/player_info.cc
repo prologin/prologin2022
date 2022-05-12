@@ -75,29 +75,29 @@ const std::array<troupe, NB_TROUPES>& PlayerInfo::troupes() const
 
 int PlayerInfo::pts_actions(int troupe_id) const
 {
-    for (size_t i = 0; i < troupes_.size(); ++i)
-        if (troupes_[i].id == troupe_id)
-            return pts_actions_[i];
+    for (auto& trp : troupes_)
+        if (trp.id == troupe_id)
+            return trp.pts_actions;
 
     return -1;
 }
 
 void PlayerInfo::reset_pts_actions()
 {
-    for (auto& mv : pts_actions_)
-        mv = PTS_ACTION;
+    for (auto& trp : troupes_)
+        trp.pts_actions = PTS_ACTION;
 }
 
 bool PlayerInfo::remove_pts_actions(int troupe_id, int delta)
 {
-    for (size_t i = 0; i < troupes_.size(); ++i)
+    for (auto& trp : troupes_)
     {
-        if (troupes_[i].id == troupe_id)
+        if (trp.id == troupe_id)
         {
-            if (pts_actions_[i] < delta)
+            if (trp.pts_actions < delta)
                 return false;
 
-            pts_actions_[i] -= delta;
+            trp.pts_actions -= delta;
             return true;
         }
     }
