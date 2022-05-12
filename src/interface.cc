@@ -201,8 +201,8 @@ std::ostream& operator<<(std::ostream& os, erreur v)
     case NON_CONSTRUCTIBLE:
         os << "NON_CONSTRUCTIBLE";
         break;
-    case PAINS_INSUFFISANTS:
-        os << "PAINS_INSUFFISANTS";
+    case SCORE_INSUFFISANT:
+        os << "SCORE_INSUFFISANT";
         break;
     case POSITION_INVALIDE:
         os << "POSITION_INVALIDE";

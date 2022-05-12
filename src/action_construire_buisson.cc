@@ -29,7 +29,7 @@ int ActionConstruireBuisson::check(const GameState& st) const
                     return NON_CONSTRUCTIBLE;
 
     if (players[0].get_pains() < COUT_BUISSON)
-        return PAINS_INSUFFISANTS;
+        return SCORE_INSUFFISANT;
 
     return OK;
 }

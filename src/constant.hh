@@ -53,10 +53,10 @@ typedef enum erreur
     TROP_GRANDI,             ///< La troupe a déjà trop grandi pendant le tour
     TROP_CREUSE,   ///< Trop de trous ont déjà été creusés pendant le tour
     NON_CREUSABLE, ///< Il n'est pas possible de creuser à la position demandée
-    NON_CONSTRUCTIBLE,  ///< La zone demandée n'est pas constructible
-    PAINS_INSUFFISANTS, ///< La troupe n'a pas assez de pains pour construire un
-                        ///< buisson
-    POSITION_INVALIDE,  ///< La position demandée est hors du parc
+    NON_CONSTRUCTIBLE, ///< La zone demandée n'est pas constructible
+    SCORE_INSUFFISANT, ///< La troupe n'a pas assez de pains pour construire un
+                       ///< buisson
+    POSITION_INVALIDE, ///< La position demandée est hors du parc
 } erreur;
 
 /// Directions possibles

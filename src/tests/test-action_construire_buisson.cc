@@ -21,7 +21,7 @@ TEST_F(ApiTest, ActionConstruireBuisson_PainsInsuffisants)
     for (const auto& player : players)
     {
         auto err = player.api->construire_buisson(pos);
-        ASSERT_EQ(PAINS_INSUFFISANTS, err);
+        ASSERT_EQ(SCORE_INSUFFISANT, err);
     }
 }
 
