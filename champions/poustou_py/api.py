@@ -25,7 +25,7 @@ TAILLE_MIN = 3
 NB_TROUPES = 2
 
 # Intervalle de distribution de pains par les papys
-INTERVALLE_DISTRIB = 4
+INTERVALLE_DISTRIB = 5
 
 # Nombre de tunnels qu'un joueur peut creuser par tour
 FREQ_TUNNEL = 1

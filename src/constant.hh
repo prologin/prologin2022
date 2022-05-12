@@ -24,7 +24,7 @@
 #define NB_TROUPES 2
 
 /// Intervalle de distribution de pains par les papys
-#define INTERVALLE_DISTRIB 4
+#define INTERVALLE_DISTRIB 5
 
 /// Nombre de tunnels qu'un joueur peut creuser par tour
 #define FREQ_TUNNEL 1
