@@ -54,7 +54,7 @@ class erreur(IntEnum):
     TROP_CREUSE = 6  # <- Trop de trous ont déjà été creusés pendant le tour
     NON_CREUSABLE = 7  # <- Il n'est pas possible de creuser à la position demandée
     NON_CONSTRUCTIBLE = 8  # <- La zone demandée n'est pas constructible
-    PAINS_INSUFFISANTS = 9  # <- La troupe n'a pas assez de pains pour construire un buisson
+    SCORE_INSUFFISANT = 9  # <- Le joueur n'a pas assez de points pour construire un buisson
     POSITION_INVALIDE = 10  # <- La position demandée est hors du parc
 
 
@@ -117,6 +117,8 @@ class troupe(NamedTuple):
     canards: List[Tuple[int, int, int]]  # Position des différents canards de la troupe, incluant la maman en première position
     taille: int  # Taille de la troupe
     dir: direction  # Direction de la troupe
+    inventaire: int  # Nombre de pains de la troupe
+    pts_action: int  # Nombre de points d'action de la troupe
     id: int  # Identifiant de la troupe
 
 
@@ -125,7 +127,7 @@ class etat_case(NamedTuple):
     pos: Tuple[int, int, int]  # Position de la case. Le niveau vaut nécessairement 0
     contenu: type_case  # Type de la case
     est_constructible: bool  # La case est constructible
-    contient_pain: bool  # La case contient une miche de pain
+    nb_pains: int  # Nombre de pains contenus sur la case
 
 
 # Action représentée dans l'historique
