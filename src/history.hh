@@ -32,14 +32,13 @@ class InternalAction
 public:
     friend std::ostream& operator<<(std::ostream&, const InternalAction&);
 
-    InternalAction(InternalActionType, int, int, direction);
     InternalAction(InternalActionType, int, int);
+    InternalAction(InternalActionType, int, int, int);
+    InternalAction(InternalActionType, int, int, direction);
     InternalAction(InternalActionType, int, int, position);
     InternalAction(InternalActionType, position);
     InternalAction(InternalActionType, position, pigeon_debug);
     InternalAction(InternalActionType, int, erreur);
-    InternalAction(InternalActionType, int, int);
-    InternalAction(InternalActionType, int, int, int);
 
 private:
     InternalActionType type_;
