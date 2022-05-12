@@ -2,6 +2,7 @@
 // Copyright (c) 2012-2020 Association Prologin <association@prologin.org>
 
 #include "api.hh"
+#include "position.hh"
 
 #include <memory>
 #include <utility>
@@ -18,8 +19,18 @@ Api::Api(std::unique_ptr<GameState> game_state,
 
 etat_case Api::info_case(position pos)
 {
-    // TODO
-    abort();
+    if (!inside_map(pos))
+    {
+        const etat_case etatCase = {
+            .pos = { -1, -1, -1 },
+            .contenu = static_cast<type_case>(-1),
+            .est_constructible = false,
+            .nb_pains = false
+        };
+
+        return etatCase;
+    }
+    return game_state_->get_map().get_cell(pos).etat;
 }
 etat_barriere Api::info_barriere(position pos)
 {
