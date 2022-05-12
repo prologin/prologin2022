@@ -137,6 +137,15 @@ PlayerInfo::canards_additionnels(int troupe_id) const
     return nullptr;
 }
 
+std::queue<position> *PlayerInfo::canards_additionnels(int troupe_id)
+{
+    for (size_t i = 0; i < troupes_.size(); ++i)
+        if (troupes_[i].id == troupe_id)
+            return &canards_additionnels_[i];
+
+    return nullptr;
+}
+
 int PlayerInfo::get_pains() const
 {
     return pains_;
@@ -195,4 +204,16 @@ void PlayerInfo::add_internal_action(InternalAction action)
 void PlayerInfo::sync_score()
 {
     rules_player_->score = score_;
+}
+
+void PlayerInfo::spawn_canard(int troupe_id, Map& map)
+{
+    std::queue<position> *q = canards_additionnels(troupe_id);
+    if (q == nullptr)
+        FATAL("Bad troupe id");
+    if (q->empty())
+        return;
+    auto last = q->front();
+    q->pop();
+    map.mark_canard(last); 
 }

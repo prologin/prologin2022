@@ -9,6 +9,16 @@ bool Case::case_praticable() const
              (etat.contenu == BARRIERE && barriere == FERMEE));
 }
 
+void Map::mark_canard(position& pos)
+{
+    get_cell(pos).canard_sur_case = true; 
+}
+
+void Map::unmark_canard(position &pos)
+{
+    get_cell(pos).canard_sur_case = false;
+}
+
 bool Map::case_praticable(const position& pos) const
 {
     return get_cell(pos).case_praticable() && inside_map(pos);

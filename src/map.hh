@@ -33,6 +33,8 @@ public:
     bool case_praticable(const position& pos) const;
     bool case_mortelle(const position& pos) const;
     void delete_troupe(const troupe& trp);
+    void mark_canard(position& pos);
+    void unmark_canard(position& pos);
 
 private:
     void load_map_cells(std::istream& stream);

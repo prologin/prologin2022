@@ -1,7 +1,10 @@
 #pragma once
 
 #include "constant.hh"
+#include "player_info.hh"
 #include "map.hh"
+#include "position.hh"
+
 
 inline void respawn(troupe& trp, PlayerInfo& player_info)
 {
@@ -23,6 +26,9 @@ inline void move_troupe(troupe& trp, const direction& dir, Map& map,
         for (int i = trp.taille - 1; i > 0; --i)
             trp.canards[i] = trp.canards[i - 1];
         trp.maman += delta;
+        player.remove_pts_actions(trp.id, 1);
         map.get_cell(trp.maman).canard_sur_case = true;
+        player.spawn_canard(trp.id, map);
+        INFO("HERE");
     }
 }

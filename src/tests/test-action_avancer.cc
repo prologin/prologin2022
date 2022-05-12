@@ -58,21 +58,28 @@ void troup_hardcoded_setup(troupe* trp, Map& map)
 TEST_F(ApiTest, ActionAvancerAutorisee)
 {
     auto& player = players[0];
-    troup_hardcoded_setup(player.info->get_troupe(1),
+    auto trp = player.info->get_troupe(1);
+    int original = trp->pts_actions;
+    troup_hardcoded_setup(trp,
                           player.api->game_state().get_map());
 
     auto err =
         test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
     ASSERT_EQ(OK, err);
+    ASSERT_EQ(original - 1, trp->pts_actions);
 }
 
 TEST_F(ApiTest, ActionAvancerInvalidTroupe)
 {
     auto& player = players[0];
     direction dir = EST;
+    auto trp = player.info->get_troupe(1);
+    int original = trp->pts_actions;
+
     auto err = player.api->avancer(NB_TROUPES + 42, dir);
 
     ASSERT_EQ(TROUPE_INVALIDE, err);
+    ASSERT_EQ(original, trp->pts_actions);
 }
 
 TEST_F(ApiTest, ActionAvancerTueLaTroupe)

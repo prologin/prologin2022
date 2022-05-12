@@ -32,7 +32,9 @@ public:
     troupe* get_troupe(int troupe_id);
 
     void enfiler_canard(int troupe_id);
+    void spawn_canard(int troupe_id, Map& map);
     const std::queue<position>* canards_additionnels(int troupe_id) const;
+    std::queue<position>* canards_additionnels(int troupe_id);
 
     // Actions
     int pts_actions(int troupe_id) const;
