@@ -35,7 +35,7 @@
 /// Nombre de points de mouvement requis pour incrémenter la taille
 #define COUT_CROISSANCE 10
 
-/// Coût en pains de la pose de buisson
+/// Coût en score de la pose de buisson
 #define COUT_BUISSON 3
 
 /// Tour au moment duquel les barrières s'ouvrent ou se ferment

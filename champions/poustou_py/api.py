@@ -36,7 +36,7 @@ PTS_ACTION = 20
 # Nombre de points de mouvement requis pour incrémenter la taille
 COUT_CROISSANCE = 10
 
-# Coût en pains de la pose de buisson
+# Coût en score de la pose de buisson
 COUT_BUISSON = 3
 
 # Tour au moment duquel les barrières s'ouvrent ou se ferment
