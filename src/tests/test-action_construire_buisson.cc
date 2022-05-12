@@ -2,20 +2,19 @@
 
 namespace
 {
-const int PAINS_INIT = 2 * COUT_BUISSON;
+const int SCORE_INIT = 2 * COUT_BUISSON;
 
-void init_pains(const std::array<ApiTest::Player, 2>& players)
+void init_score(const std::array<ApiTest::Player, NB_TROUPES>& players)
 {
     for (auto& player : players)
     {
         auto& player_info = player.api->game_state().get_player(player.id);
-        for (int i = 0; i < PAINS_INIT; ++i)
-            player_info.increment_pains();
+        player_info.increase_score(SCORE_INIT);
     }
 }
 } // namespace
 
-TEST_F(ApiTest, ActionConstruireBuisson_PainsInsuffisants)
+TEST_F(ApiTest, ActionConstruireBuisson_ScoreInsuffisants)
 {
     const position pos{5, 2, 0};
     for (const auto& player : players)
@@ -27,7 +26,7 @@ TEST_F(ApiTest, ActionConstruireBuisson_PainsInsuffisants)
 
 TEST_F(ApiTest, ActionConstruireBuisson_PositionInvalide)
 {
-    init_pains(players);
+    init_score(players);
 
     const position positions[] = {
         {0, HAUTEUR, 0}, {LARGEUR, 0, 0}, {0, 0, 1},
@@ -40,14 +39,14 @@ TEST_F(ApiTest, ActionConstruireBuisson_PositionInvalide)
             auto err = player.api->construire_buisson(position);
             ASSERT_EQ(POSITION_INVALIDE, err);
         }
-        ASSERT_EQ(PAINS_INIT,
-                  player.api->game_state().get_player(player.id).get_pains());
+        ASSERT_EQ(SCORE_INIT,
+                  player.api->game_state().get_player(player.id).get_score());
     }
 }
 
 TEST_F(ApiTest, ActionConstruireBuisson_NonConstructible)
 {
-    init_pains(players);
+    init_score(players);
 
     position positions[] = {
         {0, 0, 0},
@@ -68,14 +67,14 @@ TEST_F(ApiTest, ActionConstruireBuisson_NonConstructible)
             auto err = player.api->construire_buisson(position);
             ASSERT_EQ(NON_CONSTRUCTIBLE, err);
         }
-        ASSERT_EQ(PAINS_INIT,
-                  player.api->game_state().get_player(player.id).get_pains());
+        ASSERT_EQ(SCORE_INIT,
+                  player.api->game_state().get_player(player.id).get_score());
     }
 }
 
 TEST_F(ApiTest, ActionConstruireBuisson_Ok)
 {
-    init_pains(players);
+    init_score(players);
 
     position positions[] = {
         {5, 2, 0},
@@ -85,16 +84,16 @@ TEST_F(ApiTest, ActionConstruireBuisson_Ok)
     for (auto& player : players)
     {
         const auto& gs = player.api->game_state();
-        auto pains_init = PAINS_INIT;
+        auto score_init = SCORE_INIT;
         for (const auto& pos : positions)
         {
             auto err = player.api->construire_buisson(pos);
-            pains_init -= COUT_BUISSON;
+            score_init -= COUT_BUISSON;
 
             ASSERT_EQ(OK, err);
             ASSERT_EQ(BUISSON, gs.get_map().get_cell(pos).etat.contenu);
             ASSERT_FALSE(gs.get_map().get_cell(pos).etat.est_constructible);
-            ASSERT_EQ(pains_init, gs.get_player(player.id).get_pains());
+            ASSERT_EQ(score_init, gs.get_player(player.id).get_score());
         }
     }
 }

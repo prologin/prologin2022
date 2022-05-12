@@ -28,7 +28,7 @@ int ActionConstruireBuisson::check(const GameState& st) const
                 if (canard == pos_)
                     return NON_CONSTRUCTIBLE;
 
-    if (players[0].get_pains() < COUT_BUISSON)
+    if (players[0].get_score() < COUT_BUISSON)
         return SCORE_INSUFFISANT;
 
     return OK;
@@ -37,7 +37,7 @@ int ActionConstruireBuisson::check(const GameState& st) const
 void ActionConstruireBuisson::apply_on(GameState* st) const
 {
     // Change the state of the player
-    st->get_player(player_id_).remove_pain(COUT_BUISSON);
+    st->get_player(player_id_).decrease_score(COUT_BUISSON);
 
     // Change the state of the cell
     st->get_map().get_cell(pos_).etat.contenu = BUISSON;

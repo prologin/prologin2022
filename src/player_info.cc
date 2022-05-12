@@ -48,9 +48,15 @@ int PlayerInfo::get_score() const
     return score_;
 }
 
-void PlayerInfo::increase_score(int delta)
+void PlayerInfo::increase_score(uint delta)
 {
     score_ += delta;
+}
+
+void PlayerInfo::decrease_score(uint delta)
+{
+    if (score_ >= delta)
+        score_ -= delta;
 }
 
 const std::string& PlayerInfo::get_name() const
@@ -145,15 +151,6 @@ int PlayerInfo::get_pains() const
 void PlayerInfo::increment_pains()
 {
     pains_++;
-}
-
-bool PlayerInfo::remove_pain(int delta)
-{
-    if (pains_ < delta)
-        return false;
-
-    pains_ -= delta;
-    return true;
 }
 
 void PlayerInfo::clear_pains()

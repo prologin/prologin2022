@@ -18,10 +18,6 @@ public:
     // Id
     int get_key() const;
 
-    // Score
-    int get_score() const;
-    void increase_score(int delta);
-
     // Name
     const std::string& get_name() const;
     void set_name(const std::string& name);
@@ -42,7 +38,6 @@ public:
     // Inventaire
     int get_pains() const;
     void increment_pains();
-    bool remove_pain(int delta);
     void clear_pains();
 
     int get_tunnels() const;
@@ -53,6 +48,11 @@ public:
     const std::vector<InternalAction>& get_internal_history() const;
     void add_internal_action(InternalAction action);
     void reset_internal_history();
+
+    // Score
+    int get_score() const;
+    void increase_score(uint delta);
+    void decrease_score(uint delta);
 
     void sync_score();
 
