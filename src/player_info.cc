@@ -83,7 +83,7 @@ int PlayerInfo::pts_actions(int troupe_id) const
 void PlayerInfo::reset_pts_actions()
 {
     for (auto& mv : pts_actions_)
-        mv = PTS_MOUVEMENTS;
+        mv = PTS_ACTION;
 }
 
 bool PlayerInfo::remove_pts_actions(int troupe_id, int delta)

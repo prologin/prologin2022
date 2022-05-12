@@ -31,7 +31,7 @@ INTERVALLE_DISTRIB = 4
 FREQ_TUNNEL = 1
 
 # Nombre de déplacements que peut faire une troupe en un tour
-PTS_MOUVEMENTS = 20
+PTS_ACTION = 20
 
 # Nombre de points de mouvement requis pour incrémenter la taille
 COUT_CROISSANCE = 10
