@@ -20,7 +20,7 @@ def display_map():
             for x in range(LARGEUR):
                 pos = x, y, z
                 case = info_case(pos)
-                pains = pains_str[case.pains]
+                pains = pains_str[case.nb_pains]
                 disp = case_str[case.contenu] + pains
                 parc[z][y][x] = disp
     
@@ -93,9 +93,14 @@ def jouer_tour():
     for troupe_id in range(2):
         troupe = troupes_joueur(moi())[troupe_id]
         arrivee, chemin = target[troupe_id]
-        while troupe.pts_actions > 0:
+        while troupe.pts_action > 0:
             avancer(troupe_id, chemin.pop(0))
-            if len(chemin) 
+            if len(chemin) == 0:
+                if info_case(arrivee).contenu == type_case.NID:
+                    target[troupe_id] = nearest(troupe_id, lambda position: info_case(position).nb_pains > 0)
+                else:
+                    target[troupe_id] = nearest(troupe_id, lambda position: info_case(position).contenu == type_case.NID and info_nid(position) == moi() + 1)
+
 
 # Fonction appelée à la fin de la partie.
 def partie_fin():
