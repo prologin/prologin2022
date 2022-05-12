@@ -5,9 +5,8 @@
 
 bool Case::case_praticable() const
 {
-    return !(etat.contenu == BUISSON ||
-           etat.contenu == TERRE ||
-           (etat.contenu == BARRIERE && barriere == FERMEE));
+    return !(etat.contenu == BUISSON || etat.contenu == TERRE ||
+             (etat.contenu == BARRIERE && barriere == FERMEE));
 }
 
 bool Map::case_praticable(const position& pos) const
@@ -85,17 +84,17 @@ void Map::load_map_cells(std::istream& stream)
                     FATAL("map: empty cell found at the border of the map"
                           "'%c' found line %d column %d",
                           cell, ligne + 1, colonne + 1);
-                get_cell(pos).etat = etat_case{pos, VIDE, false, false};
+                get_cell(pos).etat = etat_case{pos, GAZON, false, false};
                 break;
             case '.':
                 if (border)
                     FATAL("map: empty cell found at the border of the map"
                           "'%c' found line %d column %d",
                           cell, ligne + 1, colonne + 1);
-                get_cell(pos).etat = etat_case{pos, VIDE, true, false};
+                get_cell(pos).etat = etat_case{pos, GAZON, true, false};
                 break;
             case 'S':
-                get_cell(pos).etat = etat_case{pos, VIDE, false, false};
+                get_cell(pos).etat = etat_case{pos, GAZON, false, false};
                 get_cell(pos).point_spawn = true;
                 if (not border)
                     FATAL("map: spawns should be at the border of the map"
@@ -203,7 +202,7 @@ Map::Map(std::istream& stream)
                 if (niveau == -1)
                     get_cell(pos).etat = etat_case{pos, TERRE, false, false};
                 else
-                    get_cell(pos).etat = etat_case{pos, VIDE, false, false};
+                    get_cell(pos).etat = etat_case{pos, GAZON, false, false};
                 get_cell(pos).barriere = PAS_DE_BARRIERE;
                 get_cell(pos).nid = PAS_DE_NID;
                 get_cell(pos).pigeon = PAS_DE_PIGEON;

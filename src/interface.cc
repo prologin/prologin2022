@@ -241,8 +241,8 @@ std::ostream& operator<<(std::ostream& os, type_case v)
 {
     switch (v)
     {
-    case VIDE:
-        os << "VIDE";
+    case GAZON:
+        os << "GAZON";
         break;
     case BUISSON:
         os << "BUISSON";

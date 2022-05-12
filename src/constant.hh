@@ -73,7 +73,7 @@ typedef enum direction
 /// Type de l'élément présent sur une case
 typedef enum type_case
 {
-    VIDE,    ///< Absence d'élément
+    GAZON,   ///< Absence d'élément
     BUISSON, ///< Obstacle impossible à traverser
     BARRIERE, ///< Élément pouvant être ouvert ou fermé. Une barrière fermée est
               ///< infranchissable alors qu'une barrière ouverte est analogue à

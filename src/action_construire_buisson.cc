@@ -13,7 +13,7 @@ int ActionConstruireBuisson::check(const GameState& st) const
         return NON_CONSTRUCTIBLE;
 
     // make sure that there is not already something built
-    if (st.get_map().get_cell(pos_).etat.contenu != VIDE)
+    if (st.get_map().get_cell(pos_).etat.contenu != GAZON)
         return NON_CONSTRUCTIBLE;
 
     PlayerInfo players[] = {

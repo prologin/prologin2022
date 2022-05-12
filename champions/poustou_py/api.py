@@ -70,7 +70,7 @@ class direction(IntEnum):
 
 # Type de l'élément présent sur une case
 class type_case(IntEnum):
-    VIDE = 0  # <- Absence d'élément
+    GAZON = 0  # <- Absence d'élément
     BUISSON = 1  # <- Obstacle impossible à traverser
     BARRIERE = 2  # <- Élément pouvant être ouvert ou fermé. Une barrière fermée est infranchissable alors qu'une barrière ouverte est analogue à une case vide
     NID = 3  # <- Élément traversable permettant à la troupe de déposer son inventaire en échange de points
