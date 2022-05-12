@@ -84,7 +84,6 @@ TEST_F(ApiTest, ActionConstruireBuisson_Ok)
 
     for (auto& player : players)
     {
-        INFO("player %d", player.id);
         const auto& gs = player.api->game_state();
         auto pains_init = PAINS_INIT;
         for (const auto& pos : positions)

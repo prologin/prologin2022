@@ -127,7 +127,11 @@ class etat_case(NamedTuple):
     pos: Tuple[int, int, int]  # Position de la case. Le niveau vaut nécessairement 0
     contenu: type_case  # Type de la case
     est_constructible: bool  # La case est constructible
+<<<<<<< HEAD
     nb_pains: int  # Nombre de pains contenus sur la case
+=======
+    nb_pains: int  # La case contient une miche de pain
+>>>>>>> renamed `contient_pain` to `nb_pains`
 
 
 # Action représentée dans l'historique

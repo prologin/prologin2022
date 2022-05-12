@@ -394,8 +394,8 @@ std::ostream& operator<<(std::ostream& os, etat_case v)
     os << "est_constructible"
        << "=" << v.est_constructible;
     os << ", ";
-    os << "contient_pain"
-       << "=" << v.contient_pain;
+    os << "nb_pains"
+       << "=" << v.nb_pains;
     os << " }";
     return os;
 }
