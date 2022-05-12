@@ -34,8 +34,10 @@ etat_case Api::info_case(position pos)
 }
 etat_barriere Api::info_barriere(position pos)
 {
-    // TODO
-    abort();
+    if (!inside_map(pos))
+        return PAS_DE_BARRIERE;
+
+    return game_state_->get_map().get_cell(pos).barriere;
 }
 etat_nid Api::info_nid(position pos)
 {
