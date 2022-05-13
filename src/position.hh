@@ -2,6 +2,8 @@
 // Copyright (c) 2012-2020 Association Prologin <association@prologin.org>
 #pragma once
 
+#include <utils/log.hh>
+
 #include "constant.hh"
 
 inline bool operator==(const position& lhs, const position& rhs)
@@ -30,6 +32,7 @@ inline position operator+(position lhs, position rhs)
 
 inline bool inside_map(const position& pos)
 {
+    INFO("%d, %d, %d", pos.ligne, pos.colonne, pos.niveau);
     return pos.ligne >= 0 && pos.ligne < HAUTEUR && pos.colonne >= 0 &&
            pos.colonne < LARGEUR && pos.niveau <= 0 && pos.niveau >= -1;
 }

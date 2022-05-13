@@ -8,7 +8,7 @@
 
 inline void respawn(troupe& trp, PlayerInfo& player_info)
 {
-    // TODO
+
 }
 
 inline void move_troupe(troupe& trp, const direction& dir, Map& map,
@@ -29,6 +29,5 @@ inline void move_troupe(troupe& trp, const direction& dir, Map& map,
         player.remove_pts_actions(trp.id, 1);
         map.get_cell(trp.maman).canard_sur_case = true;
         player.spawn_canard(trp.id, map);
-        INFO("HERE");
     }
 }

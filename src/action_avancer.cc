@@ -6,7 +6,7 @@
 #include "position.hh"
 #include "troupe.hh"
 
-int check_avancer_troupe(troupe* trp, const direction& dir, const Map& map)
+int check_avancer_troupe(const troupe* trp, const direction& dir, const Map& map)
 {
     position new_pos = trp->maman + get_delta_pos(dir);
     if (!inside_map(new_pos))

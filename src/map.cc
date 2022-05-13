@@ -9,12 +9,12 @@ bool Case::case_praticable() const
              (etat.contenu == BARRIERE && barriere == FERMEE));
 }
 
-void Map::mark_canard(position& pos)
+void Map::mark_canard(const position& pos)
 {
     get_cell(pos).canard_sur_case = true; 
 }
 
-void Map::unmark_canard(position &pos)
+void Map::unmark_canard(const position &pos)
 {
     get_cell(pos).canard_sur_case = false;
 }
@@ -228,7 +228,13 @@ Map::Map(std::istream& stream)
 void Map::delete_troupe(const troupe& trp)
 {
     for (auto& canard : trp.canards)
-        get_cell(canard).canard_sur_case = false;
+       unmark_canard(canard); 
+}
+
+void Map::mark_troupe(const troupe& trp)
+{
+    for (auto& canard : trp.canards)
+        mark_canard(canard);
 }
 
 Map::Map(const Map& map)

@@ -213,4 +213,5 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
     auto last = q->front();
     q->pop();
     map.mark_canard(last); 
+    get_troupe(troupe_id)->canards.push_back(last);
 }
