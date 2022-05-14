@@ -57,6 +57,8 @@ public:
     void increase_score(uint delta);
     void decrease_score(uint delta);
 
+	etat_nid get_player_nid_id();
+
     void sync_score();
 
 private:

@@ -50,6 +50,11 @@ int PlayerInfo::get_score() const
     return score_;
 }
 
+etat_nid PlayerInfo::get_player_nid_id()
+{
+	return player_nid_id_;
+}
+
 void PlayerInfo::increase_score(uint delta)
 {
     score_ += delta;

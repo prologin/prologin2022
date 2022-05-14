@@ -30,15 +30,19 @@ void prendre_pain(troupe& trp, Map& map)
 	}	
 }
 
-void capturer_nid(troupe& trp, Map& map)
+void capturer_nid(troupe& trp, Map& map, PlayerInfo& player)
 {
-	if (map.get_cell(trp.maman).nid != LIBRE)
-		;	
+	if (map.get_cell(trp.maman).nid == LIBRE)
+		map.get_cell(trp.maman).nid = player.get_player_nid_id();	
 }	
 
-void deposer_nid(troupe& trp, Map& map)
+void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
 {
-	//TODO
+	if (map.get_cell(trp.maman).nid == player.get_player_nid_id())
+	{
+		player.increase_score(trp.inventaire * trp.inventaire * trp.inventaire);
+		trp.inventaire = 0;
+	}
 }
 
 void move_troupe(troupe& trp, const direction& dir, Map& map,
@@ -62,7 +66,7 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
         player.spawn_canard(trp.id, map);
 		
 		prendre_pain(trp, map);
-		capturer_nid(trp, map);
-		deposer_nid(trp, map);
+		capturer_nid(trp, map, player);
+		deposer_nid(trp, map, player);
     }
 }
