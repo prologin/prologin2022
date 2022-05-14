@@ -22,13 +22,24 @@ void assert_troupe_moved(troupe& trp_after, troupe& trp_before, direction dir,
 }
 
 void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
-                std::vector<position>& former, int line)
+                std::vector<position>& former, troupe *trp, int former_inv,
+				int line)
 {
     ASSERT_EQ(OK, err) << "failed line " << line;
+	int i = 0;
+
     for (auto& pos : former)
-        ASSERT_EQ(false,
+	{    
+		ASSERT_EQ(false,
             game_state.get_map().get_cell(pos).canard_sur_case);
-    ASSERT_EQ(5, player.get_troupe(1)->canards.size());
+		if (i < former_inv)
+			ASSERT_EQ(true,
+				game_state.get_map().get_cell(pos).etat.nb_pains) << i;
+		++i;
+	}
+	ASSERT_EQ(0, trp->inventaire);
+	ASSERT_EQ(1, player.get_troupe(1)->canards.size());
+	ASSERT_EQ(4, player.canards_additionnels(trp->id)->size());
 }
 
 void place_trp(troupe *trp, std::vector<position> pos, Map& map)
@@ -109,21 +120,6 @@ TEST_F(ApiTest, ActionAvancerInvalidTroupe)
     ASSERT_EQ(original, trp->pts_actions);
 }
 
-TEST_F(ApiTest, ActionAvancerTueLaTroupe)
-{
-    auto& player = players[0];
-
-    std::vector<position> former = player.info->get_troupe(1)->canards;
-    auto err = player.api->avancer(1, EST);
-    ASSERT_EQ(OK, err);
-
-    for (auto& pos : former)
-        ASSERT_EQ(
-            false,
-            player.api->game_state().get_map().get_cell(pos).canard_sur_case);
-    ASSERT_EQ(5, player.info->get_troupe(1)->canards.size());
-}
-
 TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBuisson)
 {
     auto& player = players[0];
@@ -139,9 +135,12 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBuisson)
     troupe *trp = player.info->get_troupe(1); 
     place_trp(trp, new_pos, player.api->game_state().get_map());
     std::vector<position> former = trp->canards;
+	int former_inv = trp->inventaire;
+
     auto err = player.api->avancer(1, SUD);
+
     assert_troupe_died(err, player.api->game_state(), *(player.info), former,
-                    __LINE__);
+                    trp, former_inv, __LINE__);
 }
 
 TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBarriere)
@@ -159,9 +158,12 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBarriere)
     troupe *trp = player.info->get_troupe(1); 
     place_trp(trp, new_pos, player.api->game_state().get_map());
     std::vector<position> former = trp->canards;
+	int former_inv = trp->inventaire;
+
     auto err = player.api->avancer(1, OUEST);
+
     assert_troupe_died(err, player.api->game_state(), *(player.info), former,
-                    __LINE__);
+                    trp, former_inv, __LINE__);
 }
 
 TEST_F(ApiTest, ActionAvancerTueLaTroupeSurCanard)
@@ -193,11 +195,36 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurCanard)
                     players[1].api->game_state().get_map());
     place_trp(trp, new_pos, player.api->game_state().get_map());
     
-    
+   	int former_inv = trp->inventaire; 
     std::vector<position> former = trp->canards;
     auto err = player.api->avancer(1, EST);
+
     assert_troupe_died(err, player.api->game_state(), *(player.info), former,
-                    __LINE__);
+                    trp, former_inv, __LINE__);
+}
+
+TEST_F(ApiTest, ActionAvancerTueAvecInventaire)
+{
+    auto& player = players[0];
+    std::vector<position> new_pos = 
+    {
+        {.colonne = 31 , .ligne = 32, .niveau = 0},
+        {.colonne = 32, .ligne = 32, .niveau = 0},
+        {.colonne = 33, .ligne = 32, .niveau = 0},
+        {.colonne = 34, .ligne = 32, .niveau = 0},
+        {.colonne = 35, .ligne = 32, .niveau = 0},
+    }; 
+
+    troupe *trp = player.info->get_troupe(1); 
+    place_trp(trp, new_pos, player.api->game_state().get_map());
+	trp->inventaire = 3;
+    std::vector<position> former = trp->canards;
+	int former_inv = trp->inventaire;
+
+    auto err = player.api->avancer(1, OUEST);
+
+    assert_troupe_died(err, player.api->game_state(), *(player.info), former,
+                    trp, former_inv, __LINE__);
 }
 
 TEST_F(ApiTest, ActionAvancerAvecSpawn)

@@ -6,9 +6,19 @@
 #include "position.hh"
 
 
-inline void respawn(troupe& trp, PlayerInfo& player_info)
+inline void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
+	// Dropping the bread
+	for (auto i = 0; i < trp.inventaire; ++i)
+		map.get_cell(trp.canards[i]).etat.nb_pains = true;
+	trp.inventaire = 0;
 
+	// Determining the spawn_point
+	trp.maman = map.get_spawn_toward(trp.dir);
+	trp.canards = { trp.maman };
+	std::queue<position> *q = player_info.canards_additionnels(trp.id);
+	for (auto i = 1; i < 5; ++i)
+		player_info.enfiler_canard(trp.id);
 }
 
 inline void move_troupe(troupe& trp, const direction& dir, Map& map,
@@ -18,7 +28,7 @@ inline void move_troupe(troupe& trp, const direction& dir, Map& map,
     if (map.case_mortelle(trp.maman + delta))
     {
         map.delete_troupe(trp);
-        respawn(trp, player);
+        respawn(trp, player, map);
     }
     else
     {
