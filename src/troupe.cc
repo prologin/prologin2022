@@ -1,5 +1,7 @@
 #include "troupe.hh"
 
+#define INV_MAX(A) A - 1
+
 void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
 	// Dropping the bread
@@ -13,6 +15,30 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 	std::queue<position> *q = player_info.canards_additionnels(trp.id);
 	for (auto i = 1; i < TAILLE_DEPART; ++i)
 		player_info.enfiler_canard(trp.id);
+}
+
+void prendre_pain(troupe& trp, Map& map)
+{
+	auto nb_pains = map.get_cell(trp.maman).etat.nb_pains; 
+	if (trp.inventaire < INV_MAX(trp.taille) && nb_pains > 0)
+	{
+		auto amount = nb_pains;
+		if (INV_MAX(trp.taille) - trp.inventaire < amount)
+			amount = INV_MAX(trp.taille) - trp.inventaire;
+		trp.inventaire += amount;
+		map.get_cell(trp.maman).etat.nb_pains -= amount;
+	}	
+}
+
+void capturer_nid(troupe& trp, Map& map)
+{
+	if (map.get_cell(trp.maman).nid != LIBRE)
+		;	
+}	
+
+void deposer_nid(troupe& trp, Map& map)
+{
+	//TODO
 }
 
 void move_troupe(troupe& trp, const direction& dir, Map& map,
@@ -30,8 +56,13 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
         for (int i = trp.taille - 1; i > 0; --i)
             trp.canards[i] = trp.canards[i - 1];
         trp.maman += delta;
+
         player.remove_pts_actions(trp.id, 1);
         map.get_cell(trp.maman).canard_sur_case = true;
         player.spawn_canard(trp.id, map);
+		
+		prendre_pain(trp, map);
+		capturer_nid(trp, map);
+		deposer_nid(trp, map);
     }
 }

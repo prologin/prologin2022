@@ -9,14 +9,19 @@ std::array<PlayerInfo, 2> init_players(const rules::Players& players,
                                        const Map& map)
 {
     std::vector<PlayerInfo> result;
+	std::array<etat_nid, 2> joueurs = { JOUEUR_0, JOUEUR_1 };
+	int count = 0;
 
     for (const auto& player : players)
     {
         if (player->type != rules::PLAYER)
             continue;
 
-        auto playerInfo = PlayerInfo(player, map);
+        auto playerInfo = PlayerInfo(player, map, joueurs[count]);
         result.emplace_back(playerInfo);
+		count++;
+		if (count == 2)
+			break;
     }
 
     return {result[0], result[1]};

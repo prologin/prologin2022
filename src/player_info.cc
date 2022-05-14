@@ -27,12 +27,14 @@ std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
 }
 } // namespace
 
-PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map)
+PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
+				etat_nid player_nid_id)
     : rules_player_(std::move(player))
     , score_(0)
     , pains_(0)
     , tunnels_(0)
     , troupes_(init_troupes(*rules_player_, map))
+	, player_nid_id_(player_nid_id)
 {
     rules_player_->score = 0;
     reset_pts_actions();

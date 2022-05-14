@@ -13,7 +13,8 @@
 class PlayerInfo
 {
 public:
-    PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map);
+    PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
+					etat_nid player_nid_id);
 
     // Id
     int get_key() const;
@@ -67,4 +68,5 @@ private:
     int tunnels_; // Nombre de tunnels creusés ce tour
     std::array<troupe, NB_TROUPES> troupes_;
     std::array<std::queue<position>, NB_TROUPES> canards_additionnels_;
+	etat_nid player_nid_id_;
 };
