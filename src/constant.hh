@@ -151,7 +151,7 @@ typedef struct etat_case
     position pos; ///< Position de la case. Le niveau vaut nécessairement 0
     type_case contenu;      ///< Type de la case
     bool est_constructible; ///< La case est constructible
-    bool nb_pains;          ///< Nombre de pains contenus sur la case
+    int nb_pains;          ///< Nombre de pains contenus sur la case
 } etat_case;
 
 /// Action représentée dans l'historique
