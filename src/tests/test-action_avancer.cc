@@ -30,15 +30,13 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
     for (auto& pos : former)
 		ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case);
 
-
-	if (former_inv > 0)
-		for (int i = former.size() - 1; i > former.size() - former_inv - 1; i--)
-			ASSERT_EQ(1, game_state.get_map().get_cell(former[i])
+	for (unsigned long i = former.size() - former_inv; i < former.size(); i++)
+		ASSERT_EQ(1, game_state.get_map().get_cell(former[i])
 						.etat.nb_pains);
 
 	ASSERT_EQ(0, trp->inventaire);
 	ASSERT_EQ(1, player.get_troupe(1)->canards.size());
-	ASSERT_EQ(4, player.canards_additionnels(trp->id)->size());
+	ASSERT_EQ(TAILLE_DEPART - 1, player.canards_additionnels(trp->id)->size());
 }
 
 void place_trp(troupe *trp, std::vector<position> pos, Map& map)

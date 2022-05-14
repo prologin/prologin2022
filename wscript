@@ -47,6 +47,7 @@ def build(bld):
             src/player_info.cc
             src/map.cc
             src/history.cc
+            src/troupe.cc
         ''',
         defines=['MODULE_COLOR=ANSI_COL_BROWN', 'MODULE_NAME="rules"'],
         target=TARGET,
