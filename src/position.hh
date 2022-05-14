@@ -32,7 +32,6 @@ inline position operator+(position lhs, position rhs)
 
 inline bool inside_map(const position& pos)
 {
-    INFO("%d, %d, %d", pos.ligne, pos.colonne, pos.niveau);
     return pos.ligne >= 0 && pos.ligne < HAUTEUR && pos.colonne >= 0 &&
            pos.colonne < LARGEUR && pos.niveau <= 0 && pos.niveau >= -1;
 }

@@ -10,7 +10,7 @@ inline void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
 	// Dropping the bread
 	for (auto i = 0; i < trp.inventaire; ++i)
-		map.get_cell(trp.canards[i]).etat.nb_pains = true;
+		map.get_cell(trp.canards[trp.taille - 1 - i]).etat.nb_pains += 1;
 	trp.inventaire = 0;
 
 	// Determining the spawn_point

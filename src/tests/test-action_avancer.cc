@@ -26,17 +26,16 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
 				int line)
 {
     ASSERT_EQ(OK, err) << "failed line " << line;
-	int i = 0;
 
     for (auto& pos : former)
-	{    
-		ASSERT_EQ(false,
-            game_state.get_map().get_cell(pos).canard_sur_case);
-		if (i < former_inv)
-			ASSERT_EQ(true,
-				game_state.get_map().get_cell(pos).etat.nb_pains) << i;
-		++i;
-	}
+		ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case);
+
+
+	if (former_inv > 0)
+		for (int i = former.size() - 1; i > former.size() - former_inv - 1; i--)
+			ASSERT_EQ(1, game_state.get_map().get_cell(former[i])
+						.etat.nb_pains);
+
 	ASSERT_EQ(0, trp->inventaire);
 	ASSERT_EQ(1, player.get_troupe(1)->canards.size());
 	ASSERT_EQ(4, player.canards_additionnels(trp->id)->size());
