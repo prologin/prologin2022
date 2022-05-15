@@ -31,8 +31,17 @@ public:
     bool is_finished() override;
 
 protected:
+    virtual void at_player_start(rules::ClientMessenger_sptr) override;
+    virtual void at_spectator_start(rules::ClientMessenger_sptr) override;
+    virtual void at_player_end(rules::ClientMessenger_sptr) override;
+    virtual void at_spectator_end(rules::ClientMessenger_sptr) override;
+
+    virtual void player_turn() override;
+    virtual void spectator_turn() override;
+
     virtual void start_of_player_turn(uint32_t) override;
     virtual void end_of_player_turn(uint32_t) override;
+
     virtual void start_of_round() override;
     virtual void end_of_round() override;
 

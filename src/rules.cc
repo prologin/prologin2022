@@ -74,6 +74,57 @@ bool Rules::is_finished()
     return api_->game_state().is_finished();
 }
 
+void Rules::at_player_start(rules::ClientMessenger_sptr)
+{
+    try
+    {
+        sandbox_.execute(champion_partie_init_);
+    }
+    catch (utils::SandboxTimeout&)
+    {
+        FATAL("player_start: timeout");
+    }
+}
+
+void Rules::at_spectator_start(rules::ClientMessenger_sptr)
+{
+    champion_partie_init_();
+}
+
+void Rules::at_player_end(rules::ClientMessenger_sptr)
+{
+    try
+    {
+        sandbox_.execute(champion_partie_fin_);
+    }
+    catch (utils::SandboxTimeout&)
+    {
+        FATAL("player_end: timeout");
+    }
+}
+
+void Rules::at_spectator_end(rules::ClientMessenger_sptr)
+{
+    champion_partie_fin_();
+}
+
+void Rules::player_turn()
+{
+    try
+    {
+        sandbox_.execute(champion_jouer_tour_);
+    }
+    catch (utils::SandboxTimeout&)
+    {
+        FATAL("player_turn: timeout");
+    }
+}
+
+void Rules::spectator_turn()
+{
+    champion_jouer_tour_();
+}
+
 void Rules::start_of_player_turn(unsigned int player_key)
 {
     api_->game_state().get_player(player_key).reset_pts_actions();
