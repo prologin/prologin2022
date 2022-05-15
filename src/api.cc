@@ -85,8 +85,8 @@ int Api::adversaire()
 }
 int Api::score(int id_joueur)
 {
-    // TODO
-    abort();
+    auto player = game_state_->get_player_ptr(id_joueur);
+    return player == nullptr ? -1 : player->get_score();
 }
 bool Api::annuler()
 {
