@@ -90,8 +90,7 @@ int Api::score(int id_joueur)
 }
 bool Api::annuler()
 {
-    // TODO
-    abort();
+    return cancel();
 }
 int Api::tour_actuel()
 {

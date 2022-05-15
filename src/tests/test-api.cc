@@ -255,6 +255,34 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
     }
 }
 
+TEST_F(ApiTest, ApiAnnuler_CanNotCancel)
+{
+    for (const auto& player : players)
+    {
+        auto is_cancel = player.api->annuler();
+        ASSERT_EQ(false, is_cancel);
+    }
+}
+
+TEST_F(ApiTest, ApiAnnuler_Cancel)
+{
+    for (const auto& player : players)
+    {
+        auto position = position{ 0, 0, 0 };
+
+        auto pigeon_before = player.api->game_state().get_map().get_cell(position).pigeon;
+        auto pigeon_after = PIGEON_BLEU;
+
+        auto err = player.api->debug_poser_pigeon(position, pigeon);
+        ASSERT_EQ(OK, err);
+        ASSERT_EQ(pigeon_after, player.api->game_state().get_map().get_cell(position).pigeon);
+
+        auto is_cancel = player.api->annuler();
+        ASSERT_EQ(true, is_cancel);
+        ASSERT_EQ(pigeon_before, player.api->game_state().get_map().get_cell(position).pigeon);
+    }
+}
+
 TEST_F(ApiTest, ApiTourActuel)
 {
     for (const auto& player : players)
