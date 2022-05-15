@@ -1,5 +1,6 @@
 #include "test-helpers.hh"
 #include "../constant.hh"
+#include "../position.hh"
 
 namespace
 {
@@ -170,8 +171,8 @@ TEST_F(ApiTest, ApiInfoNid_PosInvalide)
     {
         for (const auto& position : positions)
         {
-            auto etat_barriere = player.api->info_nid(position);
-            ASSERT_EQ(PAS_DE_NID, etat_barriere);
+            auto etat_nid = player.api->info_nid(position);
+            ASSERT_EQ(PAS_DE_NID, etat_nid);
         }
     }
 }
@@ -191,8 +192,65 @@ TEST_F(ApiTest, ApiInfoNid_PosOk)
     {
         for (const auto& position : pos_nids_libres)
         {
-            auto etat_barriere = player.api->info_nid(position);
-            ASSERT_EQ(LIBRE, etat_barriere);
+            auto etat_nid = player.api->info_nid(position);
+            ASSERT_EQ(LIBRE, etat_nid);
+        }
+    }
+}
+
+TEST_F(ApiTest, ApiPapyToursRestants_PosInvalide)
+{
+    const position pos_invalides[] = {
+        { .colonne = 0, .ligne = HAUTEUR, .niveau = 0 }, // invalid pos
+        { .colonne = LARGEUR, .ligne = 0, .niveau = 0 }, // invalid pos
+        { .colonne = 0,  .ligne = 0,  .niveau = 1 },  // invalid pos
+        { .colonne = -1, .ligne = 0,  .niveau = 0 },  // invalid pos
+        { .colonne = 0,  .ligne = -1, .niveau = 0 },  // invalid pos
+        { .colonne = 0,  .ligne = 0,  .niveau = -2 }, // invalid pos
+
+        { .colonne = 1,  .ligne = 1,  .niveau = 0 }, // ' '
+        { .colonne = 5,  .ligne = 2,  .niveau = 0 }, // '.'
+        { .colonne = 36, .ligne = 0,  .niveau = 0 }, // 'S'
+        { .colonne = 57, .ligne = 11, .niveau = 0 }, // 'N'
+        { .colonne = 0,  .ligne = 0,  .niveau = 0 }, // '#'
+        { .colonne = 30, .ligne = 28, .niveau = 0 }, // 'B'
+        { .colonne = 43, .ligne = 36, .niveau = 0 }, // 'b'
+        { .colonne = 32, .ligne = 66, .niveau = 0 }, // 'X'
+    };
+
+    for (const auto& player : players)
+    {
+        for (const auto& pos_invalide : pos_invalides)
+        {
+            auto papy_tours_restants = player.api->papy_tours_restants(pos_invalide);
+            ASSERT_EQ(-1, papy_tours_restants);
+        }
+    }
+}
+
+TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
+{
+    const position pos_papys[] = {
+        { .colonne = 17, .ligne = 5,  .niveau = 0 }, // 1
+        { .colonne = 65, .ligne = 7,  .niveau = 0 }, // 2
+        { .colonne = 12, .ligne = 25, .niveau = 0 }, // 0
+        { .colonne = 56, .ligne = 29, .niveau = 0 }, // 3
+        { .colonne = 20, .ligne = 66, .niveau = 0 }, // 0
+    };
+
+    const int pos_papy_tours_restants[] = { 1, 2, 0, 3, 0 };
+
+    const size_t n_papys = sizeof(pos_papys) / sizeof(*pos_papys);
+
+    for (const auto& player : players)
+    {
+        for (size_t i = 0; i < n_papys; ++i)
+        {
+            auto pos_papy = pos_papys[i];
+            auto expect_papy_tours_restants = pos_papy_tours_restants[i];
+
+            auto papy_tours_restants = player.api->papy_tours_restants(pos_papy);
+            ASSERT_EQ(expect_papy_tours_restants, papy_tours_restants);
         }
     }
 }

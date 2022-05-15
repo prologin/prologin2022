@@ -48,8 +48,10 @@ etat_nid Api::info_nid(position pos)
 }
 int Api::papy_tours_restants(position pos)
 {
-    // TODO
-    abort();
+    if (!inside_map(pos))
+        return -1;
+
+    return game_state_->get_map().get_cell(pos).papy_tours_restants;
 }
 std::vector<troupe> Api::troupes_joueur(int id_joueur)
 {
