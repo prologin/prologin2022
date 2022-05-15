@@ -31,7 +31,10 @@ public:
     bool is_finished() override;
 
 protected:
-    // FIXME: Override turnbased methods here
+    virtual void start_of_player_turn(uint32_t) override;
+    virtual void end_of_player_turn(uint32_t) override;
+    virtual void start_of_round() override;
+    virtual void end_of_round() override;
 
 private:
     void register_actions();

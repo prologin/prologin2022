@@ -27,7 +27,7 @@ public:
     const PlayerInfo& get_other(int id) const;
     PlayerInfo& get_other(int id);
 
-    PlayerInfo *get_player_ptr(int id);
+    PlayerInfo* get_player_ptr(int id);
 
     // Map
     const Map& get_map() const;
@@ -38,8 +38,12 @@ public:
     void next_round();
     bool is_finished() const;
 
+    bool is_init() const;
+    void set_init(bool init);
+
 private:
     Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_;                         // Note : 1 round = 2 tours
+    bool init_;
 };

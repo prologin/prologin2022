@@ -9,8 +9,8 @@ std::array<PlayerInfo, 2> init_players(const rules::Players& players,
                                        const Map& map)
 {
     std::vector<PlayerInfo> result;
-	std::array<etat_nid, 2> joueurs = { JOUEUR_0, JOUEUR_1 };
-	int count = 0;
+    std::array<etat_nid, 2> joueurs = {JOUEUR_0, JOUEUR_1};
+    int count = 0;
 
     for (const auto& player : players)
     {
@@ -19,9 +19,9 @@ std::array<PlayerInfo, 2> init_players(const rules::Players& players,
 
         auto playerInfo = PlayerInfo(player, map, joueurs[count]);
         result.emplace_back(playerInfo);
-		count++;
-		if (count == 2)
-			break;
+        count++;
+        if (count == 2)
+            break;
     }
 
     return {result[0], result[1]};
@@ -32,6 +32,7 @@ GameState::GameState(std::istream& map_stream, const rules::Players& players)
     : rules::GameState(players)
     , map_(map_stream)
     , players_(init_players(players, map_))
+    , init_(false)
 {
     // FIXME
 }
@@ -123,4 +124,14 @@ void GameState::next_round()
 bool GameState::is_finished() const
 {
     return round_ >= NB_TOURS;
+}
+
+bool GameState::is_init() const
+{
+    return init_;
+}
+
+void GameState::set_init(bool init)
+{
+    init_ = init;
 }

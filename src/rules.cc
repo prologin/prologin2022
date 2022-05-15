@@ -26,24 +26,27 @@ Rules::Rules(const rules::Options opt)
     }
 
     auto streamed_map_content = std::istringstream(opt.map_content);
-    auto game_state = std::make_unique<GameState>(streamed_map_content,
-                    opt.players);
+    auto game_state =
+        std::make_unique<GameState>(streamed_map_content, opt.players);
     api_ = std::make_unique<Api>(std::move(game_state), opt.player);
     register_actions();
 }
 
 void Rules::register_actions()
 {
-    api_->actions()->register_action(ID_ACTION_AVANCER,
-                                     [] { return std::make_unique<ActionAvancer>(); });
-    api_->actions()->register_action(ID_ACTION_GRANDIR,
-                                     [] { return std::make_unique<ActionGrandir>(); });
-    api_->actions()->register_action(ID_ACTION_CONSTRUIRE_BUISSON,
-                                     [] { return std::make_unique<ActionConstruireBuisson>(); });
-    api_->actions()->register_action(ID_ACTION_CREUSER_TUNNEL,
-                                     [] { return std::make_unique<ActionCreuserTunnel>(); });
-    api_->actions()->register_action(ID_ACTION_DEBUG_POSER_PIGEON,
-                                     [] { return std::make_unique<ActionDebugPoserPigeon>(); });
+    api_->actions()->register_action(
+        ID_ACTION_AVANCER, [] { return std::make_unique<ActionAvancer>(); });
+    api_->actions()->register_action(
+        ID_ACTION_GRANDIR, [] { return std::make_unique<ActionGrandir>(); });
+    api_->actions()->register_action(
+        ID_ACTION_CONSTRUIRE_BUISSON,
+        [] { return std::make_unique<ActionConstruireBuisson>(); });
+    api_->actions()->register_action(
+        ID_ACTION_CREUSER_TUNNEL,
+        [] { return std::make_unique<ActionCreuserTunnel>(); });
+    api_->actions()->register_action(
+        ID_ACTION_DEBUG_POSER_PIGEON,
+        [] { return std::make_unique<ActionDebugPoserPigeon>(); });
 }
 
 rules::Actions* Rules::get_actions()
@@ -68,6 +71,21 @@ void Rules::apply_action(const rules::IAction& action)
 
 bool Rules::is_finished()
 {
-    // FIXME
-    return true;
+    return api_->game_state().is_finished();
 }
+
+void Rules::start_of_player_turn(unsigned int player_key)
+{
+    api_->game_state().get_player(player_key).reset_pts_actions();
+    api_->game_state().set_init(true);
+}
+
+void Rules::end_of_player_turn(unsigned int player_key)
+{
+    api_->game_state().set_init(false);
+    api_->clear_old_game_states();
+}
+
+void Rules::start_of_round() {}
+
+void Rules::end_of_round() {}
