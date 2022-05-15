@@ -254,6 +254,23 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
     }
 }
 
+TEST_F(ApiTest, ApiGain)
+{
+    const int nb_pains_array[] = { 1, 3, 5, 8, 13, 29, 37 };
+
+    for (const auto& player : players)
+    {
+        int previous_ratio = 0;
+
+        for (const auto& nb_pains : nb_pains_array)
+        {
+            int new_ratio = player.api->gain(nb_pains) / nb_pains;
+            ASSERT_TRUE(new_ratio > previous_ratio);
+            previous_ratio = new_ratio;
+        }
+    }
+}
+
 TEST_F(ApiTest, ApiMoi)
 {
     ASSERT_EQ(2, players.size());

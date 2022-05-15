@@ -70,8 +70,7 @@ std::vector<action_hist> Api::historique()
 }
 int Api::gain(int nb_pains)
 {
-    // TODO
-    abort();
+    return nb_pains * nb_pains;
 }
 int Api::moi()
 {
