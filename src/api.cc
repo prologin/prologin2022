@@ -66,8 +66,18 @@ std::vector<troupe> Api::troupes_joueur(int id_joueur)
 }
 std::vector<position> Api::pains()
 {
-    // TODO
-    abort();
+    std::vector<position> positions;
+    for (int x = 0; x < LONGUEUR; x++) {
+        for (int y = 0; y < LONGUEUR; y++) {
+            for (int z = -1; z <= 0; z++) {
+                position pos(x, y, z);
+                int nb = game_state_->get_map().get_cell(pos).etat.nb_pains;
+                for (int i = 0; i < nb; i++)
+                    positions.push_back(pos);
+            }
+        }
+    }
+    return positions;
 }
 std::vector<action_hist> Api::historique()
 {

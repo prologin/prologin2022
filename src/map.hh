@@ -21,30 +21,30 @@ typedef struct Case
 
 class Map
 {
-public:
-    Map(std::istream& stream);
-    Map(const Map& map);
+    public:
+        Map(std::istream& stream);
+        Map(const Map& map);
 
-    std::vector<position> spawns;
+        std::vector<position> spawns;
 
-    const Case& get_cell(const position& pos) const;
-    Case& get_cell(const position& pos);
-    const position& get_spawn_toward(const direction& dir) const;
-    bool case_praticable(const position& pos) const;
-    bool case_mortelle(const position& pos) const;
-    
-    void mark_troupe(const troupe& trp);
-    void delete_troupe(const troupe& trp);
+        const Case& get_cell(const position& pos) const;
+        Case& get_cell(const position& pos);
+        const position& get_spawn_toward(const direction& dir) const;
+        bool case_praticable(const position& pos) const;
+        bool case_mortelle(const position& pos) const;
 
-    void mark_canard(const position& pos);
-    void unmark_canard(const position& pos);
+        void mark_troupe(const troupe& trp);
+        void delete_troupe(const troupe& trp);
 
-	void changer_barrieres();
-	void decrementer_papy();
+        void mark_canard(const position& pos);
+        void unmark_canard(const position& pos);
 
-private:
-    void load_map_cells(std::istream& stream);
-    std::array<Case, 2 * LARGEUR * HAUTEUR> map_;
-	std::vector<position> papys_;
-	std::vector<position> barrieres_;
+        void changer_barrieres();
+        void decrementer_papy();
+
+    private:
+        void load_map_cells(std::istream& stream);
+        std::array<Case, 2 * LARGEUR * HAUTEUR> map_;
+        std::vector<position> papys_;
+        std::vector<position> barrieres_;
 };
