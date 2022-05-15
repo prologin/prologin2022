@@ -145,3 +145,54 @@ TEST_F(ApiTest, ApiInfoBarriere_PosOk)
         }
     }
 }
+
+TEST_F(ApiTest, ApiInfoNid_PosInvalide)
+{
+    const position positions[] = {
+        { .colonne = 0, .ligne = HAUTEUR, .niveau = 0 }, // invalid pos
+        { .colonne = LARGEUR, .ligne = 0, .niveau = 0 }, // invalid pos
+        { .colonne = 0,  .ligne = 0,  .niveau = 1 },  // invalid pos
+        { .colonne = -1, .ligne = 0,  .niveau = 0 },  // invalid pos
+        { .colonne = 0,  .ligne = -1, .niveau = 0 },  // invalid pos
+        { .colonne = 0,  .ligne = 0,  .niveau = -2 }, // invalid pos
+
+        { .colonne = 1,  .ligne = 1,  .niveau = 0 },  // ' '
+        { .colonne = 5,  .ligne = 2,  .niveau = 0 },  // '.'
+        { .colonne = 36, .ligne = 0,  .niveau = 0 },  // 'S'
+        { .colonne = 0,  .ligne = 0,  .niveau = 0 },  // '#'
+        { .colonne = 30, .ligne = 28, .niveau = 0 },  // 'B'
+        { .colonne = 43, .ligne = 36, .niveau = 0 },  // 'b'
+        { .colonne = 32, .ligne = 66, .niveau = 0 },  // 'X'
+        { .colonne = 65, .ligne = 7,  .niveau = 0 }   // 0-9
+    };
+
+    for (const auto& player : players)
+    {
+        for (const auto& position : positions)
+        {
+            auto etat_barriere = player.api->info_nid(position);
+            ASSERT_EQ(PAS_DE_NID, etat_barriere);
+        }
+    }
+}
+
+TEST_F(ApiTest, ApiInfoNid_PosOk)
+{
+    const position pos_nids_libres[] = {
+        { .colonne = 36, .ligne = 1,  .niveau = 0 }, // 'N'
+        { .colonne = 57, .ligne = 11, .niveau = 0 }, // 'N'
+        { .colonne = 19, .ligne = 31, .niveau = 0 }, // 'N'
+        { .colonne = 66, .ligne = 34, .niveau = 0 }, // 'N'
+        { .colonne = 41, .ligne = 66, .niveau = 0 }, // 'N'
+        { .colonne = 49, .ligne = 78, .niveau = 0 }, // 'N'
+    };
+
+    for (const auto& player : players)
+    {
+        for (const auto& position : pos_nids_libres)
+        {
+            auto etat_barriere = player.api->info_nid(position);
+            ASSERT_EQ(LIBRE, etat_barriere);
+        }
+    }
+}

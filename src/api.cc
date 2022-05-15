@@ -41,8 +41,10 @@ etat_barriere Api::info_barriere(position pos)
 }
 etat_nid Api::info_nid(position pos)
 {
-    // TODO
-    abort();
+    if (!inside_map(pos))
+        return PAS_DE_NID;
+
+    return game_state_->get_map().get_cell(pos).nid;
 }
 int Api::papy_tours_restants(position pos)
 {
