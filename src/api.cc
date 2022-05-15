@@ -55,8 +55,9 @@ int Api::papy_tours_restants(position pos)
 }
 std::vector<troupe> Api::troupes_joueur(int id_joueur)
 {
-    // TODO
-    abort();
+    std::array<troupe, NB_TROUPES> troupesArr& = game_state_ -> get_player_ptr(id_joueur) -> troupes();
+    std::vector<troupe> troupes(std::begin(troupesArr), std::end(troupesArr));
+    return troupes;
 }
 std::vector<position> Api::pains()
 {
