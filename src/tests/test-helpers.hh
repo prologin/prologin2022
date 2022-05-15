@@ -6,6 +6,7 @@
 #include "../api.hh"
 #include "../game_state.hh"
 #include "../player_info.hh"
+#include "../rules.hh"
 
 namespace
 {
@@ -41,30 +42,48 @@ public:
     };
 
 protected:
+    // Players values are not 0 and 1, because that would be too simple
+    constexpr static int PLAYER_ID_1 = 1337;
+    constexpr static int PLAYER_ID_2 = 42;
+
     virtual void SetUp()
     {
-        // Players values are not 0 and 1, because that would be too simple
-        int player_id_1 = 1337;
-        int player_id_2 = 42;
-
         utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
-        auto gs_players = make_players(player_id_1, player_id_2);
+        auto gs_players = make_players(PLAYER_ID_1, PLAYER_ID_2);
         std::unique_ptr<GameState> st(
             make_test_gamestate(test_map_path, gs_players));
         st->set_init(true);
         auto state_copy = st->copy();
 
-        players[0].id = player_id_1;
+        players[0].id = PLAYER_ID_1;
         players[0].api = std::make_unique<Api>(
             std::unique_ptr<GameState>(state_copy), gs_players[0]);
         players[0].info = state_copy->get_player_ptr(players[0].id);
 
         state_copy = st->copy();
-        players[1].id = player_id_2;
+        players[1].id = PLAYER_ID_2;
         players[1].api = std::make_unique<Api>(
             std::unique_ptr<GameState>(state_copy), gs_players[1]);
         players[1].info = state_copy->get_player_ptr(players[1].id);
     }
 
     std::array<Player, 2> players;
+};
+
+class RulesTest : public ::testing::Test
+{
+protected:
+    constexpr static int PLAYER_ID_1 = 1;
+    constexpr static int PLAYER_ID_2 = 2;
+
+    virtual void SetUp()
+    {
+        utils::Logger::get().level() = utils::Logger::DEBUG_LEVEL;
+        rules::Options opt;
+        opt.map_file = test_map_path;
+        opt.players = make_players(PLAYER_ID_1, PLAYER_ID_2);
+        rules.reset(new Rules(opt));
+    }
+
+    std::unique_ptr<Rules> rules;
 };
