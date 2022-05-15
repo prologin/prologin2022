@@ -39,7 +39,12 @@ public:
     void mark_canard(const position& pos);
     void unmark_canard(const position& pos);
 
+	void changer_barrieres();
+	void decrementer_papy();
+
 private:
     void load_map_cells(std::istream& stream);
     std::array<Case, 2 * LARGEUR * HAUTEUR> map_;
+	std::vector<position> papys_;
+	std::vector<position> barrieres_;
 };

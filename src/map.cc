@@ -134,6 +134,7 @@ void Map::load_map_cells(std::istream& stream)
                           cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
                 get_cell(pos).barriere = FERMEE;
+				barrieres_.push_back(pos);
                 break;
             case 'b':
                 if (border)
@@ -142,6 +143,7 @@ void Map::load_map_cells(std::istream& stream)
                           cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
                 get_cell(pos).barriere = OUVERTE;
+				barrieres_.push_back(pos);
                 break;
             case 'X':
                 if (border)
@@ -162,6 +164,7 @@ void Map::load_map_cells(std::istream& stream)
                           cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, PAPY, false, false};
                 get_cell(pos).papy_tours_restants = tours;
+				papys_.push_back(pos);
                 break;
             }
         }
@@ -237,7 +240,28 @@ void Map::mark_troupe(const troupe& trp)
         mark_canard(canard);
 }
 
+void Map::changer_barrieres()
+{
+	etat_barriere status;
+	for (auto& pos : barrieres_)
+	{
+		if (get_cell(pos).barriere == FERMEE)
+			status = OUVERTE;
+		else
+			status = FERMEE;
+		get_cell(pos).barriere = status;
+	}
+}
+
+void Map::decrementer_papy()
+{
+	for (auto& papy : papys_)
+		get_cell(papy).papy_tours_restants -= 1;
+}
+
 Map::Map(const Map& map)
     : map_(map.map_)
+	, papys_(map.papys_)
+	, barrieres_(map.barrieres_)
 {
 }

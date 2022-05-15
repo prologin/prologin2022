@@ -118,7 +118,20 @@ int GameState::get_round() const
 
 void GameState::next_round()
 {
-    round_++;
+	round_++;
+
+	if (round_ == TOUR_FERMETURE)
+		map_.changer_barrieres();
+
+	// JOUEUR_0 joue
+	
+	// Decrementer les tours de spawn de tous les papy
+	map_.decrementer_papy();
+	
+	// JOUEUR_1 joue
+	
+	// Decrementer les tours de spawn de tous les papy
+	map_.decrementer_papy();
 }
 
 bool GameState::is_finished() const

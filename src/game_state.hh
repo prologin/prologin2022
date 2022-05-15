@@ -42,6 +42,8 @@ public:
     void set_init(bool init);
 
 private:
+	void decrementer_papy();
+
     Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_;                         // Note : 1 round = 2 tours
