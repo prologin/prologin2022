@@ -75,8 +75,7 @@ int Api::gain(int nb_pains)
 }
 int Api::moi()
 {
-    // TODO
-    abort();
+    return player_->id;
 }
 int Api::adversaire()
 {

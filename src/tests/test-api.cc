@@ -254,6 +254,13 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
     }
 }
 
+TEST_F(ApiTest, ApiMoi)
+{
+    ASSERT_EQ(2, players.size());
+    ASSERT_EQ(PLAYER_ID_1, players[0].api->moi());
+    ASSERT_EQ(PLAYER_ID_2, players[1].api->moi());
+}
+
 TEST_F(ApiTest, ApiAdversaire)
 {
     ASSERT_EQ(2, players.size());
