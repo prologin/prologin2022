@@ -254,3 +254,13 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
         }
     }
 }
+
+TEST_F(ApiTest, ApiTourActuel)
+{
+    for (const auto& player : players)
+    {
+        ASSERT_EQ(0, player.api->tour_actuel());
+        player.api->game_state().next_round();
+        ASSERT_EQ(1, player.api->tour_actuel());
+    }
+}

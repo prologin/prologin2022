@@ -95,8 +95,7 @@ bool Api::annuler()
 }
 int Api::tour_actuel()
 {
-    // TODO
-    abort();
+    return game_state_->get_round();
 }
 
 std::ostream& operator<<(std::ostream& os, erreur v);
