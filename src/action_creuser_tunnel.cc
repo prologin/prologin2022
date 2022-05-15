@@ -7,6 +7,9 @@
 
 int ActionCreuserTunnel::check(const GameState& st) const
 {
+    if (!st.is_init())
+        return HORS_TOUR;
+
     if (!inside_map(pos_))
         return POSITION_INVALIDE;
 

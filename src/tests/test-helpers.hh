@@ -51,7 +51,7 @@ protected:
         auto gs_players = make_players(player_id_1, player_id_2);
         std::unique_ptr<GameState> st(
             make_test_gamestate(test_map_path, gs_players));
-
+        st->set_init(true);
         auto state_copy = st->copy();
 
         players[0].id = player_id_1;

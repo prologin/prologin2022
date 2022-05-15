@@ -42,6 +42,7 @@ GameState::GameState(const GameState& st)
     , map_(st.map_)
     , players_(st.players_)
     , round_(st.round_)
+    , init_(st.init_)
 {
     // FIXME
 }

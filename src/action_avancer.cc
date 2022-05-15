@@ -6,7 +6,8 @@
 #include "position.hh"
 #include "troupe.hh"
 
-int check_avancer_troupe(const troupe* trp, const direction& dir, const Map& map)
+int check_avancer_troupe(const troupe* trp, const direction& dir,
+                         const Map& map)
 {
     position new_pos = trp->maman + get_delta_pos(dir);
     if (!inside_map(new_pos))
@@ -17,6 +18,9 @@ int check_avancer_troupe(const troupe* trp, const direction& dir, const Map& map
 
 int ActionAvancer::check(const GameState& st) const
 {
+    if (!st.is_init())
+        return HORS_TOUR;
+
     auto player = st.get_player(player_id_);
     auto trp = player.get_troupe(id_);
 
@@ -48,5 +52,4 @@ void ActionAvancer::apply_on(GameState* st) const
 
     // Gere la mort de la troupe
     move_troupe(*trp, dir_, st->get_map(), *player);
-    
 }

@@ -5,6 +5,9 @@
 
 int ActionGrandir::check(const GameState& st) const
 {
+    if (!st.is_init())
+        return HORS_TOUR;
+
     auto player = st.get_player(player_id_);
     auto trp = player.get_troupe(id_);
 
