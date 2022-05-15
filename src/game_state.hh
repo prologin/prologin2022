@@ -13,8 +13,6 @@
 class GameState final : public rules::GameState
 {
 public:
-    // FIXME
-    // additional parameters? for instance map
     GameState(std::istream& map_stream, const rules::Players& players);
     GameState(const GameState& st);
     ~GameState();
@@ -42,7 +40,7 @@ public:
     void set_init(bool init);
 
 private:
-	void decrementer_papy();
+    void decrementer_papy();
 
     Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
