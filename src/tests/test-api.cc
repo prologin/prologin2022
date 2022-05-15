@@ -1,6 +1,5 @@
 #include "test-helpers.hh"
 #include "../constant.hh"
-#include "../position.hh"
 
 namespace
 {
@@ -295,12 +294,12 @@ TEST_F(ApiTest, ApiAnnuler_Cancel)
 {
     for (const auto& player : players)
     {
-        auto position = position{ 0, 0, 0 };
+        const position position = { 0, 0, 0 };
 
         auto pigeon_before = player.api->game_state().get_map().get_cell(position).pigeon;
         auto pigeon_after = PIGEON_BLEU;
 
-        auto err = player.api->debug_poser_pigeon(position, pigeon);
+        auto err = player.api->debug_poser_pigeon(position, pigeon_after);
         ASSERT_EQ(OK, err);
         ASSERT_EQ(pigeon_after, player.api->game_state().get_map().get_cell(position).pigeon);
 
