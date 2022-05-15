@@ -4,6 +4,7 @@
 
 import glob
 import os.path
+import os
 import shutil
 
 from wafgenerator import generator_player_install
@@ -53,9 +54,11 @@ def build(bld):
         target=TARGET,
         use=['stechec2'],
     )
-    source_dir = os.path.join(bld.run_dir, 'games', TARGET)
-    build_dir = os.path.join(bld.out_dir, 'games', TARGET)
-    _copy_assets(source_dir, build_dir)
+
+    if not bool(os.environ.get("WSCRIPT_SKIP_TESTS")):
+      source_dir = os.path.join(bld.run_dir, 'games', TARGET)
+      build_dir = os.path.join(bld.out_dir, 'games', TARGET)
+      _copy_assets(source_dir, build_dir)
 
     abs_pattern = os.path.join(bld.path.abspath(), 'src/tests/test-*.cc')
     for test_src in glob.glob(abs_pattern):
