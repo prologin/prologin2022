@@ -254,6 +254,13 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
     }
 }
 
+TEST_F(ApiTest, ApiAdversaire)
+{
+    ASSERT_EQ(2, players.size());
+    ASSERT_EQ(PLAYER_ID_2, players[0].api->adversaire());
+    ASSERT_EQ(PLAYER_ID_1, players[1].api->adversaire());
+}
+
 TEST_F(ApiTest, ApiScore_IdJoueurInvalide)
 {
     const int id_players_invalides[] = {

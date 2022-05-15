@@ -80,8 +80,8 @@ int Api::moi()
 }
 int Api::adversaire()
 {
-    // TODO
-    abort();
+    auto other_player = game_state_->get_other(player_->id);
+    return other_player.get_key();
 }
 int Api::score(int id_joueur)
 {
