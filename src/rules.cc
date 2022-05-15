@@ -3,6 +3,7 @@
 
 #include "rules.hh"
 
+#include <fstream>
 #include <memory>
 #include <sstream>
 #include <utility>
@@ -25,9 +26,11 @@ Rules::Rules(const rules::Options opt)
             champion_dll_->get<f_champion_partie_fin>("partie_fin");
     }
 
-    auto streamed_map_content = std::istringstream(opt.map_content);
-    auto game_state =
-        std::make_unique<GameState>(streamed_map_content, opt.players);
+    std::ifstream ifs(opt.map_file);
+    if (!ifs.is_open())
+        FATAL("Cannot open file: %s", opt.map_file.c_str());
+
+    auto game_state = std::make_unique<GameState>(ifs, opt.players);
     api_ = std::make_unique<Api>(std::move(game_state), opt.player);
     register_actions();
 }
@@ -134,9 +137,18 @@ void Rules::start_of_player_turn(unsigned int player_key)
 void Rules::end_of_player_turn(unsigned int player_key)
 {
     api_->game_state().set_init(false);
+    api_->game_state().get_map().decrementer_papy();
     api_->clear_old_game_states();
 }
 
 void Rules::start_of_round() {}
 
-void Rules::end_of_round() {}
+void Rules::end_of_round()
+{
+    api_->game_state().next_round();
+}
+
+int Rules::get_round() const
+{
+    return api_->game_state().get_round();
+}

@@ -30,7 +30,6 @@ public:
     void apply_action(const rules::IAction& action) override;
     bool is_finished() override;
 
-protected:
     virtual void at_player_start(rules::ClientMessenger_sptr) override;
     virtual void at_spectator_start(rules::ClientMessenger_sptr) override;
     virtual void at_player_end(rules::ClientMessenger_sptr) override;
@@ -44,6 +43,8 @@ protected:
 
     virtual void start_of_round() override;
     virtual void end_of_round() override;
+
+    int get_round() const;
 
 private:
     void register_actions();
