@@ -378,9 +378,9 @@ TEST_F(ApiTest, ApiPains)
             int got = 0;
             for (const auto& pain_pos : player.api->pains()) 
             {
-                if (pains_pos.colonne == position.colonne
-                        && pains_pos.ligne == position.ligne
-                        && pains_pos.niveau == position.niveau)
+                if (pain_pos.colonne == position.colonne
+                        && pain_pos.ligne == position.ligne
+                        && pain_pos.niveau == position.niveau)
                     got++;
             }
             ASSERT_EQ(count, got);
