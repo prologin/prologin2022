@@ -365,16 +365,22 @@ TEST_F(ApiTest, ApiPains)
     for (const auto& player : players)
         ASSERT_EQ(0, player.api->pains().size());
 
-    int expected = 0;
+    int expected = 0; // Nombre total de pains sur la map
     for (const auto& position : positions) 
     {
-        int count = 0;
+        int count = 0; // Nombre total de pains sur cette position
         for (const auto& player : players) 
         {
-            player.api->game_state().get_map().get_cell(position).etat.nb_pains ++;
+            // Rajoute 1 pain sur la case, pour les deux joueurs
+            // Je sais pas si c'est la bonne méthode pour que le pain soit
+            // visible par les deux joueurs mais ça marche :)
+            for (const auto& p : players)
+                p.api->game_state().get_map().get_cell(position).etat.nb_pains ++;
+
             expected++;
             count++;
-            int got = 0;
+
+            int got = 0; // Nombre de pains détectés sur cette position
             for (const auto& pain_pos : player.api->pains()) 
             {
                 if (pain_pos.colonne == position.colonne
