@@ -374,7 +374,6 @@ TEST_F(ApiTest, ApiPains)
             player.api->game_state().get_map().get_cell(position).etat.nb_pains ++;
             expected++;
             count++;
-            ASSERT_EQ(expected, player.api->pains().size());
             int got = 0;
             for (const auto& pain_pos : player.api->pains()) 
             {
@@ -384,6 +383,7 @@ TEST_F(ApiTest, ApiPains)
                     got++;
             }
             ASSERT_EQ(count, got);
+            ASSERT_EQ(expected, player.api->pains().size());
         }
     }
 }
