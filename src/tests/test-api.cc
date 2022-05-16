@@ -350,6 +350,23 @@ TEST_F(ApiTest, ApiTourActuel)
     }
 }
 
+TEST_F(ApiTest, ApiTroupesJoueursInvalide)
+{
+    const int id_players_invalides[] = {
+        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41,
+        43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97
+    };
+
+    for (const auto& player : players)
+    {
+        for (const auto& id_joueur_invalide : id_players_invalides)
+        {
+            ASSERT_EQ(0, player.api->troupes_joueur(id_joueur_invalide).size());
+        }
+    }
+}
+}
+
 TEST_F(ApiTest, ApiPains)
 {
     const position positions[] = {
