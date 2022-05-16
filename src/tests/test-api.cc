@@ -1,14 +1,24 @@
-};
+#include "test-helpers.hh"
+#include "../constant.hh"
 
-void assert_eq_etat_case(etat_case etat_case_1, etat_case etat_case_2)
+namespace
 {
-    ASSERT_EQ(etat_case_1.pos.colonne, etat_case_2.pos.colonne);
-    ASSERT_EQ(etat_case_1.pos.ligne, etat_case_2.pos.ligne);
-    ASSERT_EQ(etat_case_1.pos.niveau, etat_case_2.pos.niveau);
-    ASSERT_EQ(etat_case_1.contenu, etat_case_2.contenu);
-    ASSERT_EQ(etat_case_1.est_constructible, etat_case_2.est_constructible);
-    ASSERT_EQ(etat_case_1.nb_pains, etat_case_2.nb_pains);
-}
+    const etat_case etat_case_err = {
+        .pos = {-1, -1, -1},
+        .contenu = static_cast<type_case>(-1),
+        .est_constructible = false,
+        .nb_pains = false
+    };
+
+    void assert_eq_etat_case(etat_case etat_case_1, etat_case etat_case_2)
+    {
+        ASSERT_EQ(etat_case_1.pos.colonne, etat_case_2.pos.colonne);
+        ASSERT_EQ(etat_case_1.pos.ligne, etat_case_2.pos.ligne);
+        ASSERT_EQ(etat_case_1.pos.niveau, etat_case_2.pos.niveau);
+        ASSERT_EQ(etat_case_1.contenu, etat_case_2.contenu);
+        ASSERT_EQ(etat_case_1.est_constructible, etat_case_2.est_constructible);
+        ASSERT_EQ(etat_case_1.nb_pains, etat_case_2.nb_pains);
+    }
 } // namespace
 
 TEST_F(ApiTest, ApiInfoCase_EtatCaseInvalide)
@@ -45,15 +55,15 @@ TEST_F(ApiTest, ApiInfoCase_EtatCaseOk)
     const size_t n_positions = sizeof(positions) / sizeof(*positions);
 
     const etat_case etat_cases[] = {
-        { positions[0], GAZON, false, false },    // ' '
-        { positions[1], GAZON, true, false },     // '.'
-        { positions[2], GAZON, false, false },    // 'S'
-        { positions[3], NID, false, false },      // 'N'
-        { positions[4], BUISSON, false, false },  // '#'
-        { positions[5], BARRIERE, false, false }, // 'B'
-        { positions[6], BARRIERE, false, false }, // 'b'
-        { positions[7], TROU, false, false },     // 'X'
-        { positions[8], PAPY, false, false }      // 0-9
+         { positions[0], GAZON, false, false },    // ' '
+         { positions[1], GAZON, true, false },     // '.'
+         { positions[2], GAZON, false, false },    // 'S'
+         { positions[3], NID, false, false },      // 'N'
+         { positions[4], BUISSON, false, false },  // '#'
+         { positions[5], BARRIERE, false, false }, // 'B'
+         { positions[6], BARRIERE, false, false }, // 'b'
+         { positions[7], TROU, false, false },     // 'X'
+         { positions[8], PAPY, false, false }      // 0-9
     };
 
     for (const auto& player : players)
