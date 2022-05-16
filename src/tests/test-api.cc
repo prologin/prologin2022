@@ -365,7 +365,7 @@ TEST_F(ApiTest, ApiTroupesJoueursInvalide)
         }
     }
 }
-}
+
 
 TEST_F(ApiTest, ApiPains)
 {
