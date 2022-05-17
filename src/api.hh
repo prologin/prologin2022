@@ -118,5 +118,6 @@ public:
 
     /// Affiche le contenu d'une valeur de type action_hist
     void afficher_action_hist(action_hist v);
-
 };
+
+int gain(int nb_pains);

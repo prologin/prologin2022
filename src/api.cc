@@ -2,8 +2,8 @@
 // Copyright (c) 2012-2020 Association Prologin <association@prologin.org>
 
 #include "api.hh"
-#include "position.hh"
 #include "constant.hh"
+#include "position.hh"
 
 #include <memory>
 #include <utility>
@@ -23,10 +23,10 @@ etat_case Api::info_case(position pos)
     if (!inside_map(pos))
     {
         const etat_case etatCase = {
-            .pos = { -1, -1, -1 },
+            .pos = {-1, -1, -1},
             .contenu = static_cast<type_case>(-1),
             .est_constructible = false,
-            .nb_pains = false
+            .nb_pains = false,
         };
 
         return etatCase;
@@ -56,22 +56,25 @@ int Api::papy_tours_restants(position pos)
 }
 std::vector<troupe> Api::troupes_joueur(int id_joueur)
 {
-    auto player = game_state_ -> get_player_ptr(id_joueur);
+    auto player = game_state_->get_player_ptr(id_joueur);
     std::vector<troupe> troupes;
     if (player == nullptr)
         return troupes;
-    std::array<troupe, NB_TROUPES> troupesArr = player -> troupes();
-    for (auto troupe: troupesArr)
+    std::array<troupe, NB_TROUPES> troupesArr = player->troupes();
+    for (auto troupe : troupesArr)
         troupes.push_back(troupe);
     return troupes;
 }
 std::vector<position> Api::pains()
 {
     std::vector<position> positions;
-    for (int x = 0; x < LARGEUR; x++) {
-        for (int y = 0; y < HAUTEUR; y++) {
-            for (int z = -1; z <= 0; z++) {
-                position pos {x, y, z};
+    for (int x = 0; x < LARGEUR; x++)
+    {
+        for (int y = 0; y < HAUTEUR; y++)
+        {
+            for (int z = -1; z <= 0; z++)
+            {
+                position pos{x, y, z};
                 int nb = game_state_->get_map().get_cell(pos).etat.nb_pains;
                 for (int i = 0; i < nb; i++)
                     positions.push_back(pos);
@@ -85,28 +88,39 @@ std::vector<action_hist> Api::historique()
     // TODO
     abort();
 }
+
 int Api::gain(int nb_pains)
+{
+    return ::gain(nb_pains);
+}
+
+int gain(int nb_pains)
 {
     return nb_pains * nb_pains;
 }
+
 int Api::moi()
 {
     return player_->id;
 }
+
 int Api::adversaire()
 {
     auto other_player = game_state_->get_other(player_->id);
     return other_player.get_key();
 }
+
 int Api::score(int id_joueur)
 {
     auto player = game_state_->get_player_ptr(id_joueur);
     return player == nullptr ? -1 : player->get_score();
 }
+
 bool Api::annuler()
 {
     return cancel();
 }
+
 int Api::tour_actuel()
 {
     return game_state_->get_round();

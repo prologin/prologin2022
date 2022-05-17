@@ -10,12 +10,7 @@ TEST_F(ApiTest, ActionGrandir_TropGrandi)
         {
             const auto& info = player.api->game_state().get_player(player.id);
             for (const auto& trp : info.troupes())
-            {
-                auto initial_size = trp.canards.size();
-                auto inital_additional_size =
-                    info.canards_additionnels(trp.id)->size();
                 player.api->grandir(trp.id);
-            }
         }
     }
 

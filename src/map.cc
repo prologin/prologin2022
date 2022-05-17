@@ -6,15 +6,15 @@
 bool Case::case_praticable() const
 {
     return !(etat.contenu == BUISSON || etat.contenu == TERRE ||
-            (etat.contenu == BARRIERE && barriere == FERMEE));
+             (etat.contenu == BARRIERE && barriere == FERMEE));
 }
 
 void Map::mark_canard(const position& pos)
 {
-    get_cell(pos).canard_sur_case = true; 
+    get_cell(pos).canard_sur_case = true;
 }
 
-void Map::unmark_canard(const position &pos)
+void Map::unmark_canard(const position& pos)
 {
     get_cell(pos).canard_sur_case = false;
 }
@@ -42,27 +42,27 @@ const position& Map::get_spawn_toward(const direction& dir) const
 {
     switch (dir)
     {
-        case HAUT:
-        case NORD:
-            for (const auto& pos : spawns)
-                if (pos.ligne == 0)
-                    return pos;
-            break;
-        case BAS:
-        case SUD:
-            for (const auto& pos : spawns)
-                if (pos.ligne == HAUTEUR - 1)
-                    return pos;
-            break;
-        case EST:
-            for (const auto& pos : spawns)
-                if (pos.colonne == LARGEUR - 1)
-                    return pos;
-            break;
-        case OUEST:
-            for (const auto& pos : spawns)
-                if (pos.colonne == 0)
-                    return pos;
+    case HAUT:
+    case NORD:
+        for (const auto& pos : spawns)
+            if (pos.ligne == 0)
+                return pos;
+        break;
+    case BAS:
+    case SUD:
+        for (const auto& pos : spawns)
+            if (pos.ligne == HAUTEUR - 1)
+                return pos;
+        break;
+    case EST:
+        for (const auto& pos : spawns)
+            if (pos.colonne == LARGEUR - 1)
+                return pos;
+        break;
+    case OUEST:
+        for (const auto& pos : spawns)
+            if (pos.colonne == 0)
+                return pos;
     }
     __builtin_unreachable();
 }
@@ -75,105 +75,105 @@ void Map::load_map_cells(std::istream& stream)
         std::string line;
         if (!std::getline(stream, line))
             FATAL("map: couldn't read from the input stream (line %d)",
-                    ligne + 1);
+                  ligne + 1);
         if (line.size() != LARGEUR)
             FATAL("map: line %d has %d columns, expected %d", ligne,
-                    line.size(), LARGEUR);
+                  line.size(), LARGEUR);
         for (int colonne = 0; colonne < LARGEUR; colonne++)
         {
             bool border = (colonne == 0 || colonne == LARGEUR - 1) ||
-                (ligne == 0 || ligne == HAUTEUR - 1);
+                          (ligne == 0 || ligne == HAUTEUR - 1);
             bool corner = (colonne == 0 || colonne == LARGEUR - 1) &&
-                (ligne == 0 || ligne == HAUTEUR - 1);
+                          (ligne == 0 || ligne == HAUTEUR - 1);
             position pos{colonne, ligne, niveau};
             char cell = line[colonne];
             switch (cell)
             {
-                case ' ':
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, GAZON, false, false};
-                    break;
-                case '.':
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, GAZON, true, false};
-                    break;
-                case 'S':
-                    get_cell(pos).etat = etat_case{pos, GAZON, false, false};
-                    get_cell(pos).point_spawn = true;
-                    if (not border)
-                        FATAL("map: spawns should be at the border of the map"
-                                "line %d column %d",
-                                ligne + 1, colonne + 1);
-                    if (corner)
-                        FATAL("map: spawns should not be in a corner"
-                                "line %d column %d",
-                                ligne + 1, colonne + 1);
-                    spawns.push_back(pos);
-                    break;
-                case 'N':
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, NID, false, false};
-                    get_cell(pos).nid = LIBRE;
-                    break;
-                case '#':
-                    get_cell(pos).etat = etat_case{pos, BUISSON, false, false};
-                    break;
-                case 'B':
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
-                    get_cell(pos).barriere = FERMEE;
-                    barrieres_.push_back(pos);
-                    break;
-                case 'b':
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
-                    get_cell(pos).barriere = OUVERTE;
-                    barrieres_.push_back(pos);
-                    break;
-                case 'X':
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, TROU, false, false};
-                    break;
-                default:
-                    if (border)
-                        FATAL("map: empty cell found at the border of the map"
-                                "'%c' found line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    int tours = cell - '0';
-                    if (tours < 0 || tours > 9)
-                        FATAL("map: invalid cell type '%c'"
-                                "line %d column %d",
-                                cell, ligne + 1, colonne + 1);
-                    get_cell(pos).etat = etat_case{pos, PAPY, false, false};
-                    get_cell(pos).papy_tours_restants = tours;
-                    papys_.push_back(pos);
-                    break;
+            case ' ':
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, GAZON, false, false};
+                break;
+            case '.':
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, GAZON, true, false};
+                break;
+            case 'S':
+                get_cell(pos).etat = etat_case{pos, GAZON, false, false};
+                get_cell(pos).point_spawn = true;
+                if (not border)
+                    FATAL("map: spawns should be at the border of the map"
+                          "line %d column %d",
+                          ligne + 1, colonne + 1);
+                if (corner)
+                    FATAL("map: spawns should not be in a corner"
+                          "line %d column %d",
+                          ligne + 1, colonne + 1);
+                spawns.push_back(pos);
+                break;
+            case 'N':
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, NID, false, false};
+                get_cell(pos).nid = LIBRE;
+                break;
+            case '#':
+                get_cell(pos).etat = etat_case{pos, BUISSON, false, false};
+                break;
+            case 'B':
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
+                get_cell(pos).barriere = FERMEE;
+                barrieres_.push_back(pos);
+                break;
+            case 'b':
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
+                get_cell(pos).barriere = OUVERTE;
+                barrieres_.push_back(pos);
+                break;
+            case 'X':
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, TROU, false, false};
+                break;
+            default:
+                if (border)
+                    FATAL("map: empty cell found at the border of the map"
+                          "'%c' found line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                int tours = cell - '0';
+                if (tours < 0 || tours > 9)
+                    FATAL("map: invalid cell type '%c'"
+                          "line %d column %d",
+                          cell, ligne + 1, colonne + 1);
+                get_cell(pos).etat = etat_case{pos, PAPY, false, false};
+                get_cell(pos).papy_tours_restants = tours;
+                papys_.push_back(pos);
+                break;
             }
         }
     }
     // spawn points checks
     if (spawns.size() != 4)
         FATAL("map: invalid number of spawn points"
-                "found %d expected 4",
-                spawns.size());
+              "found %d expected 4",
+              spawns.size());
     bool found[] = {false, false, false, false};
     for (const auto& pos : spawns)
     {
@@ -231,7 +231,7 @@ Map::Map(std::istream& stream)
 void Map::delete_troupe(const troupe& trp)
 {
     for (auto& canard : trp.canards)
-        unmark_canard(canard); 
+        unmark_canard(canard);
 }
 
 void Map::mark_troupe(const troupe& trp)
@@ -269,8 +269,9 @@ void Map::decrementer_papy()
 }
 
 Map::Map(const Map& map)
-    : map_(map.map_)
+    : spawns(map.spawns)
+    , map_(map.map_)
     , papys_(map.papys_)
-      , barrieres_(map.barrieres_)
+    , barrieres_(map.barrieres_)
 {
 }

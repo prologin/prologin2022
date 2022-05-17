@@ -28,13 +28,13 @@ std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
 } // namespace
 
 PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
-				etat_nid player_nid_id)
+                       etat_nid player_nid_id)
     : rules_player_(std::move(player))
     , score_(0)
     , pains_(0)
     , tunnels_(0)
     , troupes_(init_troupes(*rules_player_, map))
-	, player_nid_id_(player_nid_id)
+    , player_nid_id_(player_nid_id)
 {
     rules_player_->score = 0;
     reset_pts_actions();
@@ -52,7 +52,7 @@ int PlayerInfo::get_score() const
 
 etat_nid PlayerInfo::get_player_nid_id()
 {
-	return player_nid_id_;
+    return player_nid_id_;
 }
 
 void PlayerInfo::increase_score(uint delta)
@@ -62,7 +62,7 @@ void PlayerInfo::increase_score(uint delta)
 
 void PlayerInfo::decrease_score(uint delta)
 {
-    if (score_ >= delta)
+    if (static_cast<unsigned>(score_) >= delta)
         score_ -= delta;
 }
 
@@ -150,7 +150,7 @@ PlayerInfo::canards_additionnels(int troupe_id) const
     return nullptr;
 }
 
-std::queue<position> *PlayerInfo::canards_additionnels(int troupe_id)
+std::queue<position>* PlayerInfo::canards_additionnels(int troupe_id)
 {
     for (size_t i = 0; i < troupes_.size(); ++i)
         if (troupes_[i].id == troupe_id)
@@ -212,13 +212,13 @@ void PlayerInfo::sync_score()
 
 void PlayerInfo::spawn_canard(int troupe_id, Map& map)
 {
-    std::queue<position> *q = canards_additionnels(troupe_id);
+    std::queue<position>* q = canards_additionnels(troupe_id);
     if (q == nullptr)
         FATAL("Bad troupe id");
     if (q->empty())
         return;
     auto last = q->front();
     q->pop();
-    map.mark_canard(last); 
+    map.mark_canard(last);
     get_troupe(troupe_id)->canards.push_back(last);
 }

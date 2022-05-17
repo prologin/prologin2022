@@ -5,54 +5,126 @@
 
 TEST(CasePraticable, BarriereOuverte)
 {
-    Case cell = {.etat = {.contenu = BARRIERE},
-                .barriere = OUVERTE,
-                .nid = PAS_DE_NID,};
+    Case cell = {
+        .etat =
+            {
+                .pos = {0, 0, 0},
+                .contenu = BARRIERE,
+                .est_constructible = false,
+                .nb_pains = 0,
+            },
+        .barriere = OUVERTE,
+        .nid = PAS_DE_NID,
+        .pigeon = PAS_DE_PIGEON,
+        .papy_tours_restants = 0,
+        .point_spawn = false,
+        .canard_sur_case = false,
+    };
 
     ASSERT_TRUE(cell.case_praticable());
 }
 
 TEST(CasePraticable, NidLibre)
 {
-    Case cell = {.etat = {.contenu = NID},
-                .barriere = OUVERTE,
-                .nid = LIBRE,};
+    Case cell = {
+        .etat =
+            {
+                .pos = {0, 0, 0},
+                .contenu = NID,
+                .est_constructible = false,
+                .nb_pains = 0,
+            },
+        .barriere = OUVERTE,
+        .nid = LIBRE,
+        .pigeon = PAS_DE_PIGEON,
+        .papy_tours_restants = 0,
+        .point_spawn = false,
+        .canard_sur_case = false,
+    };
 
     ASSERT_TRUE(cell.case_praticable());
 }
 
 TEST(CasePraticable, NidJ1)
 {
-    Case cell = {.etat = {.contenu = NID},
-                .barriere = PAS_DE_BARRIERE,
-                .nid = JOUEUR_0,};
+    Case cell = {
+        .etat =
+            {
+                .pos = {0, 0, 0},
+                .contenu = NID,
+                .est_constructible = false,
+                .nb_pains = 0,
+            },
+        .barriere = PAS_DE_BARRIERE,
+        .nid = JOUEUR_0,
+        .pigeon = PAS_DE_PIGEON,
+        .papy_tours_restants = 0,
+        .point_spawn = false,
+        .canard_sur_case = false,
+    };
 
     ASSERT_TRUE(cell.case_praticable());
 }
 
 TEST(CasePraticable, NidJ2)
 {
-    Case cell = {.etat = {.contenu = NID},
-                .barriere = PAS_DE_BARRIERE,
-                .nid = JOUEUR_1,};
+    Case cell = {
+        .etat =
+            {
+                .pos = {0, 0, 0},
+                .contenu = NID,
+                .est_constructible = false,
+                .nb_pains = 0,
+            },
+        .barriere = PAS_DE_BARRIERE,
+        .nid = JOUEUR_1,
+        .pigeon = PAS_DE_PIGEON,
+        .papy_tours_restants = 0,
+        .point_spawn = false,
+        .canard_sur_case = false,
+    };
 
     ASSERT_TRUE(cell.case_praticable());
 }
 
 TEST(CasePraticable, BUISSON)
 {
-    Case cell = {.etat = {.contenu = BUISSON},
-                .barriere = PAS_DE_BARRIERE,
-                .nid = LIBRE,};
+    Case cell = {
+        .etat =
+            {
+                .pos = {0, 0, 0},
+                .contenu = BUISSON,
+                .est_constructible = false,
+                .nb_pains = 0,
+            },
+        .barriere = PAS_DE_BARRIERE,
+        .nid = LIBRE,
+        .pigeon = PAS_DE_PIGEON,
+        .papy_tours_restants = 0,
+        .point_spawn = false,
+        .canard_sur_case = false,
+    };
 
     ASSERT_FALSE(cell.case_praticable());
 }
 
 TEST(CasePraticable, BarriereFermee)
 {
-    Case cell = {.etat = {.contenu = BARRIERE},
-                .barriere = FERMEE,
-                .nid = LIBRE,};
+    Case cell = {
+        .etat =
+            {
+                .pos = {0, 0, 0},
+                .contenu = BARRIERE,
+                .est_constructible = false,
+                .nb_pains = 0,
+            },
+        .barriere = FERMEE,
+        .nid = LIBRE,
+        .pigeon = PAS_DE_PIGEON,
+        .papy_tours_restants = 0,
+        .point_spawn = false,
+        .canard_sur_case = false,
+    };
 
     ASSERT_FALSE(cell.case_praticable());
 }
