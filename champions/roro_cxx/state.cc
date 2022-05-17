@@ -12,14 +12,14 @@ void add_state(position pos)
     {
         auto turns_left = papy_tours_restants(pos);
         state::grandpa grandpa{pos, turns_left};
-        state::grandpas.push_back(grandpa);
+        state::grandpas.emplace_back(grandpa);
         break;
     }
     case NID:
     {
         auto nest_state = info_nid(pos);
         state::nest nest{pos, nest_state};
-        state::nests.push_back(nest);
+        state::nests.emplace_back(nest);
         break;
     }
     case VIDE:
