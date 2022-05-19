@@ -47,53 +47,15 @@ export class Game {
             dirt: new PIXI.Texture.from("assets/environment/dirt/dirt.png"),
         }
     }
+
+    createSprite(texture, x, y) {
+        let sprite = new PIXI.Sprite(texture);
+        sprite.x = y * SPRITE_WIDTH;
+        sprite.y = x * SPRITE_HEIGHT;
+        sprite.width = SPRITE_WIDTH;
+        sprite.height = SPRITE_HEIGHT;
+        return sprite;
     }
-
-    setupDocument(document) {
-        return document.body.appendChild(this.app.view);
-    }
-
-    action_avancer() {
-
-    }
-
-    action_grandir() {
-
-    }
-
-    action_construire_buisson() {
-
-    }
-
-    action_creuser_tunnel() {
-
-    }
-
-    pigeon_debug() {
-
-    }
-
-    error() {
-
-    }
-
-    info_score() {
-
-    }
-
-    info_spawn() {
-
-    }
-
-
-    info_recup_pains() {
-
-    }
-
-    info_deposer_pains() {
-    }
-
-    info_lacher_pain() {
     }
 
     info_ouvrir_barriere() {
