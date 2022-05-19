@@ -77,7 +77,8 @@ export class Game {
     info_division() {
     }
 
-    info_dispersion() {
+    setupDocument(document) {
+        return document.body.appendChild(this.app.view);
     }
 
 }
