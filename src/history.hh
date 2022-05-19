@@ -40,6 +40,7 @@ public:
     InternalAction(InternalActionType, position);
     InternalAction(InternalActionType, position, pigeon_debug);
     InternalAction(InternalActionType, int, erreur);
+    InternalAction(action_hist);
 
 private:
     InternalActionType type_;

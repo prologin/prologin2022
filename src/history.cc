@@ -2,65 +2,31 @@
 
 #include <iostream>
 
-InternalAction::InternalAction(InternalActionType type, int val1, int val2)
-    : type_(type)
-    , int_value1_(val1)
-    , int_value2_(val2)
-{}
-
-InternalAction::InternalAction(InternalActionType type, int val1, int val2,
-                               int val3)
-    : type_(type)
-    , int_value1_(val1)
-    , int_value2_(val2)
-    , int_value3_(val3)
-{}
-
-InternalAction::InternalAction(InternalActionType type, int val1, int val2,
-                               direction dir)
-    : type_(type)
-    , direction_(dir)
-    , int_value1_(val1)
-    , int_value2_(val2)
-{}
-
-InternalAction::InternalAction(InternalActionType type, int val1, int val2,
-                               position pos)
-    : type_(type)
-    , pos_(pos)
-    , int_value1_(val1)
-    , int_value2_(val2)
-{}
-
-InternalAction::InternalAction(InternalActionType type, int val1, int val2,
-                               position pos, int val3)
-    : type_(type)
-    , pos_(pos)
-    , int_value1_(val1)
-    , int_value2_(val2)
-    , int_value3_(val3)
-{}
-
-InternalAction::InternalAction(InternalActionType type, position pos)
-    : type_(type)
-    , pos_(pos)
-{}
-
-InternalAction::InternalAction(InternalActionType type, position pos,
-                               pigeon_debug pigeon)
-    : type_(type)
-    , pos_(pos)
-    , pigeon_(pigeon)
-{}
-
-InternalAction::InternalAction(InternalActionType type, int val, erreur err)
-    : type_(type)
-    , err_(err)
-    , int_value1_(val)
-{}
-
 namespace
 {
+    InternalActionType action_to_internal_action(type_action action)
+    {
+        InternalActionType internal_action;
+
+        switch (action)
+        {
+        case ACTION_AVANCER:
+            internal_action = InternalActionType::action_avancer;
+            break;
+        case ACTION_GRANDIR:
+            internal_action = InternalActionType::action_grandir;
+            break;
+        case ACTION_CONSTRUIRE:
+            internal_action = InternalActionType::action_construire_buisson;
+            break;
+        case ACTION_CREUSER:
+            internal_action = InternalActionType::action_creuser_tunnel;
+            break;
+        }
+
+        return internal_action;
+    }
+
     std::string pigeon_string(const pigeon_debug& pigeon)
     {
         std::string s;
@@ -129,6 +95,70 @@ namespace
         return s;
     }
 } // namespace
+
+InternalAction::InternalAction(InternalActionType type, int val1, int val2)
+    : type_(type)
+    , int_value1_(val1)
+    , int_value2_(val2)
+{}
+
+InternalAction::InternalAction(InternalActionType type, int val1, int val2,
+                               int val3)
+    : type_(type)
+    , int_value1_(val1)
+    , int_value2_(val2)
+    , int_value3_(val3)
+{}
+
+InternalAction::InternalAction(InternalActionType type, int val1, int val2,
+                               direction dir)
+    : type_(type)
+    , direction_(dir)
+    , int_value1_(val1)
+    , int_value2_(val2)
+{}
+
+InternalAction::InternalAction(InternalActionType type, int val1, int val2,
+                               position pos)
+    : type_(type)
+    , pos_(pos)
+    , int_value1_(val1)
+    , int_value2_(val2)
+{}
+
+InternalAction::InternalAction(InternalActionType type, int val1, int val2,
+                               position pos, int val3)
+    : type_(type)
+    , pos_(pos)
+    , int_value1_(val1)
+    , int_value2_(val2)
+    , int_value3_(val3)
+{}
+
+InternalAction::InternalAction(InternalActionType type, position pos)
+    : type_(type)
+    , pos_(pos)
+{}
+
+InternalAction::InternalAction(InternalActionType type, position pos,
+                               pigeon_debug pigeon)
+    : type_(type)
+    , pos_(pos)
+    , pigeon_(pigeon)
+{}
+
+InternalAction::InternalAction(InternalActionType type, int val, erreur err)
+    : type_(type)
+    , err_(err)
+    , int_value1_(val)
+{}
+
+InternalAction::InternalAction(action_hist action)
+    : type_(action_to_internal_action(action.action_type))
+    , pos_(action.action_pos)
+    , direction_(action.action_dir)
+    , int_value1_(action.troupe_id)
+{}
 
 std::ostream& operator<<(std::ostream& os, const InternalAction& action)
 {
