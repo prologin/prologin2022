@@ -56,9 +56,19 @@ export class Game {
         sprite.height = SPRITE_HEIGHT;
         return sprite;
     }
+
+    readMap(mapString) {
+        // Generates default values.
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                let random = Math.floor(Math.random() * 3);
+                this.map[i][j][0] = this.createSprite(this.textures.grass[random], i, j);
+                this.map[i][j][1] = this.createSprite(this.textures.dirt, i, j);
+                this.app.stage.addChild(this.map[i][j][0]);
+            }
+        }
     }
 
-    info_ouvrir_barriere() {
     }
 
     info_fermer_barriere() {
