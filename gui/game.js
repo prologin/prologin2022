@@ -69,6 +69,20 @@ export class Game {
         }
     }
 
+    pigeon_debug(color, x, y, z) {
+        if (color === PigeonColor.NONE) {
+            this.app.stage.removeChild(this.units[x][y][z]);
+            this.units[x][y][z] = null;
+            return;
+        }
+        let pigeon = new PIXI.Sprite(this.textures.pigeon);
+        pigeon.x = x;
+        pigeon.y = y;
+        pigeon.width = SPRITE_WIDTH;
+        pigeon.height = SPRITE_HEIGHT;
+        pigeon.tint = color;
+        this.units[x][y] = pigeon;
+        this.app.stage.addChild(pigeon);
     }
 
     info_fermer_barriere() {
