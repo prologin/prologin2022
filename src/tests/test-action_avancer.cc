@@ -123,8 +123,6 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBuisson)
     place_trp(trp, new_pos, player.api->game_state().get_map());
     std::vector<position> former = trp->canards;
     int former_inv = trp->inventaire;
-    INFO("map nb spawns: %zu",
-         player.api->game_state().get_map().spawns.size());
     auto err = player.api->avancer(1, SUD);
 
     assert_troupe_died(err, player.api->game_state(), *(player.info), former,

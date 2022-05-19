@@ -82,6 +82,7 @@ protected:
         rules::Options opt;
         opt.map_file = test_map_path;
         opt.players = make_players(PLAYER_ID_1, PLAYER_ID_2);
+        opt.player = opt.players[0];
         rules.reset(new Rules(opt));
     }
 

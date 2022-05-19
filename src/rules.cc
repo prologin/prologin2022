@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "actions.hh"
+#include "troupe.hh"
 
 Rules::Rules(const rules::Options opt)
     : TurnBasedRules(opt)
@@ -137,12 +138,10 @@ void Rules::start_of_player_turn(unsigned int player_key)
 void Rules::end_of_player_turn(unsigned int player_key)
 {
     // If the player has not consumed all his action points yet, make it move
-    const auto& player = api_->game_state().get_player(player_key);
-    for (const auto& trp : player.troupes())
-    {
+    auto& player = api_->game_state().get_player(player_key);
+    for (auto& trp : player.troupes())
         while (player.pts_actions(trp.id))
-            api_->avancer(trp.id, trp.dir);
-    }
+            move_troupe(trp, trp.dir, api_->game_state().get_map(), player);
 
     api_->game_state().set_init(false);
     api_->game_state().get_map().decrementer_papy();
