@@ -134,8 +134,16 @@ void Rules::start_of_player_turn(unsigned int player_key)
     api_->game_state().set_init(true);
 }
 
-void Rules::end_of_player_turn(unsigned int /* player_key */)
+void Rules::end_of_player_turn(unsigned int player_key)
 {
+    // If the player has not consumed all his action points yet, make it move
+    const auto& player = api_->game_state().get_player(player_key);
+    for (const auto& trp : player.troupes())
+    {
+        while (player.pts_actions(trp.id))
+            api_->avancer(trp.id, trp.dir);
+    }
+
     api_->game_state().set_init(false);
     api_->game_state().get_map().decrementer_papy();
     api_->clear_old_game_states();
