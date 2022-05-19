@@ -36,6 +36,7 @@ public:
     InternalAction(InternalActionType, int, int, int);
     InternalAction(InternalActionType, int, int, direction);
     InternalAction(InternalActionType, int, int, position);
+    InternalAction(InternalActionType, int, int, position, int);
     InternalAction(InternalActionType, position);
     InternalAction(InternalActionType, position, pigeon_debug);
     InternalAction(InternalActionType, int, erreur);
