@@ -1,4 +1,5 @@
 from api import *
+from sys import exit
 
 def display_map():
     case_str = {
@@ -45,6 +46,12 @@ def nearest(troupe_id, condition):
                 if info_case((x, y, z)).contenu in [type_case.BUISSON, type_case.BARRIERE, type_case.TERRE]:
                     visite[z][y][x] = True
 
+    for troupe in troupes_joueur(moi()):
+        for pos in troupe.canards:
+            x, y, z = pos
+            visite[z][y][x] = True
+
+
     def traversable(x, y, z):
         if not (0 <= x < LARGEUR and 0 <= y < HAUTEUR and -1 <= z <= 0):
             return False
@@ -54,7 +61,8 @@ def nearest(troupe_id, condition):
     start = troupe.maman
     sx, sy, sz = start
     file = [(start, [])]
-    deplacements = { direction.NORD : (0, 1, 0),
+    deplacements = { 
+            direction.NORD : (0, 1, 0),
             direction.SUD  : (0, -1, 0),
             direction.EST  : (1, 0, 0),
             direction.OUEST: (-1, 0, 0),
@@ -92,7 +100,8 @@ def jouer_tour():
         troupe = troupes_joueur(moi())[troupe_id]
         arrivee, chemin = target[troupe_id]
         while troupe.pts_action > 0:
-            avancer(troupe_id, chemin.pop(0))
+            if avancer(troupe_id, chemin.pop(0)) != erreur.ok:
+                exit(1)
             if len(chemin) == 0:
                 if info_case(arrivee).contenu == type_case.NID:
                     target[troupe_id] = nearest(troupe_id, lambda position: info_case(position).nb_pains > 0)
