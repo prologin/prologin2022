@@ -54,9 +54,7 @@ def nearest(troupe_id, condition):
     start = troupe.maman
     sx, sy, sz = start
     file = [(start, [])]
-    deplacements =
-        {
-            direction.NORD : (0, 1, 0),
+    deplacements = { direction.NORD : (0, 1, 0),
             direction.SUD  : (0, -1, 0),
             direction.EST  : (1, 0, 0),
             direction.OUEST: (-1, 0, 0),
@@ -69,11 +67,11 @@ def nearest(troupe_id, condition):
             return position, chemin
         x, y, z = position
         visite[z][y][x] = True
-        for direction, (dx, dy, dz) in deplacements.items():
+        for direction_, (dx, dy, dz) in deplacements.items():
             rx, ry, rz = x + dx, y + dy, z + dz
             if not traversable(rx, ry, rz):
                 continue
-            file.append((rx, ry, rz), chemin.copy() + [direction])
+            file.append(((rx, ry, rz), chemin.copy() + [direction_]))
     
     return None
 
