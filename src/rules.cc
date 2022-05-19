@@ -152,3 +152,5 @@ int Rules::get_round() const
 {
     return api_->game_state().get_round();
 }
+
+void Rules::dump_state(std::ostream&) {}

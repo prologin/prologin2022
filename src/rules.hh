@@ -44,6 +44,8 @@ public:
     virtual void start_of_round() override;
     virtual void end_of_round() override;
 
+    virtual void dump_state(std::ostream&) override;
+
     int get_round() const;
 
 private:
