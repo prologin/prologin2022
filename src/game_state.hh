@@ -5,8 +5,10 @@
 
 #include <rules/game-state.hh>
 #include <rules/player.hh>
+#include <vector>
 
 #include "constant.hh"
+#include "history.hh"
 #include "map.hh"
 #include "player_info.hh"
 
@@ -36,6 +38,11 @@ public:
     void next_round();
     bool is_finished() const;
 
+    // History
+    const std::vector<InternalAction>& get_internal_history() const;
+    void add_internal_action(InternalAction action);
+    void reset_internal_history();
+
     bool is_init() const;
     void set_init(bool init);
 
@@ -46,4 +53,6 @@ private:
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_;                         // Note : 1 round = 2 tours
     bool init_;
+
+    std::vector<InternalAction> internal_hist_;
 };

@@ -32,6 +32,7 @@ GameState::GameState(std::istream& map_stream, const rules::Players& players)
     : rules::GameState(players)
     , map_(map_stream)
     , players_(init_players(players, map_))
+    , round_(0)
     , init_(false)
 {
     // FIXME
@@ -128,6 +129,21 @@ void GameState::next_round()
 bool GameState::is_finished() const
 {
     return round_ >= NB_TOURS / 2;
+}
+
+const std::vector<InternalAction>& GameState::get_internal_history() const
+{
+    return internal_hist_;
+}
+
+void GameState::reset_internal_history()
+{
+    internal_hist_.clear();
+}
+
+void GameState::add_internal_action(InternalAction action)
+{
+    internal_hist_.push_back(action);
 }
 
 bool GameState::is_init() const

@@ -52,7 +52,6 @@ private:
     int int_value1_;
     int int_value2_;
     int int_value3_;
-    int int_value4_;
 };
 
 std::ostream& operator<<(std::ostream& os, const InternalAction& action);
