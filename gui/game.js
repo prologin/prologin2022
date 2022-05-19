@@ -98,7 +98,8 @@ export class Game {
         this.units[x][y] = old;
     }
 
-    info_division() {
+    async setupAnimation() {
+        this.createOldMan(10, 10);
     }
 
     setupDocument(document) {
