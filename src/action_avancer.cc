@@ -6,15 +6,6 @@
 #include "position.hh"
 #include "troupe.hh"
 
-int check_avancer_troupe(const troupe* trp, const direction& dir)
-{
-    position new_pos = trp->maman + get_delta_pos(dir);
-    if (!inside_map(new_pos))
-        return POSITION_INVALIDE;
-
-    return OK;
-}
-
 int ActionAvancer::check(const GameState& st) const
 {
     if (!st.is_init())
@@ -23,16 +14,12 @@ int ActionAvancer::check(const GameState& st) const
     auto player = st.get_player(player_id_);
     auto trp = player.get_troupe(id_);
 
-   if (trp == nullptr)
+    if (trp == nullptr)
         return TROUPE_INVALIDE;
 
     if (player.pts_actions(trp->id) <= 0)
         return MOUVEMENTS_INSUFFISANTS;
 
-    auto state = check_avancer_troupe(trp, dir_);
-
-    if (state != OK)
-        return state;
     return OK;
 }
 
