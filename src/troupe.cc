@@ -11,11 +11,13 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
         map.get_cell(trp.canards[trp.taille - 1 - i]).etat.nb_pains += 1;
     trp.inventaire = 0;
 
-    // Determining the spawn_point
-    trp.maman = map.get_spawn_toward(trp.dir);
-    trp.canards = {trp.maman};
-    for (auto i = 1; i < TAILLE_DEPART; ++i)
-        player_info.enfiler_canard(trp.id);
+	// Determining the spawn_point
+	trp.maman = map.get_spawn_toward(trp.dir);
+	trp.canards = { trp.maman };
+	std::queue<position> *q = player_info.canards_additionnels(trp.id);
+	trp.pts_actions = 0;
+	for (auto i = 1; i < TAILLE_DEPART; ++i)
+		player_info.enfiler_canard(trp.id);
 }
 
 void prendre_pain(troupe& trp, Map& map)
@@ -50,6 +52,7 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
                  PlayerInfo& player)
 {
     auto delta = get_delta_pos(dir);
+	trp.dir = dir;
     if (map.case_mortelle(trp.maman + delta))
     {
         map.delete_troupe(trp);

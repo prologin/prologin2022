@@ -23,12 +23,7 @@ int ActionAvancer::check(const GameState& st) const
     auto player = st.get_player(player_id_);
     auto trp = player.get_troupe(id_);
 
-    /*
-     * Mais en fait, on a pas d'autres erreurs que les mauvais ID
-     * et les mauvaises directions ? En effet, si la troupe va
-     * vers une position invalide elle meurt :think: ?
-     * */
-    if (trp == nullptr)
+   if (trp == nullptr)
         return TROUPE_INVALIDE;
 
     if (player.pts_actions(trp->id) <= 0)
