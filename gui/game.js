@@ -85,7 +85,17 @@ export class Game {
         this.app.stage.addChild(pigeon);
     }
 
-    info_fermer_barriere() {
+    createOldMan(x, y) {
+        let old = new PIXI.AnimatedSprite(this.textures.old, true);
+        old.anchor.set(5);
+        old.animationSpeed = 0.1;
+        old.loop = false;
+        old.x = x * SPRITE_WIDTH;
+        old.y = y * SPRITE_WIDTH;
+        old.width = SPRITE_WIDTH;
+        old.height = SPRITE_HEIGHT;
+        this.app.stage.addChild(old);
+        this.units[x][y] = old;
     }
 
     info_division() {
