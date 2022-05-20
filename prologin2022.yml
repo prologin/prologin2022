@@ -8,11 +8,11 @@ player_count: 2
 constant:
   -
     cst_name: HAUTEUR
-    cst_val: 80
+    cst_val: 40
     cst_comment: Nombre de lignes dans la carte
   -
     cst_name: LARGEUR
-    cst_val: 80
+    cst_val: 40
     cst_comment: Nombre de colonnes dans la carte
   -
     cst_name: NB_TOURS

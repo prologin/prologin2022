@@ -6,10 +6,10 @@
 #include <vector>
 
 /// Nombre de lignes dans la carte
-#define HAUTEUR 80
+#define HAUTEUR 40
 
 /// Nombre de colonnes dans la carte
-#define LARGEUR 80
+#define LARGEUR 40
 
 /// Nombre de tours à jouer avant la fin de la partie
 #define NB_TOURS 400
