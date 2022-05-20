@@ -1,3 +1,5 @@
+import {PigeonColor} from "./pigeon"
+
 const WINDOW_HEIGHT = 960;
 const WINDOW_WIDTH = 960;
 
@@ -6,13 +8,6 @@ const MAP_SIZE = 30;
 
 const SPRITE_WIDTH = WINDOW_WIDTH / MAP_SIZE;
 const SPRITE_HEIGHT = WINDOW_HEIGHT / MAP_SIZE;
-
-const PigeonColor = {
-    BLUE: 0x9999FF,
-    YELLOW: 0xFFFF00,
-    RED: 0xFF4444,
-    NONE: null,
-};
 
 const Direction = {
     NORD: 0,
