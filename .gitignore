@@ -29,3 +29,6 @@
 
 #vim tmp files
 *.swp
+
+# IntelliJ Idea based files
+.idea/ 

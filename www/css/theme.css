@@ -1,0 +1,457 @@
+/*
+
+SPDX-License-Identifier: GPL-2.0-or-later
+
+Copyright 2018 Alexandre Macabies
+Copyright 2019-2021 Kilian Guillaume
+Copyright 2020 Paul Guénézan
+
+*/
+
+/*************/
+/* Variables */
+/*************/
+
+body {
+    --accent-color: #ffec07;
+    --button: #0dae93;
+    --button-hover: #ffec07;
+    --container-background: #000000;
+    --background-color: #151515;
+    --background-color-2: #151515;
+    --background-darker: rgba(0,0,0,0.02);
+    --border-color: #FFFFFF;
+    /*! --text-color: #ffec07; */
+    --text-color-accent: #ffffff;
+    /* the size of the outlines for buttons and the nav */
+    --outline-size: 2px;
+    /* the padding for the nav pills (default values from bootstrap) */
+    --pill-vert-padding: 10px;
+    --pill-horiz-padding: 15px;
+    /* when the screen is too small, parts of the logo are under the text, add a background to the text to make it readable */
+    --background-cover-fix: transparent;
+}
+
+/**********/
+/* Global */
+/**********/
+
+body {
+    background-color: #151515;
+    color: #ffffff;
+    background: #151515;
+    background-size: cover;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+canvas {
+    width: 100%;
+}
+
+body>.container {
+    background-color: var(--container-background);
+}
+
+/*******/
+/* nav */
+/*******/
+
+.navbar-default {
+    background: transparent;
+    border: transparent;
+    border-radius: 0;
+}
+
+.navbar-default .navbar-text, .navbar-default .navbar-nav > li > a {
+    color: #ffffff;
+    text-shadow: 1px 1px 0 #000000;
+    background: rgba(0,0,0,0.6);
+    padding: 5px;
+    margin: 10px;
+}
+.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+    color: #ffffff;
+    background: rgba(0,0,0,0.8)
+}
+
+/********/
+/* main */
+/********/
+
+[role=main] {
+    margin-top: 80px;
+}
+
+[role=complementary] h1 {
+    margin: 0;
+    padding: 0 0 .5rem 0;
+}
+
+[role=complementary] object {
+    width: 700px !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--accent-color);
+}
+
+
+body>div.container {
+    background-position: top left;
+    background-repeat: repeat;
+    /*! box-shadow: 0 10px 40px rgba(0,0,0,0.9); */
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+    border-radius: calc(var(--outline-size) * 4);
+}
+
+/***************/
+/* breadcrumbs */
+/***************/
+
+.breadcrumb {
+    /* put the breadcrumbs at the right of the screen, while only taking the needed space. */
+    width: max-content;
+    margin-left: auto;
+
+    text-align: right;
+    background: transparent;
+}
+
+.breadcrumb > li + li::before {
+    color: var(--text-color);
+}
+
+a:hover, a:active {
+    color: var(--accent-color);
+}
+
+.breadcrumb > .active {
+    color: var(--text-color-accent);
+}
+
+/**********/
+/* panels */
+/**********/
+
+.panel-primary, .panel-default {
+    background: transparent;
+    border-color: var(--text-color-accent);
+    border-width: var(--outline-size);
+    border-radius: 0;
+}
+
+.panel-primary > .panel-heading {
+    background: transparent;
+    border-color: var(--text-color-accent);
+    color: var(--text-color-accent);
+    border-bottom-width: var(--outline-size);
+}
+
+.panel-default > .panel-heading {
+    background: transparent;
+    border-color: var(--border-color);
+    border-bottom: 2px dotted;
+    color: var(--text-color);
+    border-bottom-width: var(--outline-size);
+}
+
+/********************/
+/* left nav / links */
+/********************/
+
+a {
+    color: var(--text-color-accent);
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    background: transparent;
+    border: var(--outline-size) solid;
+    padding: calc(var(--pill-vert-padding) - var(--outline-size))
+             calc(var(--pill-horiz-padding) - var(--outline-size));
+    border-radius: 0;
+}
+
+.nav > li > a:focus, .nav > li > a:hover {
+    background: transparent;
+    text-decoration: underline;
+}
+
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    color: var(--text-color-accent);
+    border: none;
+    font-weight: 700;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a::before {
+    content: "» ";
+}
+
+/**********/
+/* tables */
+/**********/
+
+table {
+    border: var(--outline-size) solid var(--border-color);
+    border-radius: calc(var(--outline-size) * 2);
+    border-collapse: separate;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border-top-width: var(--outline-size);
+    border-top-color: var(--border-color);
+}
+
+/* make the first line (under the header) dotted */
+.table > thead > tr > th {
+    border-bottom: var(--outline-size) dotted var(--border-color);
+}
+
+table > tbody > tr:first-child td {
+    border-top: none;
+}
+
+/* alternate colors on each line to be more readable */
+.table-striped > tbody > tr:nth-of-type(2n+1) {
+    background: var(--background-color-2);
+}
+
+/* table "danger" background" */
+/* I kept the bootstrap selector for specificity, but it's ridiculously long. */
+.table>tbody>tr.danger>td,
+.table>tbody>tr.danger>th,
+.table>tbody>tr>td.danger,
+.table>tbody>tr>th.danger,
+.table>tfoot>tr.danger>td,
+.table>tfoot>tr.danger>th,
+.table>tfoot>tr>td.danger,
+.table>tfoot>tr>th.danger,
+.table>thead>tr.danger>td,
+.table>thead>tr.danger>th,
+.table>thead>tr>td.danger,
+.table>thead>tr>th.danger {
+ background-color:#340000;
+}
+
+/**************/
+/* pre/inputs */
+/**************/
+
+pre, pre.prettyprint, input[type=text], input[type=password], textarea.form-control {
+    background: var(--background-darker);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.form-control:focus {
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+/* disabled inputs */
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+    background-color:var(--background-color-2);
+}
+
+
+/* progress bars */
+.progress-bar {
+	color: #000;
+}
+
+.progress {
+	border-radius: 0;
+	background: #F00;
+}
+
+.progress-bar-success {
+	/* technically it's yellow in undertale, but since it's "bar-success", green is more fitting. */
+	#0F0;
+}
+
+/* selects */
+/* we need to specify both --below and --above, in order to have enough specificity to override bootstrap's theme */
+.select2-dropdown.select2-dropdown--below, .select2-dropdown.select2-dropdown--above {
+  background: var(--background-color);
+  border-radius: 0;
+  border: solid var(--outline-size) var(--border-color);
+}
+
+/***********/
+/* buttons */
+/***********/
+
+/* primary */
+
+.btn-primary {
+    background: transparent;
+    color: var(--button);
+    font-weight: 700;
+    border: var(--outline-size) solid var(--button);
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus {
+    background: var(--button-hover);
+    color: var(--background-color);
+    border-color: var(--button-hover);
+    text-decoration: none;
+}
+
+/* default */
+
+.btn-default {
+    border: 1px solid var(--border-color);
+}
+
+.btn-default:hover, .btn-default:active, .btn-default:focus {
+    text-decoration: underline;
+    border-color: var(--border-color);
+}
+
+/* easter */
+.easter-egg {
+    position: fixed;
+    bottom: -55px;
+    transition: all .35s ease;
+    cursor: pointer;
+}
+.easter-egg.peak {
+    bottom: -64px;
+}
+.easter-egg.visible {
+    bottom: -12px;
+    animation: poop-dance .8s infinite alternate ease-in-out;
+}
+.easter-egg:not(.visible):hover {
+    bottom: -55px;
+}
+@keyframes poop-dance {
+    from, 49% { transform-origin: -50% 100%; }
+    50%, 75%, to { transform-origin: 150% 100%; }
+    25% { transform: rotate(-10deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(10deg); }
+}
+
+#replay::before {
+    font-size: small;
+    content: "Cliquez sur la vue puis appuyez sur F pour passer en mode plein écran";
+}
+
+/**********************/
+/* Logo too large fix */
+/**********************/
+
+h1 {
+	/*! background: #ffec07; */
+}
+
+.breadcrumb {
+	background: var(--background-cover-fix);
+}
+
+.easter-egg-42 {
+    position: fixed;
+    top: 0;
+    transition: 2s linear;
+    left: -128px;
+}
+
+.easter-egg-42 .dogo {
+    width: 128px;
+}
+
+.easter-egg-42.right .dogo {
+    transform: scaleX(-1);
+}
+
+.easter-egg-42.right {
+    transform: translate(calc(128px + 100vw), 0);
+}
+
+/* Winner animation */
+@keyframes anim-winner-img {
+    0% {
+    transform: translate(0, 20px) rotate(0deg) rotateY(0deg) scale(.8);
+    }
+    25% {
+    transform: translate(0, 0px) rotate(10deg) rotateY(360deg);
+    }
+    50% {
+    transform: translate(0, 20px) rotate(0deg) rotateY(360deg) scale(.8);
+    }
+    75% {
+    transform: translate(0, 0px) rotate(-10deg) rotateY(0deg);
+    }
+    100% {
+    transform: translate(0, 20px) rotate(0deg) scale(.8) rotateY(0deg);
+    }
+}
+
+.winner-img {
+    animation-name: anim-winner-img;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes anim-winner-title {
+    0% {
+    transform: translate(0, 20px);
+    }
+    100% {
+    transform: translate(0, 0px);
+    }
+}
+
+.winner-title {
+    animation-name: anim-winner-title;
+    animation-duration: 500ms;
+}
+
+#canvas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.not-www canvas {
+    width: unset;
+    max-width: 100vw;
+}
+
+/**********/
+/* Editor */
+/**********/
+.editor-contents {
+    width: 50%;
+    margin: auto;
+}
+
+.editor-controls {
+    display: flex;
+    justify-items: center;
+}
+
+.editor-controls > input {
+    margin: 8px;
+    flex: 1;
+}
+
+.editor-contents textarea {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 8px;
+}
+
+.editor-copy {
+    width: 100%;
+}
