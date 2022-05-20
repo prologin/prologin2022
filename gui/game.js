@@ -2,7 +2,7 @@ const WINDOW_HEIGHT = 960;
 const WINDOW_WIDTH = 960;
 
 const DEPTH = 2;
-const MAP_SIZE = 20;
+const MAP_SIZE = 30;
 
 const SPRITE_WIDTH = WINDOW_WIDTH / MAP_SIZE;
 const SPRITE_HEIGHT = WINDOW_HEIGHT / MAP_SIZE;
@@ -87,7 +87,6 @@ export class Game {
 
     createOldMan(x, y) {
         let old = new PIXI.AnimatedSprite(this.textures.old, true);
-        old.anchor.set(5);
         old.animationSpeed = 0.1;
         old.loop = false;
         old.x = x * SPRITE_WIDTH;
