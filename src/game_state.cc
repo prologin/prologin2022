@@ -146,6 +146,23 @@ void GameState::add_internal_action(InternalAction action)
     internal_hist_.push_back(action);
 }
 
+const std::vector<action_hist>& GameState::get_action_history(int player_id) const
+{
+    return get_player(player_id).get_action_history();
+}
+
+void GameState::add_action(int player_id, action_hist action)
+{
+    get_player(player_id).add_action(action);
+    add_internal_action(InternalAction{action});
+}
+
+void GameState::reset_action_history()
+{
+    for (auto& player : players_)
+        player.reset_action_history();
+}
+
 bool GameState::is_init() const
 {
     return init_;

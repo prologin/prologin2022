@@ -43,6 +43,10 @@ public:
     void add_internal_action(InternalAction action);
     void reset_internal_history();
 
+    const std::vector<action_hist>& get_action_history(int player_id) const;
+    void add_action(int player_id, action_hist action);
+    void reset_action_history();
+
     bool is_init() const;
     void set_init(bool init);
 
