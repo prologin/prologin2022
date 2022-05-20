@@ -207,3 +207,18 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
     map.mark_canard(last);
     get_troupe(troupe_id)->canards.push_back(last);
 }
+
+const std::vector<action_hist>& PlayerInfo::get_action_history() const
+{
+    return action_hist_;
+}
+
+void PlayerInfo::reset_action_history()
+{
+    action_hist_.clear();
+}
+
+void PlayerInfo::add_action(action_hist action)
+{
+    action_hist_.push_back(action);
+}

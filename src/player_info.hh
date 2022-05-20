@@ -56,8 +56,14 @@ public:
 
     void sync_score();
 
+    // History
+    const std::vector<action_hist>& get_action_history() const;
+    void reset_action_history();
+    void add_action(action_hist action);
+
 private:
     std::shared_ptr<rules::Player> rules_player_;
+    std::vector<action_hist> action_hist_;
 
     int score_;
     int pains_;
