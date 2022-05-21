@@ -68,11 +68,11 @@ erreur test_move_troupe(PlayerInfo* player, std::unique_ptr<Api>& api, int id,
 void troup_hardcoded_setup(troupe* trp, Map& map)
 {
     map.delete_troupe(*trp);
-    trp->canards[0] = {.colonne = 50, .ligne = 78, .niveau = 0};
-    trp->canards[1] = {.colonne = 49, .ligne = 78, .niveau = 0};
-    trp->canards[2] = {.colonne = 48, .ligne = 78, .niveau = 0};
-    trp->canards[3] = {.colonne = 47, .ligne = 78, .niveau = 0};
-    trp->canards[4] = {.colonne = 46, .ligne = 78, .niveau = 0};
+    trp->canards[0] = {.colonne = 27, .ligne = 38, .niveau = 0};
+    trp->canards[1] = {.colonne = 26, .ligne = 38, .niveau = 0};
+    trp->canards[2] = {.colonne = 25, .ligne = 38, .niveau = 0};
+    trp->canards[3] = {.colonne = 24, .ligne = 38, .niveau = 0};
+    trp->canards[4] = {.colonne = 23, .ligne = 38, .niveau = 0};
     trp->maman = trp->canards[0];
     map.mark_troupe(*trp);
 }
@@ -112,11 +112,11 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBuisson)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 15, .ligne = 38, .niveau = 0},
-        {.colonne = 15, .ligne = 39, .niveau = 0},
-        {.colonne = 15, .ligne = 40, .niveau = 0},
-        {.colonne = 15, .ligne = 41, .niveau = 0},
-        {.colonne = 15, .ligne = 42, .niveau = 0},
+        {.colonne = 24, .ligne = 33, .niveau = 0},
+        {.colonne = 24, .ligne = 34, .niveau = 0},
+        {.colonne = 24, .ligne = 35, .niveau = 0},
+        {.colonne = 24, .ligne = 36, .niveau = 0},
+        {.colonne = 24, .ligne = 37, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
@@ -133,11 +133,11 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBarriere)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 31, .ligne = 32, .niveau = 0},
-        {.colonne = 32, .ligne = 32, .niveau = 0},
-        {.colonne = 33, .ligne = 32, .niveau = 0},
-        {.colonne = 34, .ligne = 32, .niveau = 0},
-        {.colonne = 35, .ligne = 32, .niveau = 0},
+        {.colonne = 16, .ligne = 36, .niveau = 0},
+        {.colonne = 17, .ligne = 36, .niveau = 0},
+        {.colonne = 18, .ligne = 36, .niveau = 0},
+        {.colonne = 19, .ligne = 36, .niveau = 0},
+        {.colonne = 20, .ligne = 36, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
@@ -155,19 +155,19 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurCanard)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 31, .ligne = 41, .niveau = 0},
-        {.colonne = 32, .ligne = 41, .niveau = 0},
-        {.colonne = 33, .ligne = 41, .niveau = 0},
-        {.colonne = 34, .ligne = 41, .niveau = 0},
-        {.colonne = 35, .ligne = 41, .niveau = 0},
+        {.colonne = 26, .ligne = 37, .niveau = 0},
+        {.colonne = 27, .ligne = 37, .niveau = 0},
+        {.colonne = 28, .ligne = 37, .niveau = 0},
+        {.colonne = 29, .ligne = 37, .niveau = 0},
+        {.colonne = 30, .ligne = 37, .niveau = 0},
     };
 
     std::vector<position> new_pos2 = {
-        {.colonne = 30, .ligne = 40, .niveau = 0},
-        {.colonne = 30, .ligne = 41, .niveau = 0},
-        {.colonne = 30, .ligne = 42, .niveau = 0},
-        {.colonne = 30, .ligne = 43, .niveau = 0},
-        {.colonne = 30, .ligne = 44, .niveau = 0},
+        {.colonne = 25, .ligne = 34, .niveau = 0},
+        {.colonne = 25, .ligne = 35, .niveau = 0},
+        {.colonne = 25, .ligne = 36, .niveau = 0},
+        {.colonne = 25, .ligne = 37, .niveau = 0},
+        {.colonne = 25, .ligne = 38, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
@@ -188,11 +188,11 @@ TEST_F(ApiTest, ActionAvancerTueAvecInventaire)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 31, .ligne = 32, .niveau = 0},
-        {.colonne = 32, .ligne = 32, .niveau = 0},
-        {.colonne = 33, .ligne = 32, .niveau = 0},
-        {.colonne = 34, .ligne = 32, .niveau = 0},
-        {.colonne = 35, .ligne = 32, .niveau = 0},
+        {.colonne = 16, .ligne = 38, .niveau = 0},
+        {.colonne = 17, .ligne = 38, .niveau = 0},
+        {.colonne = 18, .ligne = 38, .niveau = 0},
+        {.colonne = 19, .ligne = 38, .niveau = 0},
+        {.colonne = 20, .ligne = 38, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
@@ -228,14 +228,14 @@ TEST_F(ApiTest, ActionAvancerCaptureNid)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 31, .niveau = 0},
-        {.colonne = 17, .ligne = 31, .niveau = 0},
-        {.colonne = 16, .ligne = 31, .niveau = 0},
-        {.colonne = 15, .ligne = 31, .niveau = 0},
-        {.colonne = 14, .ligne = 31, .niveau = 0},
+        {.colonne = 32, .ligne = 36, .niveau = 0},
+        {.colonne = 31, .ligne = 36, .niveau = 0},
+        {.colonne = 30, .ligne = 36, .niveau = 0},
+        {.colonne = 29, .ligne = 36, .niveau = 0},
+        {.colonne = 28, .ligne = 36, .niveau = 0},
     };
 
-    position nid = {.colonne = 19, .ligne = 31, .niveau = 0};
+    position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map());
@@ -250,14 +250,14 @@ TEST_F(ApiTest, ActionAvancerDeposerNid)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 31, .niveau = 0},
-        {.colonne = 17, .ligne = 31, .niveau = 0},
-        {.colonne = 16, .ligne = 31, .niveau = 0},
-        {.colonne = 15, .ligne = 31, .niveau = 0},
-        {.colonne = 14, .ligne = 31, .niveau = 0},
+        {.colonne = 32, .ligne = 36, .niveau = 0},
+        {.colonne = 31, .ligne = 36, .niveau = 0},
+        {.colonne = 30, .ligne = 36, .niveau = 0},
+        {.colonne = 29, .ligne = 36, .niveau = 0},
+        {.colonne = 28, .ligne = 36, .niveau = 0},
     };
 
-    position nid = {.colonne = 19, .ligne = 31, .niveau = 0};
+    position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
     trp->inventaire = 2;
@@ -278,14 +278,14 @@ TEST_F(ApiTest, ActionAvancerDeposerNidInvVide)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 31, .niveau = 0},
-        {.colonne = 17, .ligne = 31, .niveau = 0},
-        {.colonne = 16, .ligne = 31, .niveau = 0},
-        {.colonne = 15, .ligne = 31, .niveau = 0},
-        {.colonne = 14, .ligne = 31, .niveau = 0},
+        {.colonne = 32, .ligne = 36, .niveau = 0},
+        {.colonne = 31, .ligne = 36, .niveau = 0},
+        {.colonne = 30, .ligne = 36, .niveau = 0},
+        {.colonne = 29, .ligne = 36, .niveau = 0},
+        {.colonne = 28, .ligne = 36, .niveau = 0},
     };
 
-    position nid = {.colonne = 19, .ligne = 31, .niveau = 0};
+    position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map());
@@ -304,14 +304,14 @@ TEST_F(ApiTest, ActionAvancerCaptureEtDeposerNid)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 31, .niveau = 0},
-        {.colonne = 17, .ligne = 31, .niveau = 0},
-        {.colonne = 16, .ligne = 31, .niveau = 0},
-        {.colonne = 15, .ligne = 31, .niveau = 0},
-        {.colonne = 14, .ligne = 31, .niveau = 0},
+        {.colonne = 32, .ligne = 36, .niveau = 0},
+        {.colonne = 31, .ligne = 36, .niveau = 0},
+        {.colonne = 30, .ligne = 36, .niveau = 0},
+        {.colonne = 29, .ligne = 36, .niveau = 0},
+        {.colonne = 28, .ligne = 36, .niveau = 0},
     };
 
-    position nid = {.colonne = 19, .ligne = 31, .niveau = 0};
+    position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map());
@@ -326,14 +326,14 @@ TEST_F(ApiTest, ActionAvancerRamasserPains)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 42, .niveau = 0},
-        {.colonne = 17, .ligne = 42, .niveau = 0},
-        {.colonne = 16, .ligne = 42, .niveau = 0},
-        {.colonne = 15, .ligne = 42, .niveau = 0},
-        {.colonne = 14, .ligne = 42, .niveau = 0},
+        {.colonne = 26, .ligne = 37, .niveau = 0},
+        {.colonne = 25, .ligne = 37, .niveau = 0},
+        {.colonne = 24, .ligne = 37, .niveau = 0},
+        {.colonne = 23, .ligne = 37, .niveau = 0},
+        {.colonne = 22, .ligne = 37, .niveau = 0},
     };
 
-    position pains = {.colonne = 19, .ligne = 42, .niveau = 0};
+    position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map());
     auto& map = player.api->game_state().get_map();
@@ -350,14 +350,14 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPlein)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 42, .niveau = 0},
-        {.colonne = 17, .ligne = 42, .niveau = 0},
-        {.colonne = 16, .ligne = 42, .niveau = 0},
-        {.colonne = 15, .ligne = 42, .niveau = 0},
-        {.colonne = 14, .ligne = 42, .niveau = 0},
+        {.colonne = 26, .ligne = 37, .niveau = 0},
+        {.colonne = 25, .ligne = 37, .niveau = 0},
+        {.colonne = 24, .ligne = 37, .niveau = 0},
+        {.colonne = 23, .ligne = 37, .niveau = 0},
+        {.colonne = 22, .ligne = 37, .niveau = 0},
     };
 
-    position pains = {.colonne = 19, .ligne = 42, .niveau = 0};
+    position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map());
     auto& map = player.api->game_state().get_map();
@@ -375,14 +375,14 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPrequePlein)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 18, .ligne = 42, .niveau = 0},
-        {.colonne = 17, .ligne = 42, .niveau = 0},
-        {.colonne = 16, .ligne = 42, .niveau = 0},
-        {.colonne = 15, .ligne = 42, .niveau = 0},
-        {.colonne = 14, .ligne = 42, .niveau = 0},
+        {.colonne = 26, .ligne = 37, .niveau = 0},
+        {.colonne = 25, .ligne = 37, .niveau = 0},
+        {.colonne = 24, .ligne = 37, .niveau = 0},
+        {.colonne = 23, .ligne = 37, .niveau = 0},
+        {.colonne = 22, .ligne = 37, .niveau = 0},
     };
 
-    position pains = {.colonne = 19, .ligne = 42, .niveau = 0};
+    position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map());
     auto& map = player.api->game_state().get_map();

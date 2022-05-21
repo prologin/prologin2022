@@ -10,7 +10,7 @@
 
 namespace
 {
-static const auto test_map_path = "src/tests/map.txt";
+static const auto test_map_path = "src/tests/testMap40";
 
 static rules::Players make_players(int id_p1, int id_p2)
 {
