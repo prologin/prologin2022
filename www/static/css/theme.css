@@ -16,7 +16,7 @@ body {
     --accent-color: #ffec07;
     --button: #0dae93;
     --button-hover: #ffec07;
-    --container-background: #000000;
+    --container-background: rgba(0, 0, 0 , 0.75);
     --background-color: #151515;
     --background-color-2: #151515;
     --background-darker: rgba(0,0,0,0.02);
@@ -45,6 +45,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+    background-image: url("/static/img/background.jpg");
 }
 
 canvas {
