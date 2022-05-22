@@ -1,5 +1,3 @@
-import {PigeonColor} from "./pigeon.js"
-
 const WINDOW_HEIGHT = 960;
 const WINDOW_WIDTH = 960;
 
@@ -22,7 +20,7 @@ function generateMatrix() {
     return Array(MAP_SIZE).fill(Array(MAP_SIZE).fill(Array(DEPTH)));
 }
 
-export class Game {
+class Game {
 
 
     constructor() {
@@ -107,7 +105,7 @@ export class Game {
 
 }
 
-export function map_char_to_texture(input_char, textures) {
+function map_char_to_texture(input_char, textures) {
     switch (input_char) {
         case ' ':
         case '.':
@@ -127,7 +125,7 @@ export function map_char_to_texture(input_char, textures) {
     }
 }
 
-export function map_enum_to_texture(input_char, textures) {
+function map_enum_to_texture(input_char, textures) {
     switch (input_char) {
         case '0':
         case '7':
