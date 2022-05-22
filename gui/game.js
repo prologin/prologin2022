@@ -1,4 +1,4 @@
-import {PigeonColor} from "./pigeon"
+import {PigeonColor} from "./pigeon.js"
 
 const WINDOW_HEIGHT = 960;
 const WINDOW_WIDTH = 960;
