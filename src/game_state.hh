@@ -26,6 +26,8 @@ public:
     PlayerInfo& get_player(int id);
     const PlayerInfo& get_other(int id) const;
     PlayerInfo& get_other(int id);
+    int player_count() const { return players_.size(); }
+    const std::array<PlayerInfo, 2> players() const { return players_; }
 
     PlayerInfo* get_player_ptr(int id);
 
@@ -37,6 +39,8 @@ public:
     int get_round() const;
     void next_round();
     bool is_finished() const;
+    // The identifier of the player playing in the current round.
+    int round_player_id() const;
 
     bool is_init() const;
     void set_init(bool init);

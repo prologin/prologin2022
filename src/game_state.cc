@@ -35,7 +35,6 @@ GameState::GameState(std::istream& map_stream, const rules::Players& players)
     , round_(0)
     , init_(false)
 {
-    // FIXME
 }
 
 GameState::GameState(const GameState& st)
@@ -45,12 +44,10 @@ GameState::GameState(const GameState& st)
     , round_(st.round_)
     , init_(st.init_)
 {
-    // FIXME
 }
 
 GameState::~GameState()
 {
-    // FIXME
 }
 
 GameState* GameState::copy() const
@@ -125,6 +122,12 @@ void GameState::next_round()
     if (round_ == TOUR_FERMETURE)
         map_.changer_barrieres();
 }
+
+int GameState::round_player_id() const
+{
+    return round_ % player_count();
+}
+
 
 bool GameState::is_finished() const
 {

@@ -19,6 +19,9 @@ public:
     // Id
     int get_key() const;
 
+    // Returns the player, as seen by the overall Stechec2 engine.
+    rules::Player& rules_player() const;
+
     // Name
     const std::string& get_name() const;
     void set_name(const std::string& name);

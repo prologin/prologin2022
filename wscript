@@ -41,6 +41,7 @@ def build(bld):
             src/action_debug_poser_pigeon.cc
             src/action_grandir.cc
             src/api.cc
+            src/dumper.cc
             src/entry.cc
             src/game_state.cc
             src/interface.cc

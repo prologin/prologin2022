@@ -45,6 +45,12 @@ int PlayerInfo::get_key() const
     return this->rules_player_->id;
 }
 
+rules::Player& PlayerInfo::rules_player() const
+{
+    return *rules_player_;
+}
+
+
 int PlayerInfo::get_score() const
 {
     return score_;
