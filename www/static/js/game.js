@@ -16,34 +16,29 @@ const Direction = {
     BAS: 5,
 }
 
+const ASSET_ROOT = "/static/img/gui"
+
 function generateMatrix() {
     return Array(MAP_SIZE).fill(Array(MAP_SIZE).fill(Array(DEPTH)));
 }
 
 class Game {
-
-
     constructor() {
         this.app = new PIXI.Application({width: WINDOW_WIDTH, height: WINDOW_HEIGHT});
         this.units = generateMatrix();
         this.map = generateMatrix();
         this.textures = {
-            old: [new PIXI.Texture.from("assets/chars/old/old_1.png"),
-                new PIXI.Texture.from("assets/chars/old/old_2.png"),
-                new PIXI.Texture.from("assets/chars/old/old_3.png"),
-                new PIXI.Texture.from("assets/chars/old/old_4.png"),
-                new PIXI.Texture.from("assets/chars/old/old_1.png"),],
-            grass: [new PIXI.Texture.from("assets/environment/grass/grass_1.png"),
-                new PIXI.Texture.from("assets/environment/grass/grass_2.png"),
-                new PIXI.Texture.from("assets/environment/grass/grass_3.png")],
-            pigeon: new PIXI.Texture.from("assets/chars/pigeon/pigeon.png"),
-            dirt: new PIXI.Texture.from("assets/environment/dirt/dirt.png"),
-            spawn: new PIXI.Texture.from("assets/environment/spawn.png"),
-            nid: new PIXI.Texture.from("assets/environment/nid.png"),
-            buisson: new PIXI.Texture.from("assets/environment/buisson.png"),
-            B: new PIXI.Texture.from("assets/environment/B.png"),
-            b: new PIXI.Texture.from("assets/environment/b.png"),
-            trou: new PIXI.Texture.from("assets/environment/trou.png"),
+            grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_2.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_3.png`)],
+            pigeon: new PIXI.Texture.from(`${ASSET_ROOT}/pigeon/pigeon.png`),
+            dirt: new PIXI.Texture.from(`${ASSET_ROOT}/dirt/dirt.png`),
+            spawn: new PIXI.Texture.from(`${ASSET_ROOT}/spawn.png`),
+            nid: new PIXI.Texture.from(`${ASSET_ROOT}/nid.png`),
+            buisson: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
+            B: new PIXI.Texture.from(`${ASSET_ROOT}/B.png`),
+            b: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
+            trou: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
         }
     }
 

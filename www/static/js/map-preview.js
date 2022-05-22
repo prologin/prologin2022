@@ -10,7 +10,7 @@ $(function () {
         $.getScript('/static/js/game.js')
         .done(function() {
             let game = create_game();
-            game.addToDOM($preview)
+            game.addToDOM($preview[0]);
             game.readMap($map_content.replaceAll('\n', ''), map_char_to_texture);
             game.setupAnimation();
 
