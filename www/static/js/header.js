@@ -23,7 +23,7 @@ function plan_42_event(callback) {
 }
 
 $(function() {
-    $('[role=complementary] h1').text('').html('<object data="/static/img/logo.jpg" style="width:100%; margin-top: 0.5em;" type="image/jpeg" />');
+    $('[role=complementary] h1').text('').html('<object data="/static/img/logo.png" style="width:100%; margin-top: 0.5em;" type="image/png" />');
 
     // let's have some easter egg
     const p1 = $('<img src="/static/img/rainbow.gif" class="easter-egg" />'),
