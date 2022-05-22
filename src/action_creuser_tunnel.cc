@@ -24,6 +24,17 @@ int ActionCreuserTunnel::check(const GameState& st) const
 
 void ActionCreuserTunnel::apply_on(GameState* st) const
 {
-    st->get_player(player_id_).increment_tunnels();
+    auto player = st->get_player_ptr(player_id_);
+
+    player->increment_tunnels();
     st->get_map().get_cell(pos_).etat.contenu = TUNNEL;
+
+    // Log action.
+    internal_action action;
+    action.type = standard_action;
+    action.action.action_type = ACTION_CREUSER;
+    action.action.troupe_id = -1;
+    // TODO init action.action.action_dir;
+    action.action.action_pos = pos_;
+    player->add_internal_action(action);
 }

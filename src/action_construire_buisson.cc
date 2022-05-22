@@ -39,10 +39,21 @@ int ActionConstruireBuisson::check(const GameState& st) const
 
 void ActionConstruireBuisson::apply_on(GameState* st) const
 {
+    auto player = st->get_player_ptr(player_id_);
+
     // Change the state of the player
-    st->get_player(player_id_).decrease_score(COUT_BUISSON);
+    player->decrease_score(COUT_BUISSON);
 
     // Change the state of the cell
     st->get_map().get_cell(pos_).etat.contenu = BUISSON;
     st->get_map().get_cell(pos_).etat.est_constructible = false;
+
+    // Log action.
+    internal_action action;
+    action.type = standard_action;
+    action.action.action_type = ACTION_CONSTRUIRE;
+    action.action.troupe_id = -1;
+    // TODO init action.action.action_dir;
+    action.action.action_pos = pos_;
+    player->add_internal_action(action);
 }

@@ -28,9 +28,6 @@ int ActionAvancer::check(const GameState& st) const
 void ActionAvancer::apply_on(GameState* st) const
 {
     auto player = st->get_player_ptr(player_id_);
-    if (player == nullptr)
-        return;
-
     auto trp = player->get_troupe(id_);
 
     // Gere la mort de la troupe
@@ -43,4 +40,5 @@ void ActionAvancer::apply_on(GameState* st) const
     action.action.troupe_id = id_;
     action.action.action_dir = dir_;
     action.action.action_pos = {-1, -1, -1};
+    player->add_internal_action(action);
 }
