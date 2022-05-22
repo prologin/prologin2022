@@ -10,8 +10,9 @@ $(function () {
         $.getScript('/static/js/game.js')
         .done(function() {
             let game = create_game();
+            let map = $map_content[0].textContent.replaceAll('\n', '');
             game.addToDOM($preview[0]);
-            game.readMap($map_content.replaceAll('\n', ''), map_char_to_texture);
+            game.readMap(map, map_char_to_texture);
             game.setupAnimation();
 
             // reveal the UI
