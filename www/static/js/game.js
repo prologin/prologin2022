@@ -4,7 +4,7 @@ const WINDOW_HEIGHT = 960;
 const WINDOW_WIDTH = 960;
 
 const DEPTH = 2;
-const MAP_SIZE = 30;
+const MAP_SIZE = 40;
 
 const SPRITE_WIDTH = WINDOW_WIDTH / MAP_SIZE;
 const SPRITE_HEIGHT = WINDOW_HEIGHT / MAP_SIZE;
@@ -40,6 +40,12 @@ export class Game {
                 new PIXI.Texture.from("assets/environment/grass/grass_3.png")],
             pigeon: new PIXI.Texture.from("assets/chars/pigeon/pigeon.png"),
             dirt: new PIXI.Texture.from("assets/environment/dirt/dirt.png"),
+            spawn: new PIXI.Texture.from("assets/environment/spawn.png"),
+            nid: new PIXI.Texture.from("assets/environment/nid.png"),
+            buisson: new PIXI.Texture.from("assets/environment/buisson.png"),
+            B: new PIXI.Texture.from("assets/environment/B.png"),
+            b: new PIXI.Texture.from("assets/environment/b.png"),
+            trou: new PIXI.Texture.from("assets/environment/trou.png"),
         }
     }
 
@@ -52,12 +58,11 @@ export class Game {
         return sprite;
     }
 
-    readMap(mapString) {
-        // Generates default values.
+    readMap(mapString, texture_map) {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
-                let random = Math.floor(Math.random() * 3);
-                this.map[i][j][0] = this.createSprite(this.textures.grass[random], i, j);
+                const char_index = i * MAP_SIZE + j;
+                this.map[i][j][0] = this.createSprite(texture_map(mapString.charAt(char_index), this.textures), i, j);
                 this.map[i][j][1] = this.createSprite(this.textures.dirt, i, j);
                 this.app.stage.addChild(this.map[i][j][0]);
             }
@@ -100,4 +105,43 @@ export class Game {
         return document.body.appendChild(this.app.view);
     }
 
+}
+
+export function map_char_to_texture(input_char, textures) {
+    switch (input_char) {
+        case ' ':
+        case '.':
+            return textures.grass[Math.floor(Math.random() * 3)];
+        case 'S':
+            return textures.spawn;
+        case 'N':
+            return textures.nid;
+        case '#':
+            return textures.buisson;
+        case 'B':
+            return textures.B;
+        case 'b':
+            return textures.b;
+        case 'X':
+            return textures.trou;
+    }
+}
+
+export function map_enum_to_texture(input_char, textures) {
+    switch (input_char) {
+        case '0':
+        case '7':
+        case '8':
+            return textures.grass[Math.floor(Math.random() * 3)];
+        case 'S':
+            return textures.spawn;
+        case '3':
+            return textures.nid;
+        case '1':
+            return textures.buisson;
+        case '2':
+            return textures.B;
+        case '5':
+            return textures.trou;
+    }
 }
