@@ -105,6 +105,10 @@ class Game {
 
 }
 
+function create_game() {
+    return new Game();
+}
+
 function map_char_to_texture(input_char, textures) {
     switch (input_char) {
         case ' ':
