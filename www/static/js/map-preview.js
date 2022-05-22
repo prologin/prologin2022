@@ -9,8 +9,13 @@ $(function () {
     .done(function() {
         $.getScript('/static/js/game.js')
         .done(function() {
-            // TODO fix that
-            start_preview($preview, $map_content);
+            import {Game, map_char_to_texture} from "./game.js";
+
+            let game = new Game();
+            game.addToDOM($preview)
+            game.readMap($map_content.replaceAll('\n', ''), map_char_to_texture);
+            game.setupAnimation();
+
             // reveal the UI
             $preview.fadeIn('fast');
         });

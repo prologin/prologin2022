@@ -101,8 +101,8 @@ export class Game {
         this.createOldMan(10, 10);
     }
 
-    setupDocument(document) {
-        return document.body.appendChild(this.app.view);
+    addToDOM(viewParent) {
+        return viewParent.appendChild(this.app.view);
     }
 
 }
