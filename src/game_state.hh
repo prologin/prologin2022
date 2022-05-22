@@ -38,15 +38,6 @@ public:
     void next_round();
     bool is_finished() const;
 
-    // History
-    const std::vector<InternalAction>& get_internal_history() const;
-    void add_internal_action(InternalAction action);
-    void reset_internal_history();
-
-    const std::vector<action_hist>& get_action_history(int player_id) const;
-    void add_action(int player_id, action_hist action);
-    void reset_action_history();
-
     bool is_init() const;
     void set_init(bool init);
 
@@ -57,6 +48,4 @@ private:
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_;                         // Note : 1 round = 2 tours
     bool init_;
-
-    std::vector<InternalAction> internal_hist_;
 };

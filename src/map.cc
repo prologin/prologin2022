@@ -218,7 +218,6 @@ Map::Map(std::istream& stream)
                     get_cell(pos).etat = etat_case{pos, GAZON, false, false};
                 get_cell(pos).barriere = PAS_DE_BARRIERE;
                 get_cell(pos).nid = PAS_DE_NID;
-                get_cell(pos).pigeon = PAS_DE_PIGEON;
                 get_cell(pos).papy_tours_restants = -1;
                 get_cell(pos).point_spawn = false;
             }

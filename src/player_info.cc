@@ -208,17 +208,17 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
     get_troupe(troupe_id)->canards.push_back(last);
 }
 
-const std::vector<action_hist>& PlayerInfo::get_action_history() const
+const std::vector<internal_action>& PlayerInfo::get_internal_history() const
 {
-    return action_hist_;
+    return internal_hist_;
 }
 
-void PlayerInfo::reset_action_history()
+void PlayerInfo::reset_internal_history()
 {
-    action_hist_.clear();
+    internal_hist_.clear();
 }
 
-void PlayerInfo::add_action(action_hist action)
+void PlayerInfo::add_internal_action(internal_action action)
 {
-    action_hist_.push_back(action);
+    internal_hist_.push_back(action);
 }

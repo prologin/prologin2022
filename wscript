@@ -36,18 +36,17 @@ def build(bld):
     bld.shlib(
         source='''
             src/action_avancer.cc
-            src/action_grandir.cc
             src/action_construire_buisson.cc
             src/action_creuser_tunnel.cc
             src/action_debug_poser_pigeon.cc
+            src/action_grandir.cc
             src/api.cc
             src/entry.cc
             src/game_state.cc
             src/interface.cc
-            src/rules.cc
-            src/player_info.cc
             src/map.cc
-            src/history.cc
+            src/player_info.cc
+            src/rules.cc
             src/troupe.cc
         ''',
         defines=['MODULE_COLOR=ANSI_COL_BROWN', 'MODULE_NAME="rules"'],

@@ -131,6 +131,7 @@ void Rules::spectator_turn()
 
 void Rules::start_of_player_turn(unsigned int player_key)
 {
+    api_->game_state().get_player(player_key).reset_internal_history();
     api_->game_state().get_player(player_key).reset_pts_actions();
     api_->game_state().set_init(true);
 }

@@ -57,13 +57,13 @@ public:
     void sync_score();
 
     // History
-    const std::vector<action_hist>& get_action_history() const;
-    void reset_action_history();
-    void add_action(action_hist action);
+    const std::vector<internal_action>& get_internal_history() const;
+    void add_internal_action(internal_action action);
+    void reset_internal_history();
 
 private:
     std::shared_ptr<rules::Player> rules_player_;
-    std::vector<action_hist> action_hist_;
+    std::vector<internal_action> internal_hist_;
 
     int score_;
     int pains_;

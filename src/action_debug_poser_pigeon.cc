@@ -8,14 +8,20 @@ int ActionDebugPoserPigeon::check(const GameState& st) const
 {
     if (!st.is_init())
         return HORS_TOUR;
-
     if (!inside_map(pos_))
         return POSITION_INVALIDE;
-
+    if (pigeon_ < 0 || (int) pigeon_ >= 4)
+        return -1; // TODO add PIGEON_INVALIDE erreur
     return OK;
 }
 
 void ActionDebugPoserPigeon::apply_on(GameState* st) const
 {
-    st->get_map().get_cell(pos_).pigeon = pigeon_;
+    auto player = st->get_player_ptr(player_id_);
+
+    internal_action action;
+    action.type = flag;
+    action.flag.pos = pos_;
+    action.flag.ctype = pigeon_;
+    player->add_internal_action(action);
 }

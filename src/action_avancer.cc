@@ -20,6 +20,8 @@ int ActionAvancer::check(const GameState& st) const
     if (player.pts_actions(trp->id) <= 0)
         return MOUVEMENTS_INSUFFISANTS;
 
+    // TODO check dir_
+
     return OK;
 }
 
@@ -33,4 +35,12 @@ void ActionAvancer::apply_on(GameState* st) const
 
     // Gere la mort de la troupe
     move_troupe(*trp, dir_, st->get_map(), *player);
+
+    // Log action.
+    internal_action action;
+    action.type = standard_action;
+    action.action.action_type = ACTION_AVANCER;
+    action.action.troupe_id = id_;
+    action.action.action_dir = dir_;
+    action.action.action_pos = {-1, -1, -1};
 }

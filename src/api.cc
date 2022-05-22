@@ -85,8 +85,15 @@ std::vector<position> Api::pains()
 }
 std::vector<action_hist> Api::historique()
 {
-    // TODO
-    abort();
+    std::vector<action_hist> hist;
+    std::vector<internal_action> internal_hist =
+        game_state_->get_player_ptr(adversaire())->get_internal_history();
+
+    for (auto action : internal_hist)
+        if (action.type == standard_action)
+            hist.push_back(action.action);
+
+    return hist;
 }
 
 int Api::gain(int nb_pains)
