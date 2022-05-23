@@ -59,12 +59,25 @@ class Game {
     readMap(mapString, texture_map) {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
-                const char_index = i * MAP_SIZE + j;
-                this.map[i][j][0] = this.createSprite(texture_map(mapString.charAt(char_index), this.textures), i, j);
+                this.map[i][j][0] = this.createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j);
                 this.map[i][j][1] = this.createSprite(this.textures.dirt, i, j);
                 this.app.stage.addChild(this.map[i][j][0]);
             }
         }
+
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                const char_index = i * MAP_SIZE + j;
+                if ('0' <= mapString.charAt(char_index) && mapString.charAt(char_index) <= '9') {
+                    this.createOldMan(i, j);
+                } else {
+                    this.map[i][j][0] = this.createSprite(map_char_to_texture(mapString.charAt(char_index), this.textures), i, j);
+                    this.app.stage.addChild(this.map[i][j][0]);
+                }
+            }
+        }
+
+
     }
 
     pigeon_debug(color, x, y, z) {
@@ -96,12 +109,13 @@ class Game {
     }
 
     async setupAnimation() {
-        this.createOldMan(10, 10);
+        //this.createOldMan(10, 10);
     }
 
     addToDOM(viewParent) {
         return viewParent.appendChild(this.app.view);
     }
+
 
 }
 
@@ -124,17 +138,6 @@ function map_char_to_texture(input_char, textures) {
             return textures.B;
         case 'b':
             return textures.b;
-        case '0':
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-            return textures.papi[0];
         case 'X':
             return textures.trou;
 
