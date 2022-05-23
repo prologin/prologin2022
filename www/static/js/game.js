@@ -131,22 +131,34 @@ function map_char_to_sprite(input_char, textures, i, j) {
     return createSprite(texture, i, j);
 }
 
-function map_enum_to_texture(input_char, textures) {
+function map_enum_to_sprite(input_char, textures, i, j) {
+    let texture = textures.grass[0];
     switch (input_char) {
         case '0':
-            return textures.grass[Math.floor(Math.random() * 3)];
+            texture = textures.grass[Math.floor(Math.random() * 3)];
+            break;
         case '1':
-            return textures.buisson;
+            texture = textures.bush;
+            break;
         case '2':
-            return textures.barrier_open;
+            texture = textures.barrier_open;
+            break;
         case '3':
-            return textures.nid;
-        case '3':
-            return textures.nid;
+            texture = textures.nest;
+            break;
+        case '4':
+            return createAnimatedSprite(textures.old, i, j);
         case '5':
-            return textures.trou;
+            texture = textures.hole;
+            break;
+        case '6':
+            texture = textures.tunnel;
         case '7':
+            texture = textures.dirt;
         case 'S':
-            return textures.spawn;
+            texture = textures.spawn;
+        case 'b':
+            texture = textures.barrier_open;
     }
+    return createSprite(texture, i, j);
 }
