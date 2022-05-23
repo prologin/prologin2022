@@ -1,6 +1,9 @@
 #include "map.hh"
 
+#include <iostream>
 #include <queue>
+
+#include "state.hh"
 
 std::optional<std::vector<direction>>
 map::find_path(position start, std::function<bool(position)> predicate)
@@ -16,11 +19,11 @@ map::find_path(position start, std::function<bool(position)> predicate)
 
     std::queue<std::pair<position, std::vector<direction>>> q;
     q.push({start, {}});
+    seen[start.colonne][start.ligne][start.niveau + 1] = true;
 
     while (!q.empty())
     {
         auto [pos, path] = q.front();
-        seen[pos.colonne][pos.ligne][pos.niveau + 1] = true;
         q.pop();
 
         if (predicate(pos))
@@ -28,6 +31,7 @@ map::find_path(position start, std::function<bool(position)> predicate)
 
         // explore new horizons
         for (int i = 0; i < 6; i++)
+        // change 4 to 6 to enable vertical directions
         {
             direction dir = static_cast<direction>(i);
             position new_pos = pos + dir;
@@ -37,6 +41,7 @@ map::find_path(position start, std::function<bool(position)> predicate)
                 !seen[new_pos.colonne][new_pos.ligne][new_pos.niveau + 1] &&
                 !map::is_obstacle(new_pos))
             {
+                seen[new_pos.colonne][new_pos.ligne][new_pos.niveau + 1] = true;
                 auto new_path = path;
                 new_path.emplace_back(dir);
                 q.push({new_pos, new_path});
@@ -58,23 +63,32 @@ bool map::is_obstacle(position pos)
     auto cell = info_case(pos);
     switch (cell.contenu)
     {
-    case VIDE:
+    case BUISSON:
+    case TERRE:
+        return true;
+    case GAZON:
     case NID:
     case PAPY:
     case TROU:
     case TUNNEL:
-        return false;
-    case BUISSON:
-    case TERRE:
-        return true;
+        break;
     case BARRIERE:
     {
         auto fence_state = info_barriere(pos);
-        return fence_state == FERMEE;
+        if (fence_state == FERMEE)
+            return true;
+        break;
     }
-    default:
-        return true;
     }
+
+    // Look for collisions with ducks
+    for (int player : {state::me, state::other})
+        for (const auto& trp : troupes_joueur(player))
+            for (const auto& duck : trp.canards)
+                if (pos == duck)
+                    return true;
+
+    return false;
 }
 
 void map::apply_on_map(std::function<void(position)> fx)
@@ -83,7 +97,7 @@ void map::apply_on_map(std::function<void(position)> fx)
     {
         for (int j = 0; j < HAUTEUR; j++)
         {
-            for (int k = 0; j > -2; k--)
+            for (int k = 0; k > -2; k--)
             {
                 auto pos = position{i, j, k};
                 fx(pos);

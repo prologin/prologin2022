@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+#include <optional>
+
 #include "api.hh"
 
 namespace state
@@ -16,8 +19,18 @@ struct nest
     etat_nid state;
 };
 
-std::vector<grandpa> grandpas;
-std::vector<nest> nests;
+inline std::vector<grandpa> grandpas;
+inline std::vector<nest> nests;
 
-void fetch_state();
+inline int me = -1;
+inline int other = -1;
+
+inline std::array<std::optional<std::function<bool(position)>>, NB_TROUPES>
+    current_goals = {
+        std::nullopt,
+        std::nullopt,
+};
+
+void update_state();
+void update_goals(bool force = false);
 } // namespace state

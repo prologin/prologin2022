@@ -1,8 +1,9 @@
 #pragma once
 
-#include "api.hh"
 #include <functional>
 #include <optional>
+
+#include "api.hh"
 
 namespace map
 {

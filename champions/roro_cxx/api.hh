@@ -11,10 +11,10 @@
 #include <vector>
 
 /// Nombre de lignes dans la carte
-#define HAUTEUR 80
+#define HAUTEUR 40
 
 /// Nombre de colonnes dans la carte
-#define LARGEUR 80
+#define LARGEUR 40
 
 /// Nombre de tours à jouer avant la fin de la partie
 #define NB_TOURS 400
@@ -29,18 +29,18 @@
 #define NB_TROUPES 2
 
 /// Intervalle de distribution de pains par les papys
-#define INTERVALLE_DISTRIB 4
+#define INTERVALLE_DISTRIB 5
 
 /// Nombre de tunnels qu'un joueur peut creuser par tour
 #define FREQ_TUNNEL 1
 
 /// Nombre de déplacements que peut faire une troupe en un tour
-#define PTS_MOUVEMENTS 20
+#define PTS_ACTION 20
 
 /// Nombre de points de mouvement requis pour incrémenter la taille
-#define COUT_CROISSANCE 10
+#define COUT_CROISSANCE 11
 
-/// Coût en pains de la pose de buisson
+/// Coût en score de la pose de buisson
 #define COUT_BUISSON 3
 
 /// Tour au moment duquel les barrières s'ouvrent ou se ferment
@@ -50,13 +50,15 @@
 typedef enum erreur
 {
     OK, ///< L'action a été effectuée avec succès
+    JOUEUR_INVALIDE, ///< Mauvais numéro de joueur
+    TROUPE_INVALIDE, ///< Mauvais identifiant de troupe
     HORS_TOUR, ///< Aucune action n'est possible hors de joueur_tour
     MOUVEMENTS_INSUFFISANTS, ///< Il ne reste plus assez de points de mouvements pour effectuer l'action demandée
     TROP_GRANDI, ///< La troupe a déjà trop grandi pendant le tour
     TROP_CREUSE, ///< Trop de trous ont déjà été creusés pendant le tour
     NON_CREUSABLE, ///< Il n'est pas possible de creuser à la position demandée
     NON_CONSTRUCTIBLE, ///< La zone demandée n'est pas constructible
-    PAINS_INSUFFISANTS, ///< La troupe n'a pas assez de pains pour construire un buisson
+    SCORE_INSUFFISANT, ///< Le joueur n'a pas assez de points pour construire un buisson
     POSITION_INVALIDE, ///< La position demandée est hors du parc
 } erreur;
 
@@ -74,7 +76,7 @@ typedef enum direction
 /// Type de l'élément présent sur une case
 typedef enum type_case
 {
-    VIDE, ///< Absence d'élément
+    GAZON, ///< Absence d'élément
     BUISSON, ///< Obstacle impossible à traverser
     BARRIERE, ///< Élément pouvant être ouvert ou fermé. Une barrière fermée est infranchissable alors qu'une barrière ouverte est analogue à une case vide
     NID, ///< Élément traversable permettant à la troupe de déposer son inventaire en échange de points
@@ -134,6 +136,8 @@ typedef struct troupe
     std::vector<position> canards; ///< Position des différents canards de la troupe, incluant la maman en première position
     int taille; ///< Taille de la troupe
     direction dir; ///< Direction de la troupe
+    int inventaire; ///< Nombre de pains de la troupe
+    int pts_action; ///< Nombre de points d'action de la troupe
     int id; ///< Identifiant de la troupe
 } troupe;
 
@@ -143,7 +147,7 @@ typedef struct etat_case
     position pos; ///< Position de la case. Le niveau vaut nécessairement 0
     type_case contenu; ///< Type de la case
     bool est_constructible; ///< La case est constructible
-    bool contient_pain; ///< La case contient une miche de pain
+    int nb_pains; ///< Nombre de pains contenus sur la case
 } etat_case;
 
 /// Action représentée dans l'historique
@@ -344,6 +348,10 @@ inline bool operator==(const troupe& a, const troupe& b)
         return false;
     if (a.dir != b.dir)
         return false;
+    if (a.inventaire != b.inventaire)
+        return false;
+    if (a.pts_action != b.pts_action)
+        return false;
     if (a.id != b.id)
         return false;
     return true;
@@ -372,6 +380,14 @@ inline bool operator<(const troupe& a, const troupe& b)
         return true;
     if (a.dir > b.dir)
         return false;
+    if (a.inventaire < b.inventaire)
+        return true;
+    if (a.inventaire > b.inventaire)
+        return false;
+    if (a.pts_action < b.pts_action)
+        return true;
+    if (a.pts_action > b.pts_action)
+        return false;
     if (a.id < b.id)
         return true;
     if (a.id > b.id)
@@ -397,6 +413,14 @@ inline bool operator>(const troupe& a, const troupe& b)
         return true;
     if (a.dir < b.dir)
         return false;
+    if (a.inventaire > b.inventaire)
+        return true;
+    if (a.inventaire < b.inventaire)
+        return false;
+    if (a.pts_action > b.pts_action)
+        return true;
+    if (a.pts_action < b.pts_action)
+        return false;
     if (a.id > b.id)
         return true;
     if (a.id < b.id)
@@ -416,6 +440,8 @@ struct hash<troupe>
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<std::vector<position>>()(s.canards);
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<int>()(s.taille);
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<direction>()(s.dir);
+        res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<int>()(s.inventaire);
+        res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<int>()(s.pts_action);
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<int>()(s.id);
         return res;
     }
@@ -429,7 +455,7 @@ inline bool operator==(const etat_case& a, const etat_case& b)
         return false;
     if (a.est_constructible != b.est_constructible)
         return false;
-    if (a.contient_pain != b.contient_pain)
+    if (a.nb_pains != b.nb_pains)
         return false;
     return true;
 }
@@ -453,9 +479,9 @@ inline bool operator<(const etat_case& a, const etat_case& b)
         return true;
     if (a.est_constructible > b.est_constructible)
         return false;
-    if (a.contient_pain < b.contient_pain)
+    if (a.nb_pains < b.nb_pains)
         return true;
-    if (a.contient_pain > b.contient_pain)
+    if (a.nb_pains > b.nb_pains)
         return false;
     return false;
 }
@@ -474,9 +500,9 @@ inline bool operator>(const etat_case& a, const etat_case& b)
         return true;
     if (a.est_constructible < b.est_constructible)
         return false;
-    if (a.contient_pain > b.contient_pain)
+    if (a.nb_pains > b.nb_pains)
         return true;
-    if (a.contient_pain < b.contient_pain)
+    if (a.nb_pains < b.nb_pains)
         return false;
     return false;
 }
@@ -492,7 +518,7 @@ struct hash<etat_case>
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<position>()(s.pos);
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<type_case>()(s.contenu);
         res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<bool>()(s.est_constructible);
-        res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<bool>()(s.contient_pain);
+        res ^= 0x9e3779b9 + (res << 6) + (res >> 2) + std::hash<int>()(s.nb_pains);
         return res;
     }
 };
