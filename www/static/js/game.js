@@ -31,12 +31,17 @@ class Game {
             grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
                 new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_2.png`),
                 new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_3.png`)],
+            old: [new PIXI.Texture.from("${ASSET_ROOT}/old/old_1.png"),
+                new PIXI.Texture.from("${ASSET_ROOT}/old/old_2.png"),
+                new PIXI.Texture.from("${ASSET_ROOT}/old/old_3.png"),
+                new PIXI.Texture.from("${ASSET_ROOT}/old/old_4.png"),
+                new PIXI.Texture.from("${ASSET_ROOT}/old/old_1.png"),],
             pigeon: new PIXI.Texture.from(`${ASSET_ROOT}/pigeon/pigeon.png`),
             dirt: new PIXI.Texture.from(`${ASSET_ROOT}/dirt/dirt.png`),
             spawn: new PIXI.Texture.from(`${ASSET_ROOT}/spawn.png`),
             nid: new PIXI.Texture.from(`${ASSET_ROOT}/nid.png`),
             buisson: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
-            B: new PIXI.Texture.from(`${ASSET_ROOT}/B.png`),
+            B: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_H.png`),
             b: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
             trou: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
         }
@@ -119,8 +124,20 @@ function map_char_to_texture(input_char, textures) {
             return textures.B;
         case 'b':
             return textures.b;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            return textures.papi[0];
         case 'X':
             return textures.trou;
+
     }
 }
 
