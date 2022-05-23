@@ -22,7 +22,7 @@ TEST_F(ApiTest, ActionDebugPoserPigeon_Ok)
 {
     const position positions[] = {
         {0, 0, 0},
-        {42, 42, 0},
+        {24, 24, 0},
         {LARGEUR - 1, HAUTEUR - 1, 0}
     };
 
