@@ -39,28 +39,21 @@ class Game {
             pigeon: new PIXI.Texture.from(`${ASSET_ROOT}/pigeon/pigeon.png`),
             dirt: new PIXI.Texture.from(`${ASSET_ROOT}/dirt/dirt.png`),
             spawn: new PIXI.Texture.from(`${ASSET_ROOT}/spawn.png`),
-            nid: new PIXI.Texture.from(`${ASSET_ROOT}/nid.png`),
-            buisson: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
-            B: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_H.png`),
-            b: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
-            trou: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
+            nest: new PIXI.Texture.from(`${ASSET_ROOT}/nid.png`),
+            bush: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
+            barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_H.png`),
+            barrier_closed: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
+            hole: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
         }
     }
 
-    createSprite(texture, x, y) {
-        let sprite = new PIXI.Sprite(texture);
-        sprite.x = y * SPRITE_WIDTH;
-        sprite.y = x * SPRITE_HEIGHT;
-        sprite.width = SPRITE_WIDTH;
-        sprite.height = SPRITE_HEIGHT;
-        return sprite;
-    }
 
-    readMap(mapString, texture_map) {
+    readMap(mapString, sprite_map) {
+        // Default map with texturing to allow for transparency.
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
-                this.map[i][j][0] = this.createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j);
-                this.map[i][j][1] = this.createSprite(this.textures.dirt, i, j);
+                this.map[i][j][0] = createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j);
+                this.map[i][j][1] = createSprite(this.textures.dirt, i, j);
                 this.app.stage.addChild(this.map[i][j][0]);
             }
         }
@@ -68,54 +61,16 @@ class Game {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 const char_index = i * MAP_SIZE + j;
-                if ('0' <= mapString.charAt(char_index) && mapString.charAt(char_index) <= '9') {
-                    this.createOldMan(i, j);
-                } else {
-                    this.map[i][j][0] = this.createSprite(map_char_to_texture(mapString.charAt(char_index), this.textures), i, j);
-                    this.app.stage.addChild(this.map[i][j][0]);
-                }
+                this.map[i][j][0] = sprite_map(mapString.charAt(char_index), this.textures, i, j);
+                this.app.stage.addChild(this.map[i][j][0]);
             }
         }
-
-
     }
 
-    pigeon_debug(color, x, y, z) {
-        if (color === PigeonColor.NONE) {
-            this.app.stage.removeChild(this.units[x][y][z]);
-            this.units[x][y][z] = null;
-            return;
-        }
-        let pigeon = new PIXI.Sprite(this.textures.pigeon);
-        pigeon.x = x;
-        pigeon.y = y;
-        pigeon.width = SPRITE_WIDTH;
-        pigeon.height = SPRITE_HEIGHT;
-        pigeon.tint = color;
-        this.units[x][y] = pigeon;
-        this.app.stage.addChild(pigeon);
-    }
-
-    createOldMan(x, y) {
-        let old = new PIXI.AnimatedSprite(this.textures.old, true);
-        old.animationSpeed = 0.1;
-        old.loop = false;
-        old.x = x * SPRITE_WIDTH;
-        old.y = y * SPRITE_WIDTH;
-        old.width = SPRITE_WIDTH;
-        old.height = SPRITE_HEIGHT;
-        this.app.stage.addChild(old);
-        this.units[x][y] = old;
-    }
-
-    async setupAnimation() {
-        //this.createOldMan(10, 10);
-    }
 
     addToDOM(viewParent) {
         return viewParent.appendChild(this.app.view);
     }
-
 
 }
 
@@ -123,42 +78,75 @@ function create_game() {
     return new Game();
 }
 
-function map_char_to_texture(input_char, textures) {
+function createAnimatedSprite(texture, x, y) {
+    let aSprite = new PIXI.AnimatedSprite(texture, true);
+    aSprite.animationSpeed = 0.1;
+    aSprite.loop = false;
+    aSprite.x = x * SPRITE_WIDTH;
+    aSprite.y = y * SPRITE_WIDTH;
+    aSprite.width = SPRITE_WIDTH;
+    aSprite.height = SPRITE_HEIGHT;
+    return aSprite;
+}
+
+function createSprite(texture, x, y) {
+    let sprite = new PIXI.Sprite(texture);
+    sprite.x = y * SPRITE_WIDTH;
+    sprite.y = x * SPRITE_HEIGHT;
+    sprite.width = SPRITE_WIDTH;
+    sprite.height = SPRITE_HEIGHT;
+    return sprite;
+}
+
+function map_char_to_sprite(input_char, textures, i, j) {
+    let texture = textures.grass[0];
     switch (input_char) {
         case ' ':
         case '.':
-            return textures.grass[Math.floor(Math.random() * 3)];
+            texture = textures.grass[Math.floor(Math.random() * 3)];
+            break;
         case 'S':
-            return textures.spawn;
+            texture = textures.spawn;
+            break;
         case 'N':
-            return textures.nid;
+            texture = textures.nest;
+            break;
         case '#':
-            return textures.buisson;
+            texture = textures.bush;
+            break;
         case 'B':
-            return textures.B;
+            texture = textures.barrier_open;
+            break;
         case 'b':
-            return textures.b;
+            texture = textures.barrier_closed;
+            break;
         case 'X':
-            return textures.trou;
-
+            texture = textures.hole;
+            break;
+        default:
+            if ('0' <= input_char && input_char <= '9') {
+                return createAnimatedSprite(textures.old, i, j);
+            }
     }
+    return createSprite(texture, i, j);
 }
 
 function map_enum_to_texture(input_char, textures) {
     switch (input_char) {
         case '0':
-        case '7':
-        case '8':
             return textures.grass[Math.floor(Math.random() * 3)];
-        case 'S':
-            return textures.spawn;
-        case '3':
-            return textures.nid;
         case '1':
             return textures.buisson;
         case '2':
-            return textures.B;
+            return textures.barrier_open;
+        case '3':
+            return textures.nid;
+        case '3':
+            return textures.nid;
         case '5':
             return textures.trou;
+        case '7':
+        case 'S':
+            return textures.spawn;
     }
 }
