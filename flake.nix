@@ -7,7 +7,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
   };
 
-  outputs = { self, stechec2, nixpkgs, futils }: 
+  outputs = { self, stechec2, nixpkgs, futils }:
     futils.lib.eachDefaultSystem (system:
       let
         lib = stechec2.lib."${system}";
@@ -21,11 +21,23 @@
               version = "1.0";
               stechec2 = stechec2.defaultPackage."${system}";
             };
+
+            docs = pkgs.stdenv.mkDerivation {
+              name = "prologin2022-docs";
+
+              src = ./doc;
+              buildInputs = [ pkgs.python3Packages.sphinx ];
+              buildFlags = [ "html" ];
+
+              installPhase = ''
+                cp -r _build/html $out
+              '';
+            };
           };
 
           defaultPackage = packages.prologin2022;
           devShell = pkgs.mkShell {
-            buildInputs = [ stechec2.defaultPackage."${system}" ];
+            buildInputs = [ stechec2.defaultPackage."${system}" pkgs.python3Packages.sphinx ];
           };
         }
     );
