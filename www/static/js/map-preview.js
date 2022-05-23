@@ -12,7 +12,7 @@ $(function () {
             let game = create_game();
             let map = $map_content[0].textContent.replaceAll('\n', '');
             game.addToDOM($preview[0]);
-            game.readMap(map, map_char_to_sprite);
+            game.displaySimpleMap(map);
             // reveal the UI
             $preview.fadeIn('fast');
         });

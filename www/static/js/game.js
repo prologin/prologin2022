@@ -19,14 +19,22 @@ const Direction = {
 const ASSET_ROOT = "/static/img/gui"
 
 function generateMatrix() {
-    return Array(MAP_SIZE).fill(Array(MAP_SIZE).fill(Array(DEPTH)));
+    let list = [];
+    for (let i = 0; i < MAP_SIZE; i++) {
+        list.push([]);
+        for (let j = 0; j < MAP_SIZE; j++) {
+            list[i].push([])
+        }
+    }
+    return list;
 }
 
 class Game {
     constructor() {
         this.app = new PIXI.Application({width: WINDOW_WIDTH, height: WINDOW_HEIGHT});
         this.units = generateMatrix();
-        this.map = generateMatrix();
+        this.upperMap = generateMatrix();
+        this.lowerMap = generateMatrix();
         this.textures = {
             grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
                 new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_2.png`),
@@ -47,22 +55,61 @@ class Game {
         }
     }
 
+    displayRound(stechecDump) {
+        const totalSize = MAP_SIZE * MAP_SIZE;
+        const lowerMapString = stechecDump.map.cells.substr(0, totalSize);
+        const upperMapString = stechecDump.map.cells.substr(totalSize, totalSize * 2);
+        this.readStechecMap(upperMapString, lowerMapString);
+        this.display();
+    }
 
-    readMap(mapString, sprite_map) {
-        // Default map with texturing to allow for transparency.
+    display() {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
-                this.map[i][j][0] = createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j);
-                this.map[i][j][1] = createSprite(this.textures.dirt, i, j);
-                this.app.stage.addChild(this.map[i][j][0]);
+                for (let k = 0; k < this.upperMap[i][j].length; k++) {
+                    this.app.stage.addChild(this.upperMap[i][j][k]);
+                }
+            }
+        }
+    }
+
+    readStechecMap(upperMapString, lowerMapString) {
+        let upperMap = generateMatrix();
+        let lowerMap = generateMatrix();
+
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                upperMap[i][j].push(createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j));
+                lowerMap[i][j].push(createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j));
             }
         }
 
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 const char_index = i * MAP_SIZE + j;
-                this.map[i][j][0] = sprite_map(mapString.charAt(char_index), this.textures, i, j);
-                this.app.stage.addChild(this.map[i][j][0]);
+                upperMap[i][j].push(map_enum_to_sprite(upperMapString.charAt(char_index), this.textures, i, j));
+                lowerMap[i][j].push(map_enum_to_sprite(lowerMapString.charAt(char_index), this.textures, i, j));
+            }
+        }
+
+        this.upperMap = upperMap;
+        this.lowerMap = lowerMap;
+    }
+
+    displaySimpleMap(mapString) {
+        // Default map with texturing to allow for transparency.
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                const sprite = createSprite(this.textures.grass[Math.floor(Math.random() * 3)], i, j);
+                this.app.stage.addChild(sprite);
+            }
+        }
+
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                const char_index = i * MAP_SIZE + j;
+                const sprite = map_char_to_sprite(mapString.charAt(char_index), this.textures, i, j);
+                this.app.stage.addChild(sprite);
             }
         }
     }
@@ -82,8 +129,8 @@ function createAnimatedSprite(texture, x, y) {
     let aSprite = new PIXI.AnimatedSprite(texture, true);
     aSprite.animationSpeed = 0.1;
     aSprite.loop = false;
-    aSprite.x = x * SPRITE_WIDTH;
-    aSprite.y = y * SPRITE_WIDTH;
+    aSprite.x = y * SPRITE_WIDTH;
+    aSprite.y = x * SPRITE_WIDTH;
     aSprite.width = SPRITE_WIDTH;
     aSprite.height = SPRITE_HEIGHT;
     return aSprite;
