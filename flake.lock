@@ -75,11 +75,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1653343184,
-        "narHash": "sha256-b4bq57jBM0A/acSplV177VnbODYSjHv108WXBFfbhDk=",
+        "lastModified": 1653347347,
+        "narHash": "sha256-B7JnFENBJh/CRrKpMC/gYf9lZyH4ETvf9gKBDaEG18w=",
         "owner": "prologin",
         "repo": "stechec2",
-        "rev": "9a7825ec22066947bb459c3cab21a810451c084f",
+        "rev": "0e4792fc741f80c05aff5eaa29107b17c158e023",
         "type": "github"
       },
       "original": {
