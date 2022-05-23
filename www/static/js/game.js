@@ -153,12 +153,16 @@ function map_enum_to_sprite(input_char, textures, i, j) {
             break;
         case '6':
             texture = textures.tunnel;
+            break;
         case '7':
             texture = textures.dirt;
+            break;
         case 'S':
             texture = textures.spawn;
+            break;
         case 'b':
             texture = textures.barrier_open;
+            break;
     }
     return createSprite(texture, i, j);
 }
