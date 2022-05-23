@@ -139,8 +139,9 @@ void Rules::start_of_player_turn(unsigned int player_key)
 
 void Rules::end_of_player_turn(unsigned int player_key)
 {
-    // If the player has not consumed all his action points yet, make it move
     auto& player = api_->game_state().get_player(player_key);
+    player.sync_score();
+    // If the player has not consumed all his action points yet, make it move
     for (auto& trp : player.troupes())
         while (player.pts_actions(trp.id))
             move_troupe(trp, trp.dir, api_->game_state().get_map(), player);

@@ -255,12 +255,12 @@ void Map::changer_barrieres()
 
 void Map::decrementer_papy()
 {
-    for (auto& papy : papys_)
+    for (const auto& papy : papys_)
     {
         auto& cell = get_cell(papy);
         cell.papy_tours_restants -= 1;
 
-        if (cell.papy_tours_restants == 0)
+        if (cell.papy_tours_restants <= 0)
         {
             cell.etat.nb_pains += 1;
             cell.papy_tours_restants = INTERVALLE_DISTRIB;

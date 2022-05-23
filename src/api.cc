@@ -26,7 +26,7 @@ etat_case Api::info_case(position pos)
             .pos = {-1, -1, -1},
             .contenu = static_cast<type_case>(-1),
             .est_constructible = false,
-            .nb_pains = false,
+            .nb_pains = -1,
         };
 
         return etatCase;
