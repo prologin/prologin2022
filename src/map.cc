@@ -220,6 +220,7 @@ Map::Map(std::istream& stream)
                 get_cell(pos).nid = PAS_DE_NID;
                 get_cell(pos).papy_tours_restants = -1;
                 get_cell(pos).point_spawn = false;
+                get_cell(pos).canard_sur_case = false;
             }
         }
     }

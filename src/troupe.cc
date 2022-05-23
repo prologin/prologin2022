@@ -15,6 +15,8 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
     trp.maman = map.get_spawn_toward(trp.dir);
     trp.canards = {trp.maman};
     trp.pts_actions = 0;
+
+    *player_info.canards_additionnels(trp.id) = std::queue<position>();
     for (auto i = 1; i < TAILLE_DEPART; ++i)
         player_info.enfiler_canard(trp.id);
 }
@@ -50,6 +52,9 @@ void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
 void move_troupe(troupe& trp, const direction& dir, Map& map,
                  PlayerInfo& player)
 {
+    // Action points shall always be removed - even if the troup dies
+    player.remove_pts_actions(trp.id, 1);
+
     auto delta = get_delta_pos(dir);
     trp.dir = dir;
     if (!inside_map(trp.maman + delta) || map.case_mortelle(trp.maman + delta))
@@ -62,9 +67,9 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
         map.get_cell(trp.canards[trp.taille - 1]).canard_sur_case = false;
         for (int i = trp.taille - 1; i > 0; --i)
             trp.canards[i] = trp.canards[i - 1];
-        trp.maman += delta;
+        trp.canards[0] += delta;
+        trp.maman = trp.canards[0];
 
-        player.remove_pts_actions(trp.id, 1);
         map.get_cell(trp.maman).canard_sur_case = true;
         player.spawn_canard(trp.id, map);
 

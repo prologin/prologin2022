@@ -42,15 +42,15 @@ void Rules::register_actions()
         ID_ACTION_AVANCER, [] { return std::make_unique<ActionAvancer>(); });
     api_->actions()->register_action(
         ID_ACTION_GRANDIR, [] { return std::make_unique<ActionGrandir>(); });
-    api_->actions()->register_action(
-        ID_ACTION_CONSTRUIRE_BUISSON,
-        [] { return std::make_unique<ActionConstruireBuisson>(); });
-    api_->actions()->register_action(
-        ID_ACTION_CREUSER_TUNNEL,
-        [] { return std::make_unique<ActionCreuserTunnel>(); });
-    api_->actions()->register_action(
-        ID_ACTION_DEBUG_POSER_PIGEON,
-        [] { return std::make_unique<ActionDebugPoserPigeon>(); });
+    api_->actions()->register_action(ID_ACTION_CONSTRUIRE_BUISSON, [] {
+        return std::make_unique<ActionConstruireBuisson>();
+    });
+    api_->actions()->register_action(ID_ACTION_CREUSER_TUNNEL, [] {
+        return std::make_unique<ActionCreuserTunnel>();
+    });
+    api_->actions()->register_action(ID_ACTION_DEBUG_POSER_PIGEON, [] {
+        return std::make_unique<ActionDebugPoserPigeon>();
+    });
 }
 
 rules::Actions* Rules::get_actions()
@@ -133,6 +133,7 @@ void Rules::start_of_player_turn(unsigned int player_key)
 {
     api_->game_state().get_player(player_key).reset_internal_history();
     api_->game_state().get_player(player_key).reset_pts_actions();
+    api_->game_state().get_player(player_key).clear_tunnels();
     api_->game_state().set_init(true);
 }
 
