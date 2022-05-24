@@ -28,8 +28,9 @@ $(function () {
                     console.error('no dump found', res);
                 response.text().then(data => {
                     data = data.substring(0, data.length - 1).replaceAll('\n', ',');
-                    dump_data = JSON.parse(`{"dump": [${data}]}`);
+                    dump_data = JSON.parse(`{"dump": [${data}]}`)["dump"];
                     console.log('dump loaded');
+                    game.displayRound(dump_data[current_turn]);
                 });
             });
 
