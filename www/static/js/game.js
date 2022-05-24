@@ -49,11 +49,11 @@ class Game {
             spawn: new PIXI.Texture.from(`${ASSET_ROOT}/spawn.png`),
             nest: new PIXI.Texture.from(`${ASSET_ROOT}/nid.png`),
             bush: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
-            barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_H.png`),
-            barrier_closed: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
+            barrier_closed: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_1.png`),
+            barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
             hole: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
             duck: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_D.png`),
-            ducling: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/ducling`),
+            duckling: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_D.png`),
         }
     }
 
@@ -75,15 +75,78 @@ class Game {
                 }
             }
         }
-        // Display ducks and ducling
+        // Display ducks and duckling
         this.stechecDump.players.forEach((player) => {
-
+            for (let i = 0; i < player.troupes.length; i++) {
+                const duck = player.troupes[i].maman;
+                let sprite = createSprite(this.textures.duck, duck.colonne, duck.ligne);
+                sprite.interactive = true;
+                sprite.buttonMode = true;
+                sprite.on('click', (e) => {e.stopPropagation(); this.showDuckTooltip(player, i, duck.colonne, duck.ligne)})
+                this.app.stage.addChild(sprite);
+                for (let j = 0; j < player.troupes[i].canards.length; j++) {
+                    const duckling = player.troupes[i].canards[j];
+                    const sprite = createSprite(this.textures.duckling, duckling.colonne, duckling.ligne);
+                    this.app.stage.addChild(sprite);
+                }
+            }
         });
     }
 
-    showTooltip() {
 
+
+
+    showDuckTooltip(player, index, x, y) {
+        let container = new PIXI.Container();
+        const size = 200;
+        const round = 10;
+
+        var rectangle = new PIXI.Graphics();
+        rectangle.beginFill(0xC0C0C0);
+        rectangle.drawRoundedRect(0, 0, size, size, round);
+        rectangle.width = size;
+        rectangle.height = size;
+
+        const title = new PIXI.Text('Troupe ' + player.troupes[index].id + ' (' + player.name + ')',
+                                    {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 14, fill : 0x000000});
+        title.x = 2 * round;
+        title.y = round;
+
+        const troupe_size = new PIXI.Text('Taille : ' + player.troupes[index].taile,
+                                    {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 12, fill : 0x000000});
+        troupe_size.y = title.y + 2 * 14;
+        troupe_size.x = title.x;
+
+
+        const inventory = new PIXI.Text('Inventaire : ' + player.troupes[index].inventaire,
+                                    {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 12, fill : 0x000000});
+        inventory.y = troupe_size.y + 2 * 14;
+        inventory.x = title.x;
+
+        const actions_points = new PIXI.Text('Points d\'action : ' + player.troupes[index].pts_actions,
+                                    {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 12, fill : 0x000000});
+        actions_points.y = inventory.y + 2 * 14;
+        actions_points.x = title.x;
+
+        container.y = x * SPRITE_WIDTH + size > WINDOW_HEIGHT ? WINDOW_HEIGHT - size - round: x * SPRITE_WIDTH;
+        container.x = y * SPRITE_WIDTH + size > WINDOW_HEIGHT ? WINDOW_HEIGHT - size - round: y * SPRITE_WIDTH;
+        container.interactive = true;
+
+        container.on('click', (e) => {
+            e.stopPropagation();
+            this.app.stage.removeChild(container);
+        })
+
+        container.addChild(rectangle);
+        container.addChild(title);
+        container.addChild(troupe_size);
+        container.addChild(inventory);
+        container.addChild(actions_points);
+
+        this.app.stage.addChild(container);
     }
+
+
 
     readStechecMap(upperMapString, lowerMapString) {
         let upperMap = generateMatrix();
@@ -200,7 +263,7 @@ function map_enum_to_sprite(input_char, textures, i, j) {
             texture = textures.bush;
             break;
         case '2':
-            texture = textures.barrier_open;
+            texture = textures.barrier_closed;
             break;
         case '3':
             texture = textures.nest;
