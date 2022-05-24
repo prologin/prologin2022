@@ -47,10 +47,11 @@ class Game {
             pigeon: new PIXI.Texture.from(`${ASSET_ROOT}/pigeon/pigeon.png`),
             dirt: new PIXI.Texture.from(`${ASSET_ROOT}/dirt/dirt.png`),
             spawn: new PIXI.Texture.from(`${ASSET_ROOT}/spawn.png`),
-            nest: new PIXI.Texture.from(`${ASSET_ROOT}/nid.png`),
+            nest_empty: new PIXI.Texture.from(`${ASSET_ROOT}/nest_empty.png`),
+            nest_full: new PIXI.Texture.from(`${ASSET_ROOT}/nest_full.png`),
             bush: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
             barrier_closed: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_1.png`),
-            barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
+            barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/gate.png`),
             hole: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
             duck: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_D.png`),
             duckling: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_D.png`),
@@ -231,7 +232,7 @@ function map_char_to_sprite(input_char, textures, i, j) {
             texture = textures.spawn;
             break;
         case 'N':
-            texture = textures.nest;
+            texture = textures.nest_empty;
             break;
         case '#':
             texture = textures.bush;
@@ -266,7 +267,7 @@ function map_enum_to_sprite(input_char, textures, i, j) {
             texture = textures.barrier_closed;
             break;
         case '3':
-            texture = textures.nest;
+            texture = textures.nest_empty;
             break;
         case '4':
             return createAnimatedSprite(textures.old, i, j);
