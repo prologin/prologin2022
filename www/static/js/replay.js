@@ -12,7 +12,6 @@ $(function () {
     $replay.append('<div id="replay_view"></div>');
     let $replay_view = $("#replay_view");
 
-
     $replay_view.hide();
 
     $.getScript('/static/js/pixi.min.js')
@@ -43,6 +42,21 @@ $(function () {
             });
             $replay_view.fadeIn('fast');
 
+            $previous[0].onclick = e => {
+                if (current_turn == 0)
+                    return;
+                current_turn -= 1;
+                $turnLabel.text(current_turn);
+                game.displayRound(dump_data[current_turn]);
+            };
+            $next[0].onclick = e => {
+                if (current_turn == 100)
+                    return;
+                current_turn += 1;
+                $turnLabel.text(current_turn);
+                game.displayRound(dump_data[current_turn]);
+            };
+
             $turnSlider.change(function (e) {
                 current_turn = parseInt($turnSlider.val());
                 $previous.prop('disabled', current_turn <= 0);
@@ -51,7 +65,7 @@ $(function () {
 
                 // Trigger update iff the event was trigger by the UI
                 if (e.originalEvent)
-                    setTurn(2 * current_turn);
+                    game.displayRound(dump_data[current_turn]);
             });
         });
     });
