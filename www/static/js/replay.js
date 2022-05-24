@@ -18,7 +18,14 @@ $(function () {
         .done(function() {
             let game = create_game();
             game.addToDOM($replay_view[0]);
-            game.setupAnimation();
+
+            // Load dump
+            const dump_url = `${window.location.href}dump`;
+            fetch(dump_url).then(response => {
+                if (response.status !== 200)
+                    console.error('No dump found', res);
+                response.text().then(data => console.log(data));
+            });
 
             // reveal the UI
             $replay_view.find('canvas').css({
