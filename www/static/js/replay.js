@@ -24,7 +24,11 @@ $(function () {
             fetch(dump_url).then(response => {
                 if (response.status !== 200)
                     console.error('No dump found', res);
-                response.text().then(data => console.log(data));
+                response.text().then(data => {
+                    data = data.replaceAll('\n', ',');
+                    const json = JSON.parse(`{"dump": [${data}]}`);
+                    console.log(json);
+                });
             });
 
             // reveal the UI
