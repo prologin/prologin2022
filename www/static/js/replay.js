@@ -1,3 +1,6 @@
+let dump_data = undefined;
+let current_turn = 0;
+
 $(function () {
     let $replay = $('#replay'),
         $playPause = $('#replay-playpause'),
@@ -23,11 +26,11 @@ $(function () {
             const dump_url = `${window.location.href}dump`;
             fetch(dump_url).then(response => {
                 if (response.status !== 200)
-                    console.error('No dump found', res);
+                    console.error('no dump found', res);
                 response.text().then(data => {
-                    data = data.replaceAll('\n', ',');
-                    const json = JSON.parse(`{"dump": [${data}]}`);
-                    console.log(json);
+                    data = data.substring(0, data.length - 1).replaceAll('\n', ',');
+                    dump_data = JSON.parse(`{"dump": [${data}]}`);
+                    console.log('dump loaded');
                 });
             });
 
@@ -41,14 +44,14 @@ $(function () {
             $replay_view.fadeIn('fast');
 
             $turnSlider.change(function (e) {
-                let turnIndex = parseInt($turnSlider.val());
-                $previous.prop('disabled', turnIndex <= 0);
-                $next.prop('disabled', turnIndex > 100);
-                $turnLabel.text(turnIndex);
+                current_turn = parseInt($turnSlider.val());
+                $previous.prop('disabled', current_turn <= 0);
+                $next.prop('disabled', current_turn > 100);
+                $turnLabel.text(current_turn);
 
                 // Trigger update iff the event was trigger by the UI
                 if (e.originalEvent)
-                    setTurn(2 * turnIndex);
+                    setTurn(2 * current_turn);
             });
         });
     });
