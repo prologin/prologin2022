@@ -28,15 +28,15 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
     ASSERT_EQ(OK, err) << "failed line " << line;
 
     for (auto& pos : former)
-        ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case);
+        ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case) << line;
 
     for (unsigned long i = former.size() - former_inv; i < former.size(); i++)
-        ASSERT_EQ(1, game_state.get_map().get_cell(former[i]).etat.nb_pains);
+        ASSERT_EQ(1, game_state.get_map().get_cell(former[i]).etat.nb_pains) << line;
 
-    ASSERT_EQ(0, trp->inventaire);
-    ASSERT_EQ(static_cast<size_t>(1), player.get_troupe(1)->canards.size());
+    ASSERT_EQ(0, trp->inventaire) << line;
+    ASSERT_EQ(static_cast<size_t>(1), player.get_troupe(1)->canards.size()) << line;
     ASSERT_EQ(static_cast<size_t>(TAILLE_DEPART - 1),
-              player.canards_additionnels(trp->id)->size());
+              player.canards_additionnels(trp->id)->size()) << line;
 }
 
 void place_trp(troupe* trp, std::vector<position> pos, Map& map)
@@ -112,11 +112,11 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBuisson)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
-        {.colonne = 24, .ligne = 33, .niveau = 0},
-        {.colonne = 24, .ligne = 34, .niveau = 0},
-        {.colonne = 24, .ligne = 35, .niveau = 0},
-        {.colonne = 24, .ligne = 36, .niveau = 0},
-        {.colonne = 24, .ligne = 37, .niveau = 0},
+        {.colonne = 22, .ligne = 35, .niveau = 0},
+        {.colonne = 22, .ligne = 36, .niveau = 0},
+        {.colonne = 22, .ligne = 37, .niveau = 0},
+        {.colonne = 22, .ligne = 38, .niveau = 0},
+        {.colonne = 21, .ligne = 38, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
@@ -189,10 +189,10 @@ TEST_F(ApiTest, ActionAvancerTueAvecInventaire)
     auto& player = players[0];
     std::vector<position> new_pos = {
         {.colonne = 16, .ligne = 38, .niveau = 0},
-        {.colonne = 17, .ligne = 38, .niveau = 0},
-        {.colonne = 18, .ligne = 38, .niveau = 0},
-        {.colonne = 19, .ligne = 38, .niveau = 0},
-        {.colonne = 20, .ligne = 38, .niveau = 0},
+        {.colonne = 15, .ligne = 38, .niveau = 0},
+        {.colonne = 14, .ligne = 38, .niveau = 0},
+        {.colonne = 13, .ligne = 38, .niveau = 0},
+        {.colonne = 12, .ligne = 38, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
@@ -219,7 +219,7 @@ TEST_F(ApiTest, ActionAvancerAvecSpawn)
     player.info->enfiler_canard(1);
     test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
 
-    ASSERT_EQ(static_cast<size_t>(0),
+    EXPECT_EQ(static_cast<size_t>(0),
               player.info->canards_additionnels(1)->size());
     ASSERT_EQ(static_cast<size_t>(former_size + 1), trp->canards.size());
 }
@@ -371,7 +371,7 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPlein)
     ASSERT_EQ(4, trp->inventaire);
 }
 
-TEST_F(ApiTest, ActionAvancerRamasserPainsInvPrequePlein)
+TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
