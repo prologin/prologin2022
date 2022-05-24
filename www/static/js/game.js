@@ -52,6 +52,8 @@ class Game {
             barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_H.png`),
             barrier_closed: new PIXI.Texture.from(`${ASSET_ROOT}/b.png`),
             hole: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
+            duck: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_D.png`),
+            ducling: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/ducling`),
         }
     }
 
@@ -59,11 +61,13 @@ class Game {
         const totalSize = MAP_SIZE * MAP_SIZE;
         const lowerMapString = stechecDump.map.cells.substr(0, totalSize);
         const upperMapString = stechecDump.map.cells.substr(totalSize, totalSize * 2);
+        this.stechecDump = stechecDump;
         this.readStechecMap(upperMapString, lowerMapString);
         this.display();
     }
 
     display() {
+        // Displays map
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 for (let k = 0; k < this.upperMap[i][j].length; k++) {
@@ -71,6 +75,14 @@ class Game {
                 }
             }
         }
+        // Display ducks and ducling
+        this.stechecDump.players.forEach((player) => {
+
+        });
+    }
+
+    showTooltip() {
+
     }
 
     readStechecMap(upperMapString, lowerMapString) {
