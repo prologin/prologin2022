@@ -201,6 +201,7 @@ class Game {
                 return this.avancer(action);
         }
     }
+
     avancer(action) {
         console.log("avancer", action);
     }
@@ -266,10 +267,10 @@ function map_char_to_sprite(input_char, textures, i, j) {
             texture = textures.bush;
             break;
         case 'B':
-            texture = textures.barrier_open;
+            texture = textures.barrier_closed;
             break;
         case 'b':
-            texture = textures.barrier_closed;
+            texture = textures.barrier_open;
             break;
         case 'X':
             texture = textures.hole;
@@ -282,38 +283,3 @@ function map_char_to_sprite(input_char, textures, i, j) {
     return createSprite(texture, i, j);
 }
 
-function map_enum_to_sprite(input_char, textures, i, j) {
-    let texture = textures.grass[0];
-    switch (input_char) {
-        case '0':
-            texture = textures.grass[Math.floor(Math.random() * 3)];
-            break;
-        case '1':
-            texture = textures.bush;
-            break;
-        case '2':
-            texture = textures.barrier_closed;
-            break;
-        case '3':
-            texture = textures.nest_empty;
-            break;
-        case '4':
-            return createAnimatedSprite(textures.old, i, j);
-        case '5':
-            texture = textures.hole;
-            break;
-        case '6':
-            texture = textures.tunnel;
-            break;
-        case '7':
-            texture = textures.dirt;
-            break;
-        case 'S':
-            texture = textures.spawn;
-            break;
-        case 'b':
-            texture = textures.barrier_open;
-            break;
-    }
-    return createSprite(texture, i, j);
-}
