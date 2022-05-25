@@ -45,7 +45,6 @@
 typedef enum erreur
 {
     OK,              ///< L'action a été effectuée avec succès
-    JOUEUR_INVALIDE, ///< Mauvais numéro de joueur
     TROUPE_INVALIDE, ///< Mauvais identifiant de troupe
     HORS_TOUR,       ///< Aucune action n'est possible hors de joueur_tour
     MOUVEMENTS_INSUFFISANTS, ///< Il ne reste plus assez de points de mouvements
