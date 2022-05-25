@@ -233,8 +233,38 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
                 const position pos{x, y, level};
                 const Case cell = map.get_cell(pos);
 
-                ss << cell.etat.contenu;
-
+                switch (cell.etat.contenu) {
+                    case GAZON:
+                        if (cell.etat.est_constructible)
+                            ss << '.';
+                        else
+                            ss << ' ';
+                        break;
+                    case BUISSON:
+                        ss << '#';
+                        break;
+                    case BARRIERE:
+                        if (cell.barriere == OUVERTE)
+                            ss << 'b';
+                        else
+                            ss << 'B';
+                        break;
+                    case NID:
+                        ss << 'N';
+                        break;
+                    case PAPY:
+                        ss << cell.papy_tours_restants;
+                        break;
+                    case TROU:
+                        ss << 'X';
+                        break;
+                    case TUNNEL:
+                        ss << 't';
+                        break;
+                    case TERRE:
+                        ss << 'T';
+                        break;
+                }
             }
 
     return ss << "\"}";
