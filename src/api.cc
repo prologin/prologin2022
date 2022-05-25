@@ -4,6 +4,7 @@
 #include "api.hh"
 #include "constant.hh"
 #include "position.hh"
+#include "utils.hh"
 
 #include <memory>
 #include <utility>
@@ -59,7 +60,7 @@ std::vector<troupe> Api::troupes_joueur(int id_joueur)
     auto player = game_state_->get_player_ptr(id_joueur);
     std::vector<troupe> troupes;
     if (player == nullptr)
-        return troupes;
+        return {INVALID_TROUPE};
     std::array<troupe, NB_TROUPES> troupesArr = player->troupes();
     for (auto troupe : troupesArr)
         troupes.push_back(troupe);
