@@ -7,10 +7,10 @@ from _api import *
 
 
 # Nombre de lignes dans la carte
-HAUTEUR = 80
+HAUTEUR = 40
 
 # Nombre de colonnes dans la carte
-LARGEUR = 80
+LARGEUR = 40
 
 # Nombre de tours à jouer avant la fin de la partie
 NB_TOURS = 400
@@ -56,6 +56,8 @@ class erreur(IntEnum):
     NON_CONSTRUCTIBLE = 8  # <- La zone demandée n'est pas constructible
     SCORE_INSUFFISANT = 9  # <- Le joueur n'a pas assez de points pour construire un buisson
     POSITION_INVALIDE = 10  # <- La position demandée est hors du parc
+    DIRECTION_INVALIDE = 11  # <- La direction spécifiée n'existe pas.
+    PIGEON_INVALIDE = 12  # <- Le pigeon spécifié n'existe pas.
 
 
 # Directions possibles

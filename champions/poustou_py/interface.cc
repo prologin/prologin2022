@@ -27,6 +27,8 @@ typedef enum erreur
     NON_CONSTRUCTIBLE, ///< La zone demandée n'est pas constructible
     SCORE_INSUFFISANT, ///< Le joueur n'a pas assez de points pour construire un buisson
     POSITION_INVALIDE, ///< La position demandée est hors du parc
+    DIRECTION_INVALIDE, ///< La direction spécifiée n'existe pas.
+    PIGEON_INVALIDE, ///< Le pigeon spécifié n'existe pas.
 } erreur;
 
 /// Directions possibles
