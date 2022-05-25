@@ -16,7 +16,7 @@ void init_score(const std::array<ApiTest::Player, NB_TROUPES>& players)
 
 TEST_F(ApiTest, ActionConstruireBuisson_ScoreInsuffisants)
 {
-    const position pos{5, 2, 0};
+    const position pos{1, 1, 0};
     for (const auto& player : players)
     {
         auto err = player.api->construire_buisson(pos);
@@ -50,15 +50,15 @@ TEST_F(ApiTest, ActionConstruireBuisson_NonConstructible)
 
     position positions[] = {
         {0, 0, 0},
-        {1, 1, 0},
+        {14, 0, 0},
         {5, 2, -1},
-        {5, 2, 0},
+        {7, 2, 0},
     };
     for (auto& player : players)
         player.api->game_state()
             .get_player(players[0].id)
             .troupes()[0]
-            .canards[0] = position{5, 2, 0};
+            .canards[0] = position{3, 5, 0};
 
     for (auto& player : players)
     {
@@ -77,8 +77,8 @@ TEST_F(ApiTest, ActionConstruireBuisson_Ok)
     init_score(players);
 
     position positions[] = {
-        {5, 2, 0},
-        {53, 52, 0},
+        {1, 1, 0},
+        {3, 3, 0},
     };
 
     for (auto& player : players)

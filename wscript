@@ -20,7 +20,7 @@ def configure(cfg):
 
 def _copy_assets(source_dir, build_dir):
     assets = [
-        'src/tests/map.txt'
+        'src/tests/testMap40'
     ]
     for asset in assets:
         src_path = os.path.join(source_dir, asset)
