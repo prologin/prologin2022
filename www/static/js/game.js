@@ -32,6 +32,8 @@ function generateMatrix() {
 class Game {
     constructor() {
         this.app = new PIXI.Application({width: WINDOW_WIDTH, height: WINDOW_HEIGHT});
+        this.actions = [];
+        this.action_index = 0;
         this.units = generateMatrix();
         this.upperMap = generateMatrix();
         this.lowerMap = generateMatrix();
@@ -59,6 +61,8 @@ class Game {
     }
 
     displayRound(stechecDump) {
+        this.actions = stechecDump["players"][stechecDump["round"]["player_id"]]["last_actions"];
+        this.action_index = 0;
         const totalSize = MAP_SIZE * MAP_SIZE;
         const lowerMapString = stechecDump.map.cells.substr(0, totalSize);
         const upperMapString = stechecDump.map.cells.substr(totalSize, totalSize * 2);
@@ -190,11 +194,35 @@ class Game {
         }
     }
 
+    // actions
+    handleAction(action) {
+        switch (action["action_type"]) {
+            case 0:
+                return this.avancer(action);
+        }
+    }
+    avancer(action) {
+        console.log("avancer", action);
+    }
 
     addToDOM(viewParent) {
         return viewParent.appendChild(this.app.view);
     }
 
+    gameLoop(delta) {
+        if (this.action_index >= this.actions) {
+            return;
+        }
+    
+        let action = this.actions[this.action_index];
+        if (this.handleAction(action)) {
+            this.action_index += 1;
+        }
+    }
+
+    startGameLoop() {
+        this.app.ticker.add(delta => this.gameLoop(delta));
+    }
 }
 
 function create_game() {

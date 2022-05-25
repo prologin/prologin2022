@@ -31,6 +31,7 @@ $(function () {
                     dump_data = JSON.parse(`{"dump": [${data}]}`)["dump"];
                     console.log('dump loaded');
                     game.displayRound(dump_data[current_turn]);
+                    game.startGameLoop();
                 });
             });
 
