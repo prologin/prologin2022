@@ -23,7 +23,7 @@ function generateMatrix() {
     for (let i = 0; i < MAP_SIZE; i++) {
         list.push([]);
         for (let j = 0; j < MAP_SIZE; j++) {
-            list[i].push([])
+            list[i].push([]);
         }
     }
     return list;
@@ -100,7 +100,6 @@ class Game {
 
 
 
-
     showDuckTooltip(player, index, x, y) {
         let container = new PIXI.Container();
         const size = 200;
@@ -167,8 +166,8 @@ class Game {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 const char_index = i * MAP_SIZE + j;
-                upperMap[i][j].push(map_enum_to_sprite(upperMapString.charAt(char_index), this.textures, i, j));
-                lowerMap[i][j].push(map_enum_to_sprite(lowerMapString.charAt(char_index), this.textures, i, j));
+                upperMap[i][j].push(map_char_to_sprite(upperMapString.charAt(char_index), this.textures, i, j));
+                lowerMap[i][j].push(map_char_to_sprite(lowerMapString.charAt(char_index), this.textures, i, j));
             }
         }
 
@@ -222,7 +221,7 @@ class Game {
     }
 
     startGameLoop() {
-        this.app.ticker.add(delta => this.gameLoop(delta));
+
     }
 }
 
