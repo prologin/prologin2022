@@ -53,7 +53,15 @@
           defaultPackage = self.packages.${system}.prologin2022;
 
           devShell = pkgs.mkShell {
-            buildInputs = [ stechec2.defaultPackage."${system}" pkgs.python3Packages.sphinx ];
+            buildInputs = [
+              stechec2.defaultPackage."${system}"
+              pkgs.python3Packages.sphinx
+
+              # Editor packages
+              pkgs.python3Packages.tkinter
+              pkgs.python3Packages.pyyaml
+              pkgs.python3Packages.pillow
+            ];
           };
         }
       );
