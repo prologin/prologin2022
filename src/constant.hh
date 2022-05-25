@@ -57,6 +57,8 @@ typedef enum erreur
     SCORE_INSUFFISANT, ///< La troupe n'a pas assez de pains pour construire un
                        ///< buisson
     POSITION_INVALIDE, ///< La position demandée est hors du parc
+    DIRECTION_INVALIDE, ///< La direction spécifiée n'existe pas.
+    PIGEON_INVALIDE, ///< Le pigeon spécifié n'existe pas.
 } erreur;
 
 /// Directions possibles

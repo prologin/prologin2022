@@ -21,7 +21,7 @@ int ActionAvancer::check(const GameState& st) const
         return MOUVEMENTS_INSUFFISANTS;
 
     if (dir_ < 0 || (int) dir_ >= 6)
-        return -1; // TODO add DIRECTION_INVALIDE erreur
+        return DIRECTION_INVALIDE;
 
 
     return OK;

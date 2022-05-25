@@ -71,6 +71,8 @@ enum:
       - [non_constructible, "La zone demandée n'est pas constructible"]
       - [score_insuffisant, "Le joueur n'a pas assez de points pour construire un buisson"]
       - [position_invalide, "La position demandée est hors du parc"]
+      - [direction_invalide, "La direction spécifiée n'existe pas."]
+      - [pigeon_invalide, "Le pigeon spécifié n'existe pas."]
   -
     enum_name: direction
     enum_summary: "Directions possibles"

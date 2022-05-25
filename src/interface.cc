@@ -207,6 +207,12 @@ std::ostream& operator<<(std::ostream& os, erreur v)
     case POSITION_INVALIDE:
         os << "POSITION_INVALIDE";
         break;
+    case DIRECTION_INVALIDE:
+        os << "DIRECTION_INVALIDE";
+        break;
+    case PIGEON_INVALIDE:
+        os << "PIGEON_INVALIDE";
+        break;
     }
     return os;
 }
