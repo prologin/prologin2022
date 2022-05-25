@@ -20,7 +20,9 @@ int ActionAvancer::check(const GameState& st) const
     if (player.pts_actions(trp->id) <= 0)
         return MOUVEMENTS_INSUFFISANTS;
 
-    // TODO check dir_
+    if (dir_ < 0 || (int) dir_ >= 6)
+        return -1; // TODO add DIRECTION_INVALIDE erreur
+
 
     return OK;
 }
