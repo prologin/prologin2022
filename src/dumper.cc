@@ -281,20 +281,27 @@ static std::ostream& operator<<(std::ostream& ss, internal_action action)
             return ss << action.action;
         case troupe_respawn:
             return ss << '{' << KV{"action_type", "\"respawn\""} << ", "
-          // TODO uncomment      << KV{"pos", action.action.action_pos} << ", "
+                << KV{"pos", action.action.action_pos} << ", "
                 << KV{"troupe_id", action.action.troupe_id} << '}';
         case auto_move:
             return ss << '{' << KV{"action_type", "\"auto_move\""} << ", "
                 << KV{"dir", action.action.action_dir} << ", "
                 << KV{"troupe_id", action.action.troupe_id} << '}';
+        case take_bread:
+            return ss << '{' << KV{"action_type", "\"take\""} << ", "
+                << KV{"pos", action.action.troupe_id} << '}';
         case leave_bread:
             return ss << '{' << KV{"action_type", "\"leave\""} << ", "
                 << KV{"troupe_id", action.action.troupe_id} << '}';
+        case spread_bread:
+            return ss << '{' << KV{"action_type", "\"spread_bread\""} << ", "
+                << KV{"pos", action.action.action_pos} << '}';
         case flag:
             return ss << '{' << KV{"action_type", "\"debug\""} << ", "
                 << KV{"pos", action.flag.pos} << ", "
                 << KV{"debug", action.flag.ctype} << '}';
     }
+    __builtin_unreachable();
 }
 
 static std::ostream& operator<<(std::ostream& ss, const PlayerInfo& player)
