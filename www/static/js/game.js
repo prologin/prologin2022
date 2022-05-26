@@ -9,6 +9,7 @@ const SPRITE_HEIGHT = WINDOW_HEIGHT / MAP_SIZE;
 
 const ASSET_ROOT = "/static/img/assets/"
 
+
 const textures = {
     grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
         new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_2.png`),
@@ -45,14 +46,22 @@ function create_game() {
     return new Game();
 }
 
+function calculateY(y) {
+    return WINDOW_HEIGHT - y * SPRITE_HEIGHT - SPRITE_HEIGHT;
+}
+
+function calculateX(x) {
+   return x * SPRITE_WIDTH;
+}
+
 
 class Barrier extends PIXI.Sprite {
     constructor(x, y, isOpen) {
         super(isOpen ? textures.barrier_open : textures.barrier_closed);
         this.posX = x;
         this.posY = y;
-        this.y = x * SPRITE_WIDTH;
-        this.x = y * SPRITE_WIDTH;
+        this.y = calculateY(y);
+        this.x = calculateX(x);
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
     }
@@ -67,8 +76,8 @@ class Nest extends PIXI.Sprite {
         super(hasEggs ? textures.nest_full : textures.nest_empty);
         this.posX = x;
         this.posY = y;
-        this.x = x * SPRITE_WIDTH;
-        this.y = y * SPRITE_WIDTH;
+        this.y = calculateY(y);
+        this.x = calculateX(x);
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
     }
@@ -181,8 +190,8 @@ function createGame() {
 
 function createSprite(texture, x, y) {
     let sprite = new PIXI.Sprite(texture);
-    sprite.x = x * SPRITE_WIDTH;
-    sprite.y = y * SPRITE_HEIGHT;
+    sprite.y = calculateY(y);
+    sprite.x = calculateX(x);
     sprite.width = SPRITE_WIDTH;
     sprite.height = SPRITE_HEIGHT;
     return sprite;
@@ -228,8 +237,8 @@ class Papy extends PIXI.AnimatedSprite {
         this.loop = false;
         this.posX = x;
         this.posY = y;
-        this.y = y * SPRITE_WIDTH;
-        this.x = x * SPRITE_WIDTH;
+        this.y = calculateY(y);
+        this.x = calculateX(x);
     }
 
     display(app) {
@@ -255,8 +264,8 @@ class Duck extends PIXI.AnimatedSprite {
         this.spriteSheet = spriteSheet;
         this.animationSpeed = 0.1;
         this.loop = false;
-        this.x = y * SPRITE_WIDTH;
-        this.y = x * SPRITE_WIDTH;
+        this.y = calculateY(y);
+        this.x = calculateX(x);
     }
 
     display(app) {
@@ -278,8 +287,8 @@ class Duckling extends PIXI.AnimatedSprite {
         this.spriteSheet = spriteSheet;
         this.animationSpeed = 0.1;
         this.loop = false;
-        this.x = y * SPRITE_WIDTH;
-        this.y = x * SPRITE_WIDTH;
+        this.y = calculateY(y);
+        this.x = calculateX(x);
     }
 
     display(app) {
