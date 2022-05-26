@@ -139,7 +139,7 @@ void GameState::reset_turn()
 
 int GameState::turn_player_id() const
 {
-    return turn_ % player_count();
+    return (turn_ + 1) % player_count();
 }
 
 bool GameState::is_finished() const
