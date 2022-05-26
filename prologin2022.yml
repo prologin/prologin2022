@@ -283,7 +283,9 @@ function:
 
   -
     fct_name: trouver_chemin
-    fct_summary: Trouve un plus court chemin ouvert entre deux positions
+    fct_summary: Trouve un plus court chemin ouvert entre deux positions.
+      Renvoie une liste vide si les deux positions sont égales ou si aucun
+      chemin n'existe.
     fct_ret_type: direction array
     fct_arg:
       - [depart, position, "Position de départ"]
