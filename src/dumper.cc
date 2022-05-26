@@ -166,6 +166,11 @@ static std::ostream& operator<<(std::ostream& ss, position pos)
     return ss << '{' << KV{"colonne", pos.colonne} << ", " << KV{"ligne", pos.ligne} << ", " << KV{"niveau", pos.niveau} << '}';
 }
 
+static std::ostream& operator<<(std::ostream& ss, std::pair<position, int> pain)
+{
+    return ss << '{' << KV{"pos", pain.first} << ", " << KV{"pain", pain.second} << '}';
+}
+
 static std::ostream& operator<<(std::ostream& ss, action_hist action)
 {
     switch (action.action_type)
@@ -230,12 +235,18 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
 
     ss << R"("cells": ")";
 
+    std::vector<std::pair<position, int>> pains;
+
     for (int level = -1; level <= 0; level++)
         for (int x = 0; x < LARGEUR; x++)
             for (int y = 0; y < HAUTEUR; y++)
             {
                 const position pos{x, y, level};
                 const Case cell = map.get_cell(pos);
+                
+                if (cell.etat.nb_pains) {
+                    pains.push_back(std::make_pair(pos, cell.etat.nb_pains));
+                }
 
                 switch (cell.etat.contenu) {
                     case GAZON:
@@ -273,7 +284,7 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
                 }
             }
 
-    return ss << "\"}";
+    return ss << "\", " << KV{"pains", Vec{pains}} << "}";
 }
 
 static std::ostream& operator<<(std::ostream& ss, internal_action action)
