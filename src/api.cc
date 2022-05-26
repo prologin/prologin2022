@@ -104,8 +104,7 @@ int Api::gain(int nb_pains)
 
 int Api::inventaire(int taille)
 {
-    // TODO
-    abort();
+    return taille/3;
 }
 
 std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
