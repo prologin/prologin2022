@@ -171,20 +171,20 @@ static std::ostream& operator<<(std::ostream& ss, action_hist action)
     switch (action.action_type)
     {
     case ACTION_AVANCER:
-        ss << '{' << KV{"action_type", "avancer"} << ", ";
+        ss << '{' << KV{"action_type", "\"avancer\""} << ", ";
         ss << KV{"troupe_id", action.troupe_id} << ", ";
         ss << KV{"direction", action.action_dir};
         break;
     case ACTION_CONSTRUIRE:
-        ss << '{' << KV{"action_type", "construire"} << ", ";
+        ss << '{' << KV{"action_type", "\"construire\""} << ", ";
         ss << KV{"position", action.action_pos};
         break;
     case ACTION_CREUSER:
-        ss << '{' << KV{"action_type", "creuser"} << ", ";
+        ss << '{' << KV{"action_type", "\"creuser\""} << ", ";
         ss << KV{"position", action.action_pos};
         break;
     case ACTION_GRANDIR:
-        ss << '{' << KV{"action_type", "grandir"} << ", ";
+        ss << '{' << KV{"action_type", "\"grandir\""} << ", ";
         ss << KV{"troupe_id", action.troupe_id};
         break;
     }
