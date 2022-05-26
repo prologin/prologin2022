@@ -63,6 +63,7 @@ public:
     const std::vector<internal_action>& get_internal_history() const;
     void add_internal_action(internal_action action);
     void reset_internal_history();
+    bool cancel();
 
 private:
     std::shared_ptr<rules::Player> rules_player_;

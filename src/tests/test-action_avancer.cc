@@ -28,15 +28,19 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
     ASSERT_EQ(OK, err) << "failed line " << line;
 
     for (auto& pos : former)
-        ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case) << line;
+        ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case)
+            << line;
 
     for (unsigned long i = former.size() - former_inv; i < former.size(); i++)
-        ASSERT_EQ(1, game_state.get_map().get_cell(former[i]).etat.nb_pains) << line;
+        ASSERT_EQ(1, game_state.get_map().get_cell(former[i]).etat.nb_pains)
+            << line;
 
     ASSERT_EQ(0, trp->inventaire) << line;
-    ASSERT_EQ(static_cast<size_t>(1), player.get_troupe(1)->canards.size()) << line;
+    ASSERT_EQ(static_cast<size_t>(1), player.get_troupe(1)->canards.size())
+        << line;
     ASSERT_EQ(static_cast<size_t>(TAILLE_DEPART - 1),
-              player.canards_additionnels(trp->id)->size()) << line;
+              player.canards_additionnels(trp->id)->size())
+        << line;
 }
 
 void place_trp(troupe* trp, std::vector<position> pos, Map& map)
@@ -68,6 +72,7 @@ erreur test_move_troupe(PlayerInfo* player, std::unique_ptr<Api>& api, int id,
 void troup_hardcoded_setup(troupe* trp, Map& map)
 {
     map.delete_troupe(*trp);
+    trp->canards.reserve(5);
     trp->canards[0] = {.colonne = 27, .ligne = 38, .niveau = 0};
     trp->canards[1] = {.colonne = 26, .ligne = 38, .niveau = 0};
     trp->canards[2] = {.colonne = 25, .ligne = 38, .niveau = 0};

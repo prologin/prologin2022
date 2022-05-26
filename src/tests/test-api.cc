@@ -6,7 +6,7 @@ namespace
 const etat_case etat_case_err = {.pos = {-1, -1, -1},
                                  .contenu = static_cast<type_case>(-1),
                                  .est_constructible = false,
-                                 .nb_pains = false};
+                                 .nb_pains = -1};
 
 void assert_eq_etat_case(etat_case etat_case_1, etat_case etat_case_2)
 {
@@ -42,12 +42,12 @@ TEST_F(ApiTest, ApiInfoCase_EtatCaseOk)
         {2, 2, 0},   // ' '
         {1, 1, 0},   // '.'
         {14, 0, 0},  // 'S'
-        {13, 2, 0}, // 'N'
+        {13, 2, 0},  // 'N'
         {0, 0, 0},   // '#'
         {29, 25, 0}, // 'B'
         {26, 26, 0}, // 'b'
-        {16, 1, 0}, // 'X'
-        {7, 2, 0}   // 0-9
+        {16, 1, 0},  // 'X'
+        {7, 2, 0}    // 0-9
     };
 
     const size_t n_positions = sizeof(positions) / sizeof(*positions);
@@ -86,10 +86,10 @@ TEST_F(ApiTest, ApiInfoBarriere_PosInvalide)
         {2, 2, 0},       // ' '
         {1, 1, 0},       // '.'
         {14, 0, 0},      // 'S'
-        {13, 2, 0},     // 'N'
+        {13, 2, 0},      // 'N'
         {0, 0, 0},       // '#'
-        {16, 1, 0},     // 'X'
-        {7, 2, 0}       // 0-9
+        {16, 1, 0},      // 'X'
+        {7, 2, 0}        // 0-9
     };
 
     for (const auto& player : players)
@@ -106,26 +106,26 @@ TEST_F(ApiTest, ApiInfoBarriere_PosOk)
 {
     const position positions_barriere_fermee[] = {
         {29, 25, 0}, // 'B'
-        {31, 6, 0}, // 'B'
-        {4, 8, 0}, // 'B'
-        {33, 9, 0}, // 'B'
+        {31, 6, 0},  // 'B'
+        {4, 8, 0},   // 'B'
+        {33, 9, 0},  // 'B'
         {32, 18, 0}, // 'B'
-        {4, 21, 0}, // 'B'
+        {4, 21, 0},  // 'B'
         {29, 25, 0}, // 'B'
         {10, 29, 0}, // 'B'
         {38, 29, 0}, // 'B'
     };
 
     const position positions_barriere_ouverte[] = {
-        {31, 3, 0}, // 'b'
-        {13, 6, 0}, // 'b'
+        {31, 3, 0},  // 'b'
+        {13, 6, 0},  // 'b'
         {35, 15, 0}, // 'b'
         {27, 18, 0}, // 'b'
         {15, 20, 0}, // 'b'
         {13, 26, 0}, // 'b'
         {26, 26, 0}, // 'b'
-        {2, 29, 0}, // 'b'
-        {1, 35, 0}, // 'b'
+        {2, 29, 0},  // 'b'
+        {1, 35, 0},  // 'b'
     };
 
     for (const auto& player : players)
@@ -160,8 +160,8 @@ TEST_F(ApiTest, ApiInfoNid_PosInvalide)
         {.colonne = 0, .ligne = 0, .niveau = 0},   // '#'
         {.colonne = 29, .ligne = 25, .niveau = 0}, // 'B'
         {.colonne = 26, .ligne = 26, .niveau = 0}, // 'b'
-        {.colonne = 16, .ligne = 1, .niveau = 0}, // 'X'
-        {.colonne = 7, .ligne = 2, .niveau = 0}   // 0-9
+        {.colonne = 16, .ligne = 1, .niveau = 0},  // 'X'
+        {.colonne = 7, .ligne = 2, .niveau = 0}    // 0-9
     };
 
     for (const auto& player : players)
@@ -178,11 +178,11 @@ TEST_F(ApiTest, ApiInfoNid_PosOk)
 {
     const position pos_nids_libres[] = {
         {.colonne = 13, .ligne = 2, .niveau = 0},  // 'N'
-        {.colonne = 14, .ligne = 1, .niveau = 0}, // 'N'
-        {.colonne = 33, .ligne = 1, .niveau = 0}, // 'N'
+        {.colonne = 14, .ligne = 1, .niveau = 0},  // 'N'
+        {.colonne = 33, .ligne = 1, .niveau = 0},  // 'N'
         {.colonne = 11, .ligne = 11, .niveau = 0}, // 'N'
         {.colonne = 12, .ligne = 16, .niveau = 0}, // 'N'
-        {.colonne = 1, .ligne = 27, .niveau = 0}, // 'N'
+        {.colonne = 1, .ligne = 27, .niveau = 0},  // 'N'
     };
 
     for (const auto& player : players)
@@ -208,11 +208,11 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosInvalide)
         {.colonne = 2, .ligne = 2, .niveau = 0},   // ' '
         {.colonne = 1, .ligne = 1, .niveau = 0},   // '.'
         {.colonne = 14, .ligne = 0, .niveau = 0},  // 'S'
-        {.colonne = 13, .ligne = 2, .niveau = 0}, // 'N'
+        {.colonne = 13, .ligne = 2, .niveau = 0},  // 'N'
         {.colonne = 0, .ligne = 0, .niveau = 0},   // '#'
         {.colonne = 29, .ligne = 25, .niveau = 0}, // 'B'
         {.colonne = 26, .ligne = 26, .niveau = 0}, // 'b'
-        {.colonne = 16, .ligne = 1, .niveau = 0}, // 'X'
+        {.colonne = 16, .ligne = 1, .niveau = 0},  // 'X'
     };
 
     for (const auto& player : players)
@@ -229,7 +229,7 @@ TEST_F(ApiTest, ApiPapyToursRestants_PosInvalide)
 TEST_F(ApiTest, ApiPapyToursRestants_PosOk)
 {
     const position pos_papys[] = {
-        {.colonne = 7, .ligne = 2, .niveau = 0},  // 2
+        {.colonne = 7, .ligne = 2, .niveau = 0},   // 2
         {.colonne = 19, .ligne = 2, .niveau = 0},  // 4
         {.colonne = 20, .ligne = 11, .niveau = 0}, // 1
         {.colonne = 11, .ligne = 15, .niveau = 0}, // 4
@@ -326,19 +326,29 @@ TEST_F(ApiTest, ApiAnnuler_Cancel)
     {
         const position position = {0, 0, 0};
 
-        auto pigeon_before =
-            player.api->game_state().get_map().get_cell(position).pigeon;
+        player.api->debug_poser_pigeon(position, PAS_DE_PIGEON);
+
+        auto pigeon_before = player.api->game_state()
+                                 .get_player(player.id)
+                                 .get_internal_history()
+                                 .back()
+                                 .flag.ctype;
         auto pigeon_after = PIGEON_BLEU;
 
         auto err = player.api->debug_poser_pigeon(position, pigeon_after);
         ASSERT_EQ(OK, err);
-        ASSERT_EQ(pigeon_after,
-                  player.api->game_state().get_map().get_cell(position).pigeon);
-
+        ASSERT_EQ(pigeon_after, player.api->game_state()
+                                    .get_player(player.id)
+                                    .get_internal_history()
+                                    .back()
+                                    .flag.ctype);
         auto is_cancel = player.api->annuler();
-        ASSERT_EQ(true, is_cancel);
-        ASSERT_EQ(pigeon_before,
-                  player.api->game_state().get_map().get_cell(position).pigeon);
+        ASSERT_TRUE(is_cancel);
+        EXPECT_EQ(pigeon_before, player.api->game_state()
+                                     .get_player(player.id)
+                                     .get_internal_history()
+                                     .back()
+                                     .flag.ctype);
     }
 }
 
@@ -362,8 +372,8 @@ TEST_F(ApiTest, ApiTroupesJoueursInvalide)
     {
         for (const auto& id_joueur_invalide : id_players_invalides)
         {
-            ASSERT_EQ(static_cast<size_t>(0),
-                      player.api->troupes_joueur(id_joueur_invalide).size());
+            ASSERT_EQ(
+                -1, player.api->troupes_joueur(id_joueur_invalide).front().id);
         }
     }
 }
@@ -376,8 +386,8 @@ TEST_F(ApiTest, ApiPains)
         {14, 0, 0},  // 'S'
         {29, 25, 0}, // 'B'
         {26, 26, 0}, // 'b'
-        {16, 1, 0}, // 'X'
-        {7, 2, 0}   // 0-9
+        {16, 1, 0},  // 'X'
+        {7, 2, 0}    // 0-9
     };
 
     for (const auto& player : players)

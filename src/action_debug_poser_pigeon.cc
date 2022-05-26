@@ -10,7 +10,7 @@ int ActionDebugPoserPigeon::check(const GameState& st) const
         return HORS_TOUR;
     if (!inside_map(pos_))
         return POSITION_INVALIDE;
-    if (pigeon_ < 0 || (int) pigeon_ >= 4)
+    if (pigeon_ < 0 || (int)pigeon_ >= 4)
         return PIGEON_INVALIDE;
     return OK;
 }

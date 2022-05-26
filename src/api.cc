@@ -126,7 +126,7 @@ int Api::score(int id_joueur)
 
 bool Api::annuler()
 {
-    return cancel();
+    return game_state_->get_player(player_->id).cancel() && cancel();
 }
 
 int Api::tour_actuel()

@@ -50,7 +50,6 @@ rules::Player& PlayerInfo::rules_player() const
     return *rules_player_;
 }
 
-
 int PlayerInfo::get_score() const
 {
     return score_;
@@ -227,4 +226,12 @@ void PlayerInfo::reset_internal_history()
 void PlayerInfo::add_internal_action(internal_action action)
 {
     internal_hist_.push_back(action);
+}
+
+bool PlayerInfo::cancel()
+{
+    if (internal_hist_.empty())
+        return false;
+    internal_hist_.pop_back();
+    return true;
 }
