@@ -106,7 +106,7 @@ int Api::inventaire(int taille)
 {
     if (taille < 0)
         return 0;
-    return taille/3;
+    return taille / 3;
 }
 
 std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
@@ -143,39 +143,39 @@ std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
         for (direction nextdir : nexts) {
             position nextpos = point + get_delta_pos(nextdir);
             if (!visite[nextpos.niveau+1][nextpos.ligne][nextpos.colonne]) {
-				back[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = inverse_dir(nextdir);
-				visite[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = true;
-            	queue.push(nextpos);
-			}
+                back[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = inverse_dir(nextdir);
+                visite[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = true;
+                queue.push(nextpos);
+            }
         }
     }
     
     for (int y = 0; y < HAUTEUR; y++) {
-		for (int x = 0; x < LARGEUR; x++) {
-			if (y == arrivee.ligne && x == arrivee.colonne)
-				std::cout << 'X';
-			else 
-			{
-				direction thing = back[1][y][x];
-				switch (thing) {
-					case NORD:
-						std::cout << 'v';
-						break;
-					case EST:
-						std::cout << '>';
-						break;
-					case SUD:
-						std::cout << '^';
-						break;
-					case OUEST:
-						std::cout << '<';
-						break;
-				}
-			}
-		}
-		std::cout << std::endl;
-	}
-	    
+        for (int x = 0; x < LARGEUR; x++) {
+            if (y == arrivee.ligne && x == arrivee.colonne)
+                std::cout << 'X';
+            else 
+            {
+                direction thing = back[1][y][x];
+                switch (thing) {
+                    case NORD:
+                        std::cout << 'v';
+                        break;
+                    case EST:
+                        std::cout << '>';
+                        break;
+                    case SUD:
+                        std::cout << '^';
+                        break;
+                    case OUEST:
+                        std::cout << '<';
+                        break;
+                }
+            }
+        }
+        std::cout << std::endl;
+    }
+
 
     if (!found)
         return result;

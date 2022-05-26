@@ -6,6 +6,8 @@
 
 #include "constant.hh"
 
+class PlayerInfo; // forward decl
+
 typedef struct Case
 {
     etat_case etat;          ///< Position, type, constructible et pain
@@ -41,7 +43,7 @@ public:
     void unmark_canard(const position& pos);
 
     void changer_barrieres();
-    void decrementer_papy();
+    void decrementer_papy(PlayerInfo& player);
 
 private:
     void load_map_cells(std::istream& stream);

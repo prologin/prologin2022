@@ -2,6 +2,7 @@
 
 #include "map.hh"
 #include "position.hh"
+#include "player_info.hh"
 
 bool Case::case_praticable() const
 {
@@ -254,7 +255,7 @@ void Map::changer_barrieres()
     }
 }
 
-void Map::decrementer_papy()
+void Map::decrementer_papy(PlayerInfo& player)
 {
     for (const auto& papy : papys_)
     {
@@ -265,6 +266,12 @@ void Map::decrementer_papy()
         {
             cell.etat.nb_pains += 1;
             cell.papy_tours_restants = INTERVALLE_DISTRIB;
+
+            // Log event
+            internal_action action;
+            action.type = add_bread;
+            action.action.action_pos = papy;
+            player.add_internal_action(action);
         }
     }
 }
