@@ -4,13 +4,11 @@
 namespace
 {
 std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
-                                            const Map& map)
+                                            const Map& map, etat_nid nest_id)
 {
     std::array<troupe, NB_TROUPES> troupes;
 
-    rules::Player other;
-
-    auto dir = player.id < other.id ? NORD : SUD;
+    auto dir = nest_id == JOUEUR_0 ? NORD : SUD;
     for (int i = 0; i < NB_TROUPES; i++, dir = clockwise_dir(dir))
     {
         auto head = map.get_spawn_toward(dir);
@@ -33,7 +31,7 @@ PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
     , score_(0)
     , pains_(0)
     , tunnels_(0)
-    , troupes_(init_troupes(*rules_player_, map))
+    , troupes_(init_troupes(*rules_player_, map, player_nid_id))
     , player_nid_id_(player_nid_id)
 {
     rules_player_->score = 0;
