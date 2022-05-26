@@ -289,6 +289,31 @@ TEST_F(ApiTest, ApiInventaire)
     }
 }
 
+TEST_F(ApiTest, ApiTrouverChemin)
+{
+    
+    for (const auto& player : players)
+    {
+        position start = {
+            .niveau = 0,
+            .ligne = 16,
+            .colonne = 23 };
+        position end = {
+            .niveau = 0,
+            .ligne = 14,
+            .colonne = 28 };
+
+        vector<direction> got = player.api->trouver_chemin(start, end);
+        vector<direction> expected = {
+            NORD, NORD, NORD, NORD, EST, EST, SUD, EST, EST, SUD, SUD, SUD, SUD, SUD, EST };
+
+        ASSERT_TRUE(got.size() == expected.size());
+        for (int i = 0; i < got.size(); i++) {
+            ASSERT_TRUE(got[i] == expected[i]);
+        }
+    }
+}
+
 TEST_F(ApiTest, ApiMoi)
 {
     ASSERT_EQ(static_cast<size_t>(2), players.size());
