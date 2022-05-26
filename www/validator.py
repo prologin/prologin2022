@@ -47,19 +47,21 @@ for y in range(size):
             if int(char) >= INTERVALLE_DISTRIB:
                 exit(f"Papy ligne {y} colonne {x}, phase {char} supérieure à l'intervalle de distribution {INTERVALLE_DISTRIB}.")
 
-# Vérification :
-# Bordure composée exclusivement de murs ou point d'apparition
-allowed = {'#', 'S'}
-for y in range(size):
-    if grid[y][0] not in allowed:
-        exit(f"Caractère ligne {y} colonne 0 ({grid[y][0]}) interdit en bordure.")
-    if grid[y][size-1] not in allowed:
-        exit(f"Caractère ligne {y} colonne {size-1} ({grid[y][size-1]}) interdit en bordure.")
-for x in range(size):
-    if grid[0][x] not in allowed:
-        exit(f"Caractère ligne 0 colonne {x} ({grid[0][x]}) interdit en bordure.")
-    if grid[size-1][x] not in allowed:
-        exit(f"Caractère ligne {size-1} colonne {x} ({grid[size-1][x]}) interdit en bordure.")
+# Condition abandonnee
+
+### Vérification :
+### Bordure composée exclusivement de murs ou point d'apparition
+##allowed = {'#', 'S'}
+##for y in range(size):
+##    if grid[y][0] not in allowed:
+##        exit(f"Caractère ligne {y} colonne 0 ({grid[y][0]}) interdit en bordure.")
+##    if grid[y][size-1] not in allowed:
+##        exit(f"Caractère ligne {y} colonne {size-1} ({grid[y][size-1]}) interdit en bordure.")
+##for x in range(size):
+##    if grid[0][x] not in allowed:
+##        exit(f"Caractère ligne 0 colonne {x} ({grid[0][x]}) interdit en bordure.")
+##    if grid[size-1][x] not in allowed:
+##        exit(f"Caractère ligne {size-1} colonne {x} ({grid[size-1][x]}) interdit en bordure.")
 
 # Vérification :
 # Pas de point d'apparition au cœur de la carte
