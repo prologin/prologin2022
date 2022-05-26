@@ -1,0 +1,210 @@
+map_size: 40
+
+default_cell_type: buildable_grass
+
+cell_types:
+    non_buildable_grass:
+        sprite: bg/gazon-non-constructible.png
+        serialize:
+            method: ascii
+            ascii: ' '
+
+    spawn:
+        #TODO: use special sprite to distinguish it
+        sprite: bg/gazon.png
+        serialize:
+            method: ascii
+            ascii: 'S'
+
+    buildable_grass:
+        #TODO: there's multiple "flavors" of grass
+        sprite: bg/gazon.png
+        serialize:
+            method: ascii
+            ascii: '.'
+
+    bush:
+        sprite: bg/buisson.png
+        serialize:
+            method: ascii
+            ascii: '#'
+
+    barrier_open:
+        #TODO: distinguish o/c
+        sprite: bg/barriere.png
+        serialize:
+            method: ascii
+            ascii: 'B'
+
+    barrier_closed:
+        #TODO: distinguish o/c
+        sprite: bg/barriere.png
+        serialize:
+            method: ascii
+            ascii: 'b'
+
+    nest:
+        sprite: bg/nid.png
+        serialize:
+            method: ascii
+            ascii: 'N'
+
+    # TODO: range or chars
+    #old:
+    #    sprite: bg/papy.png
+    #    serialize:
+    #        method: ascii_range
+    #        from: '0'
+    #        to: '9'
+    old_0:
+        sprite: bg/old_1.png
+        serialize:
+            method: ascii
+            ascii: '0'
+
+    old_1:
+        sprite: bg/old_2.png
+        serialize:
+            method: ascii
+            ascii: '1'
+    old_2:
+        sprite: bg/old_3.png
+        serialize:
+            method: ascii
+            ascii: '2'
+    old_3:
+        sprite: bg/old_4.png
+        serialize:
+            method: ascii
+            ascii: '3'
+    old_4:
+        sprite: bg/old_1.png
+        serialize:
+            method: ascii
+            ascii: '4'
+    old_5:
+        sprite: bg/old_2.png
+        serialize:
+            method: ascii
+            ascii: '5'
+    old_6:
+        sprite: bg/old_3.png
+        serialize:
+            method: ascii
+            ascii: '6'
+    old_7:
+        sprite: bg/old_4.png
+        serialize:
+            method: ascii
+            ascii: '7'
+    old_8:
+        sprite: bg/old_1.png
+        serialize:
+            method: ascii
+            ascii: '8'
+    old_9:
+        sprite: bg/old_2.png
+        serialize:
+            method: ascii
+            ascii: '9'
+
+    hole:
+        sprite: bg/trou.png
+        serialize:
+            method: ascii
+            ascii: 'X'
+
+    # Underground, by default everything underground is made of earth
+    # tunnels are created by players
+    #tunnel:
+    #    sprite: bg/tunnel.png
+    #    serialize:
+    #        method: ascii
+    #        # TODO:
+    #        ascii: 'Z'
+
+    #earth:
+    #    sprite: bg/terre.png
+    #    serialize:
+    #        method: ascii_space
+    #        ascii_space: '100,100,100'
+
+    #plante_jaune:
+    #    extra: ['vie_max', 'force', 'elegance', 'rayon', 'collecte', 'chaud', 'lumiere', 'eau']
+    #    serialize:
+    #        method: list
+    #        order: 0
+    #    presets:
+    #        normal:
+    #            sprite: plante_jaune/normal.png
+    #            default:
+    #                vie_max: 100
+    #                force: 50
+    #                elegance: 50
+    #                rayon: 45
+    #                collecte: 45
+    #                chaud: 300
+    #                lumiere: 300
+    #                eau: 300
+    #        beauty:
+    #            sprite: plante_jaune/beauty.png
+    #            default:
+    #                vie_max: 50
+    #                force: 10
+    #                elegance: 100
+    #                rayon: 30
+    #                collecte: 45
+    #                chaud: 0
+    #                lumiere: 300
+    #                eau: 300
+    #        beast:
+    #            sprite: plante_jaune/beast.png
+    #            default:
+    #                vie_max: 50
+    #                force: 100
+    #                elegance: 10
+    #                rayon: 60
+    #                collecte: 45
+    #                chaud: 300
+    #                lumiere: 0
+    #                eau: 300
+
+    #plante_rouge:
+    #    extra: ['vie_max', 'force', 'elegance', 'rayon', 'collecte', 'chaud', 'lumiere', 'eau']
+    #    serialize:
+    #        method: list
+    #        order: 1
+    #    presets:
+    #        normal:
+    #            sprite: plante_rouge/normal.png
+    #            default:
+    #                vie_max: 100
+    #                force: 50
+    #                elegance: 50
+    #                rayon: 45
+    #                collecte: 45
+    #                chaud: 300
+    #                lumiere: 300
+    #                eau: 300
+    #        beauty:
+    #            sprite: plante_rouge/beauty.png
+    #            default:
+    #                vie_max: 50
+    #                force: 10
+    #                elegance: 100
+    #                rayon: 30
+    #                collecte: 45
+    #                chaud: 0
+    #                lumiere: 300
+    #                eau: 300
+    #        beast:
+    #            sprite: plante_rouge/beast.png
+    #            default:
+    #                vie_max: 50
+    #                force: 100
+    #                elegance: 10
+    #                rayon: 60
+    #                collecte: 45
+    #                chaud: 300
+    #                lumiere: 0
+    #                eau: 300

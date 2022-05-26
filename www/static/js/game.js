@@ -252,7 +252,9 @@ function createSprite(texture, x, y) {
 function map_char_to_sprite(input_char, textures, i, j) {
     let texture = textures.grass[0];
     switch (input_char) {
+        // non buildable grass
         case ' ':
+        // buildable grass
         case '.':
             texture = textures.grass[Math.floor(Math.random() * 3)];
             break;
