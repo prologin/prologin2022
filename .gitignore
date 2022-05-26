@@ -32,3 +32,8 @@
 
 # IntelliJ Idea based files
 .idea/ 
+
+# Javascript package manager 
+node_modules/
+
+

@@ -1,0 +1,34 @@
+{
+  "name": "prologin2022",
+  "version": "1.0.0",
+  "description": "The finale game for Prologin 2022",
+  "dependencies": {
+    "@pixi/app": "^6.3.2",
+    "@pixi/constants": "^6.3.2",
+    "@pixi/core": "^6.3.2",
+    "@pixi/display": "^6.3.2",
+    "@pixi/math": "^6.3.2",
+    "@pixi/runner": "^6.3.2",
+    "@pixi/settings": "^6.3.2",
+    "@pixi/ticker": "^6.3.2",
+    "@pixi/utils": "^6.3.2"
+  },
+  "scripts": {
+    "production": "webpack --mode production --config webpack.config.prod.js && cp dist/main.js ../www/static/js/out.js && cp -r dist/assets ../www/static/img/assets",
+    "build": "webpack --mode development --config webpack.config.dev.js",
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
+    "clean": "rm -rf dist && rm -rf ../www/static/img/assets/ && rm -f ../www/static/js/out.js"
+  },
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "babel-loader": "^8.2.5",
+    "copy-webpack-plugin": "^11.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "terser-webpack-plugin": "^5.3.1",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0"
+  }
+}
