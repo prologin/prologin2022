@@ -316,7 +316,7 @@ fieldset[disabled] .form-control {
 /* easter */
 .easter-egg {
     position: fixed;
-    bottom: -55px;
+    bottom: -15px;
     transition: all .35s ease;
     cursor: pointer;
 }
@@ -328,7 +328,7 @@ fieldset[disabled] .form-control {
     animation: poop-dance .8s infinite alternate ease-in-out;
 }
 .easter-egg:not(.visible):hover {
-    bottom: -55px;
+    bottom: -15px;
 }
 @keyframes poop-dance {
     from, 49% { transform-origin: -50% 100%; }
