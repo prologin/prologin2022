@@ -25,6 +25,9 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
         dir = clockwise_dir(dir);
     } while (map.get_cell(trp.maman).canard_sur_case);
 
+    // Mark the new position
+    map.get_cell(trp.maman).canard_sur_case = true;
+
     trp.canards = {trp.maman};
     trp.pts_actions = 0;
 
