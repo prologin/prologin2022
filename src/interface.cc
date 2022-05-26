@@ -25,6 +25,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& arr)
     return os;
 }
 
+
 extern "C" erreur api_avancer(int id, direction dir)
 {
     return api->avancer(id, dir);
@@ -88,6 +89,16 @@ extern "C" std::vector<action_hist> api_historique()
 extern "C" int api_gain(int nb_pains)
 {
     return api->gain(nb_pains);
+}
+
+extern "C" int api_inventaire(int taille)
+{
+    return api->inventaire(taille);
+}
+
+extern "C" std::vector<direction> api_trouver_chemin(position depart, position arrivee)
+{
+    return api->trouver_chemin(depart, arrivee);
 }
 
 extern "C" int api_moi()
@@ -177,14 +188,14 @@ std::ostream& operator<<(std::ostream& os, erreur v)
     case OK:
         os << "OK";
         break;
+    case TROUPE_INVALIDE:
+        os << "TROUPE_INVALIDE";
+        break;
     case HORS_TOUR:
         os << "HORS_TOUR";
         break;
     case MOUVEMENTS_INSUFFISANTS:
         os << "MOUVEMENTS_INSUFFISANTS";
-        break;
-    case TROUPE_INVALIDE:
-        os << "TROUPE_INVALIDE";
         break;
     case TROP_GRANDI:
         os << "TROP_GRANDI";
@@ -214,6 +225,10 @@ std::ostream& operator<<(std::ostream& os, erreur v)
     return os;
 }
 
+extern "C" void api_afficher_erreur(erreur v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, direction v)
 {
     switch (v)
@@ -240,6 +255,10 @@ std::ostream& operator<<(std::ostream& os, direction v)
     return os;
 }
 
+extern "C" void api_afficher_direction(direction v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, type_case v)
 {
     switch (v)
@@ -272,6 +291,10 @@ std::ostream& operator<<(std::ostream& os, type_case v)
     return os;
 }
 
+extern "C" void api_afficher_type_case(type_case v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, etat_barriere v)
 {
     switch (v)
@@ -289,6 +312,10 @@ std::ostream& operator<<(std::ostream& os, etat_barriere v)
     return os;
 }
 
+extern "C" void api_afficher_etat_barriere(etat_barriere v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, etat_nid v)
 {
     switch (v)
@@ -309,6 +336,10 @@ std::ostream& operator<<(std::ostream& os, etat_nid v)
     return os;
 }
 
+extern "C" void api_afficher_etat_nid(etat_nid v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, pigeon_debug v)
 {
     switch (v)
@@ -329,6 +360,10 @@ std::ostream& operator<<(std::ostream& os, pigeon_debug v)
     return os;
 }
 
+extern "C" void api_afficher_pigeon_debug(pigeon_debug v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, type_action v)
 {
     switch (v)
@@ -349,6 +384,11 @@ std::ostream& operator<<(std::ostream& os, type_action v)
     return os;
 }
 
+extern "C" void api_afficher_type_action(type_action v)
+{
+    std::cerr << v << std::endl;
+}
+
 std::ostream& operator<<(std::ostream& os, position v)
 {
     os << "{ ";
@@ -364,6 +404,10 @@ std::ostream& operator<<(std::ostream& os, position v)
     return os;
 }
 
+extern "C" void api_afficher_position(position v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, troupe v)
 {
     os << "{ ";
@@ -379,12 +423,22 @@ std::ostream& operator<<(std::ostream& os, troupe v)
     os << "dir"
        << "=" << v.dir;
     os << ", ";
+    os << "inventaire"
+       << "=" << v.inventaire;
+    os << ", ";
+    os << "pts_action"
+       << "=" << v.pts_action;
+    os << ", ";
     os << "id"
        << "=" << v.id;
     os << " }";
     return os;
 }
 
+extern "C" void api_afficher_troupe(troupe v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, etat_case v)
 {
     os << "{ ";
@@ -403,6 +457,10 @@ std::ostream& operator<<(std::ostream& os, etat_case v)
     return os;
 }
 
+extern "C" void api_afficher_etat_case(etat_case v)
+{
+    std::cerr << v << std::endl;
+}
 std::ostream& operator<<(std::ostream& os, action_hist v)
 {
     os << "{ ";
@@ -419,4 +477,9 @@ std::ostream& operator<<(std::ostream& os, action_hist v)
        << "=" << v.action_pos;
     os << " }";
     return os;
+}
+
+extern "C" void api_afficher_action_hist(action_hist v)
+{
+    std::cerr << v << std::endl;
 }

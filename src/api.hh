@@ -68,6 +68,14 @@ public:
     /// Renvoie le gain en score que le nombre de pains passé en entrée
     /// rapporterait s'ils étaient tous déposés d'un coup dans un nid
     int gain(int nb_pains);
+    
+    /// Renvoie la taille de l'inventaire d'une troupe de taille donnée
+    int inventaire(int taille);
+
+    /// Trouve un plus court chemin ouvert entre deux positions. Renvoie une
+    /// liste vide si les deux positions sont égales ou si aucun chemin
+    /// n'existe.
+    std::vector<direction> trouver_chemin(position depart, position arrivee);
 
     /// Renvoie votre numéro de joueur.
     int moi();

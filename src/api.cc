@@ -102,6 +102,18 @@ int Api::gain(int nb_pains)
     return ::gain(nb_pains);
 }
 
+int Api::inventaire(int taille)
+{
+    // TODO
+    abort();
+}
+
+std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
+{
+    // TODO
+    abort();
+}
+
 int gain(int nb_pains)
 {
     return nb_pains * nb_pains;
