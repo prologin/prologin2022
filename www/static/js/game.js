@@ -1,10 +1,3 @@
-import {Application} from "@pixi/app";
-import {Texture} from "@pixi/core";
-import {Container} from "@pixi/display";
-import {Graphics} from "@pixi/graphics";
-import {Sprite} from "@pixi/sprite";
-import {AnimatedSprite} from "@pixi/sprite-animated"
-
 const WINDOW_HEIGHT = 960;
 const WINDOW_WIDTH = 960;
 
@@ -23,7 +16,7 @@ const Direction = {
     BAS: 5,
 }
 
-const ASSET_ROOT = "/static/img/assets"
+const ASSET_ROOT = "/static/img/assets/"
 
 function generateMatrix() {
     let list = [];
@@ -38,32 +31,32 @@ function generateMatrix() {
 
 class Game {
     constructor() {
-        this.app = new Application({width: WINDOW_WIDTH, height: WINDOW_HEIGHT});
+        this.app = new PIXI.Application({width: WINDOW_WIDTH, height: WINDOW_HEIGHT});
         this.actions = [];
         this.action_index = 0;
         this.units = generateMatrix();
         this.upperMap = generateMatrix();
         this.lowerMap = generateMatrix();
         this.textures = {
-            grass: [new Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
-                new Texture.from(`${ASSET_ROOT}/grass/grass_2.png`),
-                new Texture.from(`${ASSET_ROOT}/grass/grass_3.png`)],
-            old: [new Texture.from(`${ASSET_ROOT}/old/old_1.png`),
-                new Texture.from(`${ASSET_ROOT}/old/old_2.png`),
-                new Texture.from(`${ASSET_ROOT}/old/old_3.png`),
-                new Texture.from(`${ASSET_ROOT}/old/old_4.png`),
-                new Texture.from(`${ASSET_ROOT}/old/old_1.png`),],
-            pigeon: new Texture.from(`${ASSET_ROOT}/pigeon/pigeon.png`),
-            dirt: new Texture.from(`${ASSET_ROOT}/dirt/dirt.png`),
-            spawn: new Texture.from(`${ASSET_ROOT}/spawn.png`),
-            nest_empty: new Texture.from(`${ASSET_ROOT}/nest_empty.png`),
-            nest_full: new Texture.from(`${ASSET_ROOT}/nest_full.png`),
-            bush: new Texture.from(`${ASSET_ROOT}/buisson.png`),
-            barrier_closed: new Texture.from(`${ASSET_ROOT}/barrier/barrier_1.png`),
-            barrier_open: new Texture.from(`${ASSET_ROOT}/barrier/gate.png`),
-            hole: new Texture.from(`${ASSET_ROOT}/trou.png`),
-            duck: new Texture.from(`${ASSET_ROOT}/ducks/duck_D.png`),
-            duckling: new Texture.from(`${ASSET_ROOT}/ducks/duckling_D.png`),
+            grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_2.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_3.png`)],
+            old: [new PIXI.Texture.from(`${ASSET_ROOT}/old/old_1.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/old/old_2.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/old/old_3.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/old/old_4.png`),
+                new PIXI.Texture.from(`${ASSET_ROOT}/old/old_1.png`),],
+            pigeon: new PIXI.Texture.from(`${ASSET_ROOT}/pigeon/pigeon.png`),
+            dirt: new PIXI.Texture.from(`${ASSET_ROOT}/dirt/dirt.png`),
+            spawn: new PIXI.Texture.from(`${ASSET_ROOT}/spawn.png`),
+            nest_empty: new PIXI.Texture.from(`${ASSET_ROOT}/nest_empty.png`),
+            nest_full: new PIXI.Texture.from(`${ASSET_ROOT}/nest_full.png`),
+            bush: new PIXI.Texture.from(`${ASSET_ROOT}/buisson.png`),
+            barrier_closed: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/barrier_1.png`),
+            barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/gate.png`),
+            hole: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
+            duck: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_D.png`),
+            duckling: new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_D.png`),
         }
     }
 
@@ -108,33 +101,33 @@ class Game {
 
 
     showDuckTooltip(player, index, x, y) {
-        let container = new Container();
+        let container = new PIXI.Container();
         const size = 200;
         const round = 10;
 
-        var rectangle = new Graphics();
+        var rectangle = new PIXI.Graphics();
         rectangle.beginFill(0xC0C0C0);
         rectangle.drawRoundedRect(0, 0, size, size, round);
         rectangle.width = size;
         rectangle.height = size;
 
-        const title = new Text('Troupe ' + player.troupes[index].id + ' (' + player.name + ')',
+        const title = new PIXI.Text('Troupe ' + player.troupes[index].id + ' (' + player.name + ')',
                                     {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 14, fill : 0x000000});
         title.x = 2 * round;
         title.y = round;
 
-        const troupe_size = new Text('Taille : ' + player.troupes[index].taile,
+        const troupe_size = new PIXI.Text('Taille : ' + player.troupes[index].taile,
                                     {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 12, fill : 0x000000});
         troupe_size.y = title.y + 2 * 14;
         troupe_size.x = title.x;
 
 
-        const inventory = new Text('Inventaire : ' + player.troupes[index].inventaire,
+        const inventory = new PIXI.Text('Inventaire : ' + player.troupes[index].inventaire,
                                     {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 12, fill : 0x000000});
         inventory.y = troupe_size.y + 2 * 14;
         inventory.x = title.x;
 
-        const actions_points = new Text('Points d\'action : ' + player.troupes[index].pts_actions,
+        const actions_points = new PIXI.Text('Points d\'action : ' + player.troupes[index].pts_actions,
                                     {fontFamily : "\"Lucida Console\", Monaco, monospace", fontSize: 12, fill : 0x000000});
         actions_points.y = inventory.y + 2 * 14;
         actions_points.x = title.x;
@@ -237,7 +230,7 @@ function create_game() {
 }
 
 function createAnimatedSprite(texture, x, y) {
-    let aSprite = new AnimatedSprite(texture, true);
+    let aSprite = new PIXI.AnimatedSprite(texture, true);
     aSprite.animationSpeed = 0.1;
     aSprite.loop = false;
     aSprite.x = y * SPRITE_WIDTH;
@@ -248,7 +241,7 @@ function createAnimatedSprite(texture, x, y) {
 }
 
 function createSprite(texture, x, y) {
-    let sprite = new Sprite(texture);
+    let sprite = new PIXI.Sprite(texture);
     sprite.x = y * SPRITE_WIDTH;
     sprite.y = x * SPRITE_HEIGHT;
     sprite.width = SPRITE_WIDTH;
