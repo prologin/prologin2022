@@ -306,16 +306,18 @@ TEST_F(ApiTest, ApiTrouverChemin)
 	}
 
 	std::pair<position, position> tests[] = {
-		{ {.colonne = 23, .ligne = 16, .niveau = 0},
-		  {.colonne = 28, .ligne = 14, .niveau = 0} },
-		{ {.colonne = 12, .ligne = 23, .niveau = 0},
-		  {.colonne = 13, .ligne = 21, .niveau = 0} },
-		{ {.colonne = 5 , .ligne = 1 , .niveau = 0},
-		  {.colonne = 11, .ligne = 1 , .niveau = 0} },
-		{ {.colonne = 26, .ligne = 39, .niveau = 0},
-		  {.colonne = 26, .ligne = 40, .niveau = 0} },
-		{ {.colonne = 18, .ligne = 5 , .niveau = 0},
-		  {.colonne = 21, .ligne = 6 , .niveau = 0} }
+		{ {.colonne = 23, .ligne = 16, .niveau = 0 },
+		  {.colonne = 28, .ligne = 14, .niveau = 0 } },
+		{ {.colonne = 12, .ligne = 23, .niveau = 0 },
+		  {.colonne = 13, .ligne = 21, .niveau = 0 } },
+		{ {.colonne = 5 , .ligne = 1 , .niveau = 0 },
+		  {.colonne = 11, .ligne = 1 , .niveau = 0 } },
+		{ {.colonne = 26, .ligne = 39, .niveau = 0 },
+		  {.colonne = 26, .ligne = 40, .niveau = 0 } },
+		{ {.colonne = 18, .ligne = 5 , .niveau = 0 },
+		  {.colonne = 21, .ligne = 6 , .niveau = 0 } },
+		{ {.colonne = 20, .ligne = 8 , .niveau = -1},
+		  {.colonne = 21, .ligne = 8 , .niveau = 0 } }
 	};
 
 	std::vector<direction> expectations[] = {	
@@ -323,11 +325,12 @@ TEST_F(ApiTest, ApiTrouverChemin)
 		{ OUEST, SUD, SUD, EST, EST},
 		{},
 		{},
-		{ NORD, EST, BAS, EST, NORD, NORD, NORD, HAUT, EST, SUD, EST, EST, SUD, SUD, OUEST, OUEST}
+		{ NORD, EST, BAS, EST, NORD, NORD, NORD, HAUT, EST, SUD, EST, EST, SUD, SUD, OUEST, OUEST},
+		{ NORD, HAUT, EST, SUD }
 	};
     for (const auto& player : players)
     {
-		for (int t = 0; t < 5; t++) {
+		for (int t = 0; t < 6; t++) {
 			std::vector<direction> got = player.api->trouver_chemin(tests[t].first, tests[t].second);
 			std::vector<direction> expected = expectations[t];
         	ASSERT_EQ(got.size(), expected.size());
