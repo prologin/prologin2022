@@ -4,7 +4,7 @@ default_cell_type: buildable_grass
 
 cell_types:
     non_buildable_grass:
-        sprite: bg/gazon.png
+        sprite: bg/gazon-non-constructible.png
         serialize:
             method: ascii
             ascii: ' '
