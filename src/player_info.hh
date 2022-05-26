@@ -66,6 +66,8 @@ public:
     bool cancel();
 
 private:
+    void init_troupes(const Map& map, etat_nid);
+
     std::shared_ptr<rules::Player> rules_player_;
     std::vector<internal_action> internal_hist_;
 

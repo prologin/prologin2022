@@ -1,29 +1,21 @@
 #include "player_info.hh"
 #include "position.hh"
 
-namespace
+void PlayerInfo::init_troupes(const Map& map, etat_nid nid)
 {
-std::array<troupe, NB_TROUPES> init_troupes(const rules::Player& player,
-                                            const Map& map, etat_nid nest_id)
-{
-    std::array<troupe, NB_TROUPES> troupes;
-
-    auto dir = nest_id == JOUEUR_0 ? NORD : SUD;
+    auto dir = nid == JOUEUR_0 ? NORD : SUD;
     for (int i = 0; i < NB_TROUPES; i++, dir = clockwise_dir(dir))
     {
         auto head = map.get_spawn_toward(dir);
-        std::vector<position> body;
-        for (int j = 0; j < TAILLE_DEPART; j++)
-            body.push_back(head);
+        std::vector<position> body = {head};
+        for (int j = 1; j < TAILLE_DEPART; j++)
+            canards_additionnels_[i].push(head);
 
-        troupes[i] = troupe{
-            head, body, TAILLE_DEPART, inverse_dir(dir), 0, 0, i + 1,
+        troupes_[i] = troupe{
+            head, body, 1, inverse_dir(dir), 0, 0, i + 1,
         };
     }
-
-    return troupes;
 }
-} // namespace
 
 PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
                        etat_nid player_nid_id)
@@ -31,10 +23,10 @@ PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
     , score_(0)
     , pains_(0)
     , tunnels_(0)
-    , troupes_(init_troupes(*rules_player_, map, player_nid_id))
     , player_nid_id_(player_nid_id)
 {
     rules_player_->score = 0;
+    init_troupes(map, player_nid_id);
     reset_pts_actions();
 }
 
@@ -208,6 +200,7 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
     auto last = q->front();
     q->pop();
     map.mark_canard(last);
+    get_troupe(troupe_id)->taille++;
     get_troupe(troupe_id)->canards.push_back(last);
 }
 

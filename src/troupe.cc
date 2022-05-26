@@ -2,18 +2,19 @@
 
 #include "api.hh"
 
-#define INV_MAX(A) A - 1
+#define INV_MAX(A) ((A)-1)
 
 void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
     // Dropping the bread
-    for (auto i = 0; i < trp.inventaire; ++i) {
+    for (auto i = 0; i < trp.inventaire; ++i)
+    {
         map.get_cell(trp.canards[trp.taille - 1 - i]).etat.nb_pains += 1;
 
         // Log event
         internal_action action;
         action.type = spread_bread;
-        action.action.action_pos = trp.canards[trp.taille - 1 -i];
+        action.action.action_pos = trp.canards[trp.taille - 1 - i];
         player_info.add_internal_action(action);
     }
     trp.inventaire = 0;
@@ -36,6 +37,7 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
     action.action.action_pos = trp.maman;
     player_info.add_internal_action(action);
 
+    trp.taille = 1;
     trp.canards = {trp.maman};
     trp.pts_actions = 0;
 
@@ -52,8 +54,9 @@ void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
         auto amount = nb_pains;
         if (INV_MAX(trp.taille) - trp.inventaire < amount)
             amount = INV_MAX(trp.taille) - trp.inventaire;
-        
-        if (amount) {
+
+        if (amount)
+        {
             // Log event
             internal_action action;
             action.type = take_bread;
@@ -76,7 +79,8 @@ void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
 {
     if (map.get_cell(trp.maman).nid == player.get_player_nid_id())
     {
-        if (trp.inventaire) {
+        if (trp.inventaire)
+        {
             // Log event
             internal_action action;
             action.type = leave_bread;
@@ -103,7 +107,7 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
     }
     else
     {
-        map.get_cell(trp.canards[trp.taille - 1]).canard_sur_case = false;
+        map.get_cell(trp.canards.back()).canard_sur_case = false;
         for (int i = trp.taille - 1; i > 0; --i)
             trp.canards[i] = trp.canards[i - 1];
         trp.canards[0] += delta;

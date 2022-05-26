@@ -13,7 +13,7 @@ void assert_troupe_moved(troupe& trp_after, troupe& trp_before, direction dir,
     ASSERT_EQ(trp_before.maman + delta, trp_after.maman)
         << "First Duck did not move accordingly line: " << line;
 
-    for (int i = trp_after.taille - 1; i > 0; --i)
+    for (int i = trp_before.taille - 1; i > 0; --i)
     {
         ASSERT_EQ(trp_before.canards[i - 1], trp_after.canards[i])
             << "Duck number " << i
@@ -45,11 +45,11 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
 
 void place_trp(troupe* trp, std::vector<position> pos, Map& map)
 {
-    if (trp->canards.size() != pos.size())
-        FATAL("new_pos must have the same size as the number of ducks");
     map.delete_troupe(*trp);
-    for (size_t i = 0; i < trp->canards.size(); ++i)
-        trp->canards[i] = pos[i];
+    trp->canards.clear();
+    trp->taille = pos.size();
+    for (size_t i = 0; i < pos.size(); ++i)
+        trp->canards.push_back(pos[i]);
     trp->maman = trp->canards[0];
     map.mark_troupe(*trp);
 }
@@ -97,7 +97,7 @@ TEST_F(ApiTest, ActionAvancerAutorisee)
         test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
     ASSERT_EQ(OK, err);
     ASSERT_EQ(original - 1, trp->pts_actions);
-    ASSERT_EQ(former_size, trp->canards.size());
+    ASSERT_EQ(former_size + 1, trp->canards.size());
 }
 
 TEST_F(ApiTest, ActionAvancerInvalidTroupe)
@@ -221,11 +221,11 @@ TEST_F(ApiTest, ActionAvancerAvecSpawn)
 
     auto former_size = trp->canards.size();
 
+    auto size_before = player.info->canards_additionnels(1)->size();
     player.info->enfiler_canard(1);
     test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
 
-    EXPECT_EQ(static_cast<size_t>(0),
-              player.info->canards_additionnels(1)->size());
+    EXPECT_EQ(size_before, player.info->canards_additionnels(1)->size());
     ASSERT_EQ(static_cast<size_t>(former_size + 1), trp->canards.size());
 }
 
@@ -368,12 +368,12 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPlein)
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 15;
-    trp->inventaire = 4;
+    trp->inventaire = 5;
 
     player.api->avancer(1, EST);
 
-    ASSERT_EQ(15, map.get_cell(pains).etat.nb_pains);
-    ASSERT_EQ(4, trp->inventaire);
+    EXPECT_EQ(15, map.get_cell(pains).etat.nb_pains);
+    ASSERT_EQ(5, trp->inventaire);
 }
 
 TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
@@ -393,10 +393,10 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 15;
-    trp->inventaire = 2;
+    trp->inventaire = 3;
 
     player.api->avancer(1, EST);
 
     ASSERT_EQ(13, map.get_cell(pains).etat.nb_pains);
-    ASSERT_EQ(4, trp->inventaire);
+    ASSERT_EQ(5, trp->inventaire);
 }
