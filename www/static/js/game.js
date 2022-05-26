@@ -120,9 +120,9 @@ class Game {
                 const symbol = upperMapString.charAt(char_index);
                 switch (symbol) {
                     case '#':
-                        const bush = createSprite(textures.bush, i, j);
+                        const bush = new Bush(i, j);
+                        bush.display(this.app);
                         this.bushes.push(bush);
-                        this.app.stage.addChild(bush);
                         break;
                     case 'S':
                         this.app.stage.addChild(createSprite(textures.spawn, i, j));
@@ -155,8 +155,39 @@ class Game {
 
     }
 
-    displayMapChanges() {
+    displayMapChanges(index) {
+        const totalSize = MAP_SIZE * MAP_SIZE;
+        const lowerMapString = this.dump[index].map.cells.substr(0, totalSize);
+        const upperMapString = this.dump[index].map.cells.substr(totalSize, totalSize * 2);
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                const char_index = i * MAP_SIZE + j;
+                const symbol = upperMapString.charAt(char_index);
+                switch (symbol) {
+                    case '#':
+                        let bush = this.findBushByCoords(i, j);
+                        if (bush == null) {
+                            bush = new Bush(i, j);
+                            bush.display(this.app);
+                            this.bushes.push(bush);
+                        }
+                        break;
+                    case 'B':
+                    case 'b':
+                        //Custom logic
+                        break;
+                }
+            }
+        }
+    }
 
+    findBushByCoords(x, y) {
+        for (const bush of this.bushes) {
+            if (bush.posX === x && bush.posY === y) {
+                return bush;
+            }
+        }
+        return null;
     }
 
     displayDucks(index) {
@@ -165,10 +196,19 @@ class Game {
         for (let i = 0, k = 0; i < roundData.length; i++) {
             for (let j = 0; j < roundData[i].troupes.length; j++, k++) {
                 this.troupes[k] = [];
+                // Display the duck.
                 const troupe = roundData[i].troupes[j];
                 const duck = new Duck(troupe.maman.colonne, troupe.maman.ligne, troupe.dir);
                 duck.display(this.app);
                 this.troupes[k].push(duck);
+
+                // Pushes the ducklings
+                for (let l = 1; l < troupe.canards.length; l++) {
+                    const canard = troupe.canards[l];
+                    const duckling = new Duckling(canard.colonne, canard.ligne, 1);
+                    duckling.display(this.app);
+                    this.troupes[k].push(duckling);
+                }
             }
         }
     }
@@ -312,23 +352,39 @@ class Duck extends PIXI.AnimatedSprite {
     }
 }
 
-class Duckling extends PIXI.AnimatedSprite {
+class Bush extends PIXI.Sprite {
     constructor(x, y) {
-        const spriteSheet = {
-            north: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_1.png`),
+        super(textures.bush);
+        this.x = calculateX(x);
+        this.y = calculateY(y);
+        this.width = SPRITE_WIDTH;
+        this.height = SPRITE_HEIGHT;
+        this.posX = x;
+        this.posY = y;
+    }
+
+    display(app) {
+        app.stage.addChild(this);
+    }
+}
+
+class Duckling extends PIXI.AnimatedSprite {
+    constructor(x, y, dir) {
+        const spriteSheet = [
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_3.png`)],
-            south: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_1.png`),
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_3.png`)],
-            east: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_1.png`),
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_3.png`)],
-            west: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_1.png`),
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_3.png`)],
-        }
-        super(spriteSheet['south'], true);
+        ];
+        super(spriteSheet[dir], true);
         this.spriteSheet = spriteSheet;
         this.animationSpeed = 0.1;
         this.loop = false;
@@ -339,20 +395,7 @@ class Duckling extends PIXI.AnimatedSprite {
     }
 
     changeOrientation(dir) {
-        switch (dir) {
-            case 0:
-                this.textures = this.spriteSheet.south;
-                break;
-            case 1:
-                this.textures = this.spriteSheet.south;
-                break;
-            case 2:
-                this.textures = this.spriteSheet.east;
-                break;
-            case 3:
-                this.textures = this.spriteSheet.west;
-                break;
-        }
+        this.textures = this.spriteSheet[dir];
     }
 
     display(app) {
