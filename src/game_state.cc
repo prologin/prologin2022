@@ -6,8 +6,7 @@
 
 namespace
 {
-std::array<PlayerInfo, 2> init_players(const rules::Players& players,
-                                       Map& map)
+std::array<PlayerInfo, 2> init_players(const rules::Players& players, Map& map)
 {
     std::vector<PlayerInfo> result;
     std::array<etat_nid, 2> joueurs = {JOUEUR_0, JOUEUR_1};
@@ -34,6 +33,7 @@ GameState::GameState(std::istream& map_stream, const rules::Players& players)
     , map_(map_stream)
     , players_(init_players(players, map_))
     , round_(0)
+    , turn_(0)
     , init_(false)
 {
 }
@@ -43,13 +43,12 @@ GameState::GameState(const GameState& st)
     , map_(st.map_)
     , players_(st.players_)
     , round_(st.round_)
+    , turn_(st.turn_)
     , init_(st.init_)
 {
 }
 
-GameState::~GameState()
-{
-}
+GameState::~GameState() {}
 
 GameState* GameState::copy() const
 {
@@ -118,16 +117,20 @@ int GameState::get_round() const
 
 void GameState::next_round()
 {
-	if (round_ == ROUND_FERMETURE)
+    if (round_ == ROUND_FERMETURE)
         map_.changer_barrieres();
     round_++;
 }
 
-int GameState::round_player_id() const
+void GameState::next_turn()
 {
-    return round_ % player_count();
+    turn_++;
 }
 
+int GameState::turn_player_id() const
+{
+    return turn_ % player_count();
+}
 
 bool GameState::is_finished() const
 {

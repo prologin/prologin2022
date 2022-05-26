@@ -23,7 +23,7 @@ Rules::Rules(const rules::Options opt)
             champion_dll_->get<f_champion_partie_init>("partie_init");
         champion_jouer_tour_ =
             champion_dll_->get<f_champion_jouer_tour>("jouer_tour");
-            champion_dll_->get<f_champion_partie_fin>("partie_fin");
+        champion_dll_->get<f_champion_partie_fin>("partie_fin");
     }
 
     std::ifstream ifs(opt.map_file);
@@ -156,6 +156,7 @@ void Rules::end_of_player_turn(unsigned int player_key)
 
     api_->game_state().set_init(false);
     api_->game_state().get_map().decrementer_papy(player);
+    api_->game_state().next_turn();
     api_->clear_old_game_states();
 }
 

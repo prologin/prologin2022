@@ -353,7 +353,7 @@ static std::ostream& operator<<(std::ostream& ss, const GameState& st)
     std::vector<PlayerInfo> players_vec(players.begin(), players.end());
 
     return ss << '{' << KV{"round", "{"} << KV{"round_id", st.get_round()}
-              << ", " << KV{"player_id", st.round_player_id()} << "}, "
+              << ", " << KV{"player_id", st.turn_player_id()} << "}, "
               << KV{"map", st.get_map()} << ", "
               << KV{"players", Vec{players_vec}} << ", "
               << KV{"is_finished", st.is_finished()} << "}\n";

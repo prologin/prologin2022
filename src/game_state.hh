@@ -26,8 +26,14 @@ public:
     PlayerInfo& get_player(int id);
     const PlayerInfo& get_other(int id) const;
     PlayerInfo& get_other(int id);
-    int player_count() const { return players_.size(); }
-    const std::array<PlayerInfo, 2> players() const { return players_; }
+    int player_count() const
+    {
+        return players_.size();
+    }
+    const std::array<PlayerInfo, 2> players() const
+    {
+        return players_;
+    }
 
     PlayerInfo* get_player_ptr(int id);
 
@@ -38,9 +44,10 @@ public:
     // Rounds
     int get_round() const;
     void next_round();
+    void next_turn();
     bool is_finished() const;
     // The identifier of the player playing in the current round.
-    int round_player_id() const;
+    int turn_player_id() const;
 
     bool is_init() const;
     void set_init(bool init);
@@ -51,5 +58,6 @@ private:
     Map map_;
     std::array<PlayerInfo, 2> players_; // Troupes, scores, etc.
     int round_;                         // Note : 1 round = 2 tours
+    int turn_;
     bool init_;
 };
