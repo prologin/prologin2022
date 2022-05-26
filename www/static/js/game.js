@@ -224,10 +224,8 @@ function map_char_to_sprite(input_char, i, j) {
             break;
         default:
             if ('0' <= input_char && input_char <= '9') {
-                texture = texture.old[0];
-                break;
+                return createSprite(texture.old[0], i, j);
             }
-            texture = textures.grass[Math.floor(Math.random() * 3)];
             break;
     }
     if (texture !== undefined) {
