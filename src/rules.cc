@@ -146,7 +146,7 @@ void Rules::end_of_player_turn(unsigned int player_key)
         while (player.pts_actions(trp.id)) {
             // Log event
             internal_action action;
-            action.type = standard_action;
+            action.type = auto_move;
             action.action.troupe_id = trp.id;
             action.action.action_dir = trp.dir;
             player.add_internal_action(action);

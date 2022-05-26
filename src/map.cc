@@ -90,17 +90,9 @@ void Map::load_map_cells(std::istream& stream)
             switch (cell)
             {
             case ' ':
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, GAZON, false, false};
                 break;
             case '.':
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, GAZON, true, false};
                 break;
             case 'S':
@@ -117,10 +109,6 @@ void Map::load_map_cells(std::istream& stream)
                 spawns.push_back(pos);
                 break;
             case 'N':
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, NID, false, false};
                 get_cell(pos).nid = LIBRE;
                 break;
@@ -128,35 +116,19 @@ void Map::load_map_cells(std::istream& stream)
                 get_cell(pos).etat = etat_case{pos, BUISSON, false, false};
                 break;
             case 'B':
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
                 get_cell(pos).barriere = FERMEE;
                 barrieres_.push_back(pos);
                 break;
             case 'b':
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, BARRIERE, false, false};
                 get_cell(pos).barriere = OUVERTE;
                 barrieres_.push_back(pos);
                 break;
             case 'X':
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 get_cell(pos).etat = etat_case{pos, TROU, false, false};
                 break;
             default:
-                if (border)
-                    FATAL("map: empty cell found at the border of the map"
-                          "'%c' found line %d column %d",
-                          cell, ligne + 1, colonne + 1);
                 int tours = cell - '0';
                 if (tours < 0 || tours > 9)
                     FATAL("map: invalid cell type '%c'"

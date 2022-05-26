@@ -989,6 +989,11 @@
   resolved "https://registry.yarnpkg.com/@pixi/display/-/display-6.3.2.tgz#675411567b3f92c6906498cbfea44a3d427323eb"
   integrity sha512-D+WiM0BcyPK91RYxl7TXXVNz/5lOGs8Q6jtCMcWgTHwCXxWPOHFnNZ4KPJZpUQ7me8Tl2u+c9hfB5Oh1+17r/Q==
 
+"@pixi/graphics@^6.3.2":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@pixi/graphics/-/graphics-6.3.2.tgz#9c513600c8ec6876b050da4eb2781b843ba519c8"
+  integrity sha512-GaykoXJr0pV0e9TB1yOcgvJf9i/fIF/cgT+DnGz82uninWMo31aFJSvhLbZOcEPQRfdHXdFfUkQAAMTICAp7+Q==
+
 "@pixi/math@^6.3.2":
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/@pixi/math/-/math-6.3.2.tgz#e3db7500e43bc327b60e7a2056eaf53cdefda3e4"
@@ -1005,6 +1010,16 @@
   integrity sha512-i5cLDUWFnRub3LPa3x7IzkH8MjSwPHyHWzIZKG5t8RiCfbhVfhWGEdKO9AYp8yO/xcf7AqtPK4mikXziL48tXA==
   dependencies:
     ismobilejs "^1.1.0"
+
+"@pixi/sprite-animated@^6.3.2":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@pixi/sprite-animated/-/sprite-animated-6.3.2.tgz#ab96cf991abfc19004e3835638beec6b404ce0e6"
+  integrity sha512-fSY64i5BqbOmtFKhgOWf9iML4gId7l5hcniUT/s95+eIZiyYss+jxeekVH22DrAyCOAIdsLEClvGCHGj8iXTFw==
+
+"@pixi/sprite@^6.3.2":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@pixi/sprite/-/sprite-6.3.2.tgz#d689626a0f1d6a7baff4a23d2d13dd74a209b42f"
+  integrity sha512-T1KJ8l2f8Otn6Se6h4b2pz2nrUSe59Pnmj2WIzgBisM245h7dGATs05MisMaLV6Lg/3gTBTxsLBmKsbDSQqbNw==
 
 "@pixi/ticker@^6.3.2":
   version "6.3.2"
