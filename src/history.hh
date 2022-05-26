@@ -12,6 +12,10 @@ enum internal_action_type
 {
     flag,
     standard_action,
+    troupe_respawn,
+    take_bread,
+    spread_bread,
+    leave_bread,
 };
 
 typedef struct flag_info

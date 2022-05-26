@@ -168,19 +168,23 @@ static std::ostream& operator<<(std::ostream& ss, position pos)
 
 static std::ostream& operator<<(std::ostream& ss, action_hist action)
 {
-    ss << '{' << KV{"action_type", action.action_type} << ", ";
-
     switch (action.action_type)
     {
     case ACTION_AVANCER:
+        ss << '{' << KV{"action_type", "avancer"} << ", ";
         ss << KV{"troupe_id", action.troupe_id} << ", ";
         ss << KV{"direction", action.action_dir};
         break;
     case ACTION_CONSTRUIRE:
+        ss << '{' << KV{"action_type", "construire"} << ", ";
+        ss << KV{"position", action.action_pos};
+        break;
     case ACTION_CREUSER:
+        ss << '{' << KV{"action_type", "creuser"} << ", ";
         ss << KV{"position", action.action_pos};
         break;
     case ACTION_GRANDIR:
+        ss << '{' << KV{"action_type", "grandir"} << ", ";
         ss << KV{"troupe_id", action.troupe_id};
         break;
     }
@@ -272,12 +276,17 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
 
 static std::ostream& operator<<(std::ostream& ss, internal_action action)
 {
-    if (action.type == standard_action)
-        return ss << action.action;
-    assert(action.type == flag);
-    return ss << '{' << KV{"action_type", "\"afficher_debug_pigeon\""} << ", "
-              << KV{"pos", action.flag.pos} << ", "
-              << KV{"debug_pigeon", action.flag.ctype} << '}';
+    switch (action.type) {
+        case standard_action:
+            return ss << action.action;
+        case troupe_respawn:
+            return ss << '{' << KV{"action_type", "\"respawn\""} << ", "
+                << KV{"troupe_id", action.action.troupe_id} << '}';
+        case flag:
+            return ss << '{' << KV{"action_type", "\"debug\""} << ", "
+                << KV{"pos", action.flag.pos} << ", "
+                << KV{"debug", action.flag.ctype} << '}';
+    }
 }
 
 static std::ostream& operator<<(std::ostream& ss, const PlayerInfo& player)

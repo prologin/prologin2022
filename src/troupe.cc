@@ -6,6 +6,12 @@
 
 void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
+    // Log event
+    internal_action action;
+    action.type = troupe_respawn;
+    action.action.troupe_id = trp.id;
+    player_info.add_internal_action(action);
+
     // Dropping the bread
     for (auto i = 0; i < trp.inventaire; ++i)
         map.get_cell(trp.canards[trp.taille - 1 - i]).etat.nb_pains += 1;
