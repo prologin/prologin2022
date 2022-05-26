@@ -26,7 +26,7 @@ SYMETRY = ["NONE", "CENT", "HORI", "VERT", "DIAG1", "DIAG2"]
 
 # Load configuration
 with open(res_dir + '/conf.yml') as f:
-    CONF = yaml.load(f)
+    CONF = yaml.load(f, Loader=yaml.Loader)
 
 MAP_SIZE = CONF['map_size']
 CELL_TYPES = CONF['cell_types']
