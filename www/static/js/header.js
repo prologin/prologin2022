@@ -26,8 +26,8 @@ $(function() {
     $('[role=complementary] h1').text('').html('<img src="/static/img/logo.png" style="width:100%; padding: 20px 10px;" />');
 
     // let's have some easter egg
-    const p1 = $('<img src="/static/img/rainbow.gif" class="easter-egg" />'),
-        p2 = $('<img src="/static/img/pattern.gif" class="easter-egg" />'),
+    const p1 = $('<img src="/static/img/old.apng" class="easter-egg" />'),
+        p2 = $('<img src="/static/img/duck.apng" class="easter-egg" />'),
         dog = $('<div class="easter-egg-42"><img src="/static/img/dogo.gif" class="dogo" /></div>');
 
     plan_42_event(flip_dogo);
