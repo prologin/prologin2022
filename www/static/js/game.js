@@ -221,7 +221,7 @@ class Game {
     }
 
     startGameLoop() {
-        this.app.ticker.add(delta => gameLoop(delta));
+        this.app.ticker.add(delta => this.gameLoop(delta));
     }
 }
 
