@@ -18,7 +18,13 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
     trp.inventaire = 0;
 
     // Determining the spawn_point
-    trp.maman = map.get_spawn_toward(trp.dir);
+    direction dir = trp.dir;
+    do
+    {
+        trp.maman = map.get_spawn_toward(dir);
+        dir = clockwise_dir(dir);
+    } while (map.get_cell(trp.maman).canard_sur_case);
+
     trp.canards = {trp.maman};
     trp.pts_actions = 0;
 
