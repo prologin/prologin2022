@@ -239,7 +239,9 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
 
                 switch (cell.etat.contenu) {
                     case GAZON:
-                        if (cell.etat.est_constructible)
+                        if (cell.point_spawn)
+                            ss << 'S';
+                        else if (cell.etat.est_constructible)
                             ss << '.';
                         else
                             ss << ' ';
