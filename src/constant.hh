@@ -39,7 +39,7 @@
 #define COUT_BUISSON 3
 
 /// Tour au moment duquel les barrières s'ouvrent ou se ferment
-#define TOUR_FERMETURE 100
+#define TOUR_FERMETURE 200
 
 /// Erreurs possibles après avoir effectué une action
 typedef enum erreur
