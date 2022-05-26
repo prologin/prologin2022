@@ -12,6 +12,8 @@ $(function () {
     $replay.append('<div id="replay_view"></div>');
     let $replay_view = $("#replay_view");
 
+    $turnSlider.attr('min', 0).attr('max', 400 - 1).val(0);
+
     $replay_view.hide();
 
     $.getScript('/static/js/out.js')
@@ -50,7 +52,7 @@ $(function () {
             game.displayRound(dump_data[current_turn]);
         };
         $next[0].onclick = e => {
-            if (current_turn == 100)
+            if (current_turn == 400)
                 return;
             current_turn += 1;
             $turnLabel.text(current_turn);
@@ -60,7 +62,7 @@ $(function () {
         $turnSlider.change(function (e) {
             current_turn = parseInt($turnSlider.val());
             $previous.prop('disabled', current_turn <= 0);
-            $next.prop('disabled', current_turn > 100);
+            $next.prop('disabled', current_turn > 400);
             $turnLabel.text(current_turn);
 
             // Trigger update iff the event was trigger by the UI
