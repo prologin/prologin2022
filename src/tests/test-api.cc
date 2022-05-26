@@ -271,6 +271,24 @@ TEST_F(ApiTest, ApiGain)
     }
 }
 
+TEST_F(ApiTest, ApiInventaire)
+{
+    const int taille_troupe_array[] = {-10, -1, 0, 1, 5, 8, 11, 14, 18, 20};
+
+    for (const auto& player : players)
+    {
+        int previous = 0;
+
+        for (const auto& taille : taille_troupe_array)
+        {
+            int now = player.api->inventaire(taille);
+            ASSERT_TRUE(now >= previous);
+            ASSERT_TRUE(now >= 0);
+            previous = now;
+        }
+    }
+}
+
 TEST_F(ApiTest, ApiMoi)
 {
     ASSERT_EQ(static_cast<size_t>(2), players.size());

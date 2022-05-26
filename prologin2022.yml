@@ -51,9 +51,9 @@ constant:
     cst_val: 3
     cst_comment: Coût en score de la pose de buisson
   -
-    cst_name: TOUR_FERMETURE
-    cst_val: 100
-    cst_comment: Tour au moment duquel les barrières s'ouvrent ou se ferment
+    cst_name: ROUND_FERMETURE
+    cst_val: 99
+    cst_comment: Round à la fin duquel les barrières s'ouvrent ou se ferment
 
 enum:
   - enum_name: erreur
@@ -273,6 +273,24 @@ function:
     fct_ret_type: int
     fct_arg:
       - [nb_pains, int, "Nombre de miches de pain déposées"]
+
+  -
+    fct_name: inventaire
+    fct_summary: Renvoie la taille de l'inventaire d'une troupe de taille donnée
+    fct_ret_type: int
+    fct_arg:
+      - [taille, int, "Taille de la troupe"]
+
+  -
+    fct_name: trouver_chemin
+    fct_summary: Trouve un plus court chemin ouvert entre deux positions.
+      Renvoie une liste vide si les deux positions sont égales ou si aucun
+      chemin n'existe.
+    fct_ret_type: direction array
+    fct_arg:
+      - [depart, position, "Position de départ"]
+      - [arrivee, position, "Position d'arrivée"]
+
 # Autres
   -
     fct_name: moi

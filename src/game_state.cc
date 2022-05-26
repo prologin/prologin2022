@@ -119,7 +119,7 @@ void GameState::next_round()
 {
     round_++;
 
-    if (round_ == TOUR_FERMETURE)
+    if (round_ == ROUND_FERMETURE)
         map_.changer_barrieres();
 }
 

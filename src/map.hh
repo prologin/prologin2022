@@ -32,6 +32,7 @@ public:
     const position& get_spawn_toward(const direction& dir) const;
     bool case_praticable(const position& pos) const;
     bool case_mortelle(const position& pos) const;
+    std::vector<direction> directions_non_mortelles(const position& pos) const;
 
     void mark_troupe(const troupe& trp);
     void delete_troupe(const troupe& trp);
