@@ -18,31 +18,31 @@ def display_map():
     def display_case(case):
         contenu = case.contenu
         if contenu == type_case.GAZON:
-            return ' '
+            return '  '
         if contenu == type_case.BUISSON:
-            return '█'
+            return '██'
         if contenu == type_case.BARRIERE:
             if info_barriere(case.pos) == etat_barriere.OUVERTE:
-                return ' '
+                return '  '
             else:
-                return '█'
+                return '██'
         if contenu == type_case.NID:
             if info_nid(case.pos) == etat_nid.LIBRE:
-                return 'O'
+                return 'O '
             if info_nid(case.pos) == moi() + 1:
-                return 'O'
-            return 'O'
+                return 'O!'
+            return 'Ox'
         if contenu == type_case.PAPY:
-            return str(papy_tours_restants(case.pos))
+            return '0' + str(papy_tours_restants(case.pos))
         if contenu == type_case.TROU:
-            return '╳'
+            return '╳ '
         if contenu == type_case.TUNNEL:
-            return ' '
-        return '█'
+            return '  '
+        return '██'
 
-    pains_str = [' ', '.', ':', '…'] + [str(x % 10) for x in range(4, 50)]
+    pains_str = ['  ', ' .', '..', '.:', '::', ':…', '……'] + ['++'] * 100
 
-    parc = [[[' '] * LARGEUR for _ in range(HAUTEUR)] for _ in range(2)]
+    parc = [[['  '] * LARGEUR for _ in range(HAUTEUR)] for _ in range(2)]
 
     for z in range(-1, 1):
         for y in range(HAUTEUR):
@@ -50,25 +50,21 @@ def display_map():
                 pos = x, y, z
                 case = info_case(pos)
                 parc[z][y][x] = display_case(case)
+                if case.nb_pains > 0:
+                    parc[z][y][x] = pains_str[case.nb_pains]
 
-    for pos in pains():
-        x, y, z = pos
-        act = parc[z][y][x]
-        if not act in pains_str:
-            parc[z][y][x] = pains_str[1]
-        else:
-            act = pains_str.index(act)
-            parc[z][y][x] = pains_str[act+1]
 
     for troupe in troupes_joueur(moi()):
         for x, y, z in troupe.canards:
-            parc[z][y][x] = 'm'
+            parc[z][y][x] = '||'
             if troupe.maman == (x, y, z):
-                parc[z][y][x] = 'M'
+                parc[z][y][x] = 'MM'
 
     for troupe in troupes_joueur(adversaire()):
         for x, y, z in troupe.canards:
-            parc[z][y][x] = 'A'
+            parc[z][y][x] = '||'
+            if troupe.maman == (x, y, z):
+                parc[z][y][x] = 'AA'
 
 
     
@@ -77,7 +73,7 @@ def display_map():
             for case in ligne:
                 print(case, end = '')
             print()
-        print('-----------')
+        #print('-----------')
 
 def traversable(pos):
     x, y, z = pos
@@ -276,12 +272,19 @@ def mon_nid(position):
 def nid_libre(position):
     return info_case(position).contenu == type_case.NID and info_nid(position) == etat_nid.LIBRE
 
-def step_to(troupe, condition):
+def step_to(troupe, condition, n = 1):
+    n = 1
     target, path = nearest(troupe.id, condition)
-    if target is None:
-        return False
-    else:
-        return avancer(troupe.id, path.pop()) == erreur.OK
+    while n > 0:
+        n -= 1
+        if target is None:
+            return False
+        else:
+            if len(path) == 0:
+                return True
+            if avancer(troupe.id, path.pop()) != erreur.OK:
+                return False
+    return True
 
 def canmove(pos, condition = lambda pos: traversable(pos)):
     x, y, z = pos
@@ -311,27 +314,31 @@ def jouer_tour():
     for troupe_id in ids:
         dprint(troupe_id, "start")
         troupe = get_troupe_by_id(troupe_id)
+        flag = False
         while troupe.pts_action > 0:
             #display_map()
             #print(troupe.pts_action, "pts remaining")            
             if troupe.inventaire > 0:
                 #print(troupe.inventaire, "pains in inventory, trying to get to our nest")
-                if not step_to(troupe, lambda pos: mon_nid(pos)):
+                if not step_to(troupe, lambda pos: mon_nid(pos), troupe.pts_action):
                     #print("Can't get to my nest ! Trying to reach a free nest")
                     while troupe.pts_action > 0:
-                        if not step_to(troupe, lambda pos: nid_libre(pos)):
+                        if not step_to(troupe, lambda pos: nid_libre(pos), troupe.pts_action):
                             #print("Can't reach it ! Trying to grow")
                             if grandir(troupe_id) != erreur.OK:
                                 #print("Can't grow ! Trying to move")
                                 dirs = canmove(troupe.maman)
                                 if len(dirs) == 0:
                                     #print("Can't move ! *dies*")
+                                    flag = True
                                     break
                                 avancer(troupe_id, dirs[0][0])
                         troupe = get_troupe_by_id(troupe_id)
+                    if flag:
+                        break
             else:
                 #print("No pain in inventory. Searching for some")
-                if not step_to(troupe, lambda pos:beaucoup_pains(pos)):
+                if not step_to(troupe, lambda pos:beaucoup_pains(pos), troupe.pts_action):
                     #print("Can't get to bread. Trying to grow")
                     if grandir(troupe_id) != erreur.OK:
                         #print("Can't grow. Trying to move")
