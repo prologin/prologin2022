@@ -211,6 +211,12 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
     map.mark_canard(last, *this, troupe_id);
     get_troupe(troupe_id)->taille++;
     get_troupe(troupe_id)->canards.push_back(last);
+
+    internal_action action;
+    action.type = troupe_respawn;
+    action.action.troupe_id = troupe_id;
+    action.action.action_pos = last;
+    add_internal_action(action);
 }
 
 const std::vector<internal_action>& PlayerInfo::get_internal_history() const

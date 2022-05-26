@@ -128,7 +128,8 @@ static std::ostream& operator<<(std::ostream& ss, Str str)
 // Basic structs.
 // ===========================================================================
 
-template <typename V> struct KV
+template <typename V>
+struct KV
 {
     KV(std::string_view key, const V& value)
         : key(key)
@@ -146,12 +147,14 @@ static std::ostream& operator<<(std::ostream& ss, KV<V> kv)
     return ss << Str(kv.key) << ": " << kv.value;
 }
 
-template <> std::ostream& operator<<(std::ostream& ss, KV<bool> kv)
+template <>
+std::ostream& operator<<(std::ostream& ss, KV<bool> kv)
 {
     return ss << Str(kv.key) << ": " << (kv.value ? "true" : "false");
 }
 
-template <typename T> struct Vec
+template <typename T>
+struct Vec
 {
     Vec(const std::vector<T>& vec)
         : vec(vec)
@@ -163,12 +166,15 @@ template <typename T> struct Vec
 
 static std::ostream& operator<<(std::ostream& ss, position pos)
 {
-    return ss << '{' << KV{"colonne", pos.colonne} << ", " << KV{"ligne", pos.ligne} << ", " << KV{"niveau", pos.niveau} << '}';
+    return ss << '{' << KV{"colonne", pos.colonne} << ", "
+              << KV{"ligne", pos.ligne} << ", " << KV{"niveau", pos.niveau}
+              << '}';
 }
 
 static std::ostream& operator<<(std::ostream& ss, std::pair<position, int> pain)
 {
-    return ss << '{' << KV{"pos", pain.first} << ", " << KV{"pain", pain.second} << '}';
+    return ss << '{' << KV{"pos", pain.first} << ", " << KV{"pain", pain.second}
+              << '}';
 }
 
 static std::ostream& operator<<(std::ostream& ss, action_hist action)
@@ -199,13 +205,11 @@ static std::ostream& operator<<(std::ostream& ss, action_hist action)
 
 static std::ostream& operator<<(std::ostream& ss, const troupe& troupe)
 {
-    return ss << '{' << KV{"id", troupe.id} << ", "
-        << KV{"maman", troupe.maman} << ", "
-        << KV{"canards", Vec{troupe.canards}} << ", "
-        << KV{"taile", troupe.taille} << ", "
-        << KV{"dir", troupe.dir} << ", "
-        << KV{"inventaire", troupe.inventaire} << ", "
-        << KV{"pts_actions", troupe.pts_actions} << '}';
+    return ss << '{' << KV{"id", troupe.id} << ", " << KV{"maman", troupe.maman}
+              << ", " << KV{"canards", Vec{troupe.canards}} << ", "
+              << KV{"taile", troupe.taille} << ", " << KV{"dir", troupe.dir}
+              << ", " << KV{"inventaire", troupe.inventaire} << ", "
+              << KV{"pts_actions", troupe.pts_actions} << '}';
 }
 
 // Large classes.
@@ -243,44 +247,46 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
             {
                 const position pos{x, y, level};
                 const Case cell = map.get_cell(pos);
-                
-                if (cell.etat.nb_pains) {
+
+                if (cell.etat.nb_pains)
+                {
                     pains.push_back(std::make_pair(pos, cell.etat.nb_pains));
                 }
 
-                switch (cell.etat.contenu) {
-                    case GAZON:
-                        if (cell.point_spawn)
-                            ss << 'S';
-                        else if (cell.etat.est_constructible)
-                            ss << '.';
-                        else
-                            ss << ' ';
-                        break;
-                    case BUISSON:
-                        ss << '#';
-                        break;
-                    case BARRIERE:
-                        if (cell.barriere == OUVERTE)
-                            ss << 'b';
-                        else
-                            ss << 'B';
-                        break;
-                    case NID:
-                        ss << 'N';
-                        break;
-                    case PAPY:
-                        ss << cell.papy_tours_restants;
-                        break;
-                    case TROU:
-                        ss << 'X';
-                        break;
-                    case TUNNEL:
-                        ss << 't';
-                        break;
-                    case TERRE:
-                        ss << 'T';
-                        break;
+                switch (cell.etat.contenu)
+                {
+                case GAZON:
+                    if (cell.point_spawn)
+                        ss << 'S';
+                    else if (cell.etat.est_constructible)
+                        ss << '.';
+                    else
+                        ss << ' ';
+                    break;
+                case BUISSON:
+                    ss << '#';
+                    break;
+                case BARRIERE:
+                    if (cell.barriere == OUVERTE)
+                        ss << 'b';
+                    else
+                        ss << 'B';
+                    break;
+                case NID:
+                    ss << 'N';
+                    break;
+                case PAPY:
+                    ss << cell.papy_tours_restants;
+                    break;
+                case TROU:
+                    ss << 'X';
+                    break;
+                case TUNNEL:
+                    ss << 't';
+                    break;
+                case TERRE:
+                    ss << 'T';
+                    break;
                 }
             }
 
@@ -289,36 +295,41 @@ static std::ostream& operator<<(std::ostream& ss, const Map& map)
 
 static std::ostream& operator<<(std::ostream& ss, internal_action action)
 {
-    switch (action.type) {
-        case standard_action:
-            return ss << action.action;
-        case troupe_respawn:
-            return ss << '{' << KV{"action_type", "\"respawn\""} << ", "
-                << KV{"pos", action.action.action_pos} << ", "
-                << KV{"troupe_id", action.action.troupe_id} << '}';
-        case auto_move:
-            return ss << '{' << KV{"action_type", "\"auto_move\""} << ", "
-                << KV{"dir", action.action.action_dir} << ", "
-                << KV{"troupe_id", action.action.troupe_id} << '}';
-        case take_bread:
-            return ss << '{' << KV{"action_type", "\"take\""} << ", "
-                << KV{"pos", action.action.troupe_id} << '}';
-        case leave_bread:
-            return ss << '{' << KV{"action_type", "\"leave\""} << ", "
-                << KV{"troupe_id", action.action.troupe_id} << '}';
-        case spread_bread:
-            return ss << '{' << KV{"action_type", "\"spread_bread\""} << ", "
-                << KV{"pos", action.action.action_pos} << '}';
-        case capture_nest:
-            return ss << '{' << KV{"action_type", "\"capture_nest\""} << ", "
-                << KV{"pos", action.action.action_pos} << '}';
-        case add_bread:
-            return ss << '{' << KV{"action_type", "\"add_bread\""} << ", "
-                << KV{"pos", action.action.action_pos} << '}';
-        case flag:
-            return ss << '{' << KV{"action_type", "\"debug\""} << ", "
-                << KV{"pos", action.flag.pos} << ", "
-                << KV{"debug", action.flag.ctype} << '}';
+    switch (action.type)
+    {
+    case standard_action:
+        return ss << action.action;
+    case troupe_respawn:
+        return ss << '{' << KV{"action_type", "\"respawn\""} << ", "
+                  << KV{"pos", action.action.action_pos} << ", "
+                  << KV{"troupe_id", action.action.troupe_id} << '}';
+    case auto_move:
+        return ss << '{' << KV{"action_type", "\"auto_move\""} << ", "
+                  << KV{"dir", action.action.action_dir} << ", "
+                  << KV{"troupe_id", action.action.troupe_id} << '}';
+    case take_bread:
+        return ss << '{' << KV{"action_type", "\"take\""} << ", "
+                  << KV{"pos", action.action.troupe_id} << '}';
+    case leave_bread:
+        return ss << '{' << KV{"action_type", "\"leave\""} << ", "
+                  << KV{"troupe_id", action.action.troupe_id} << '}';
+    case spread_bread:
+        return ss << '{' << KV{"action_type", "\"spread_bread\""} << ", "
+                  << KV{"pos", action.action.action_pos} << '}';
+    case capture_nest:
+        return ss << '{' << KV{"action_type", "\"capture_nest\""} << ", "
+                  << KV{"pos", action.action.action_pos} << '}';
+    case add_bread:
+        return ss << '{' << KV{"action_type", "\"add_bread\""} << ", "
+                  << KV{"pos", action.action.action_pos} << '}';
+    case flag:
+        return ss << '{' << KV{"action_type", "\"debug\""} << ", "
+                  << KV{"pos", action.flag.pos} << ", "
+                  << KV{"debug", action.flag.ctype} << '}';
+    case new_duck:
+        return ss << '{' << KV{"action_type", "\"nouveau_canard\""} << ", "
+                  << KV{"pos", action.action.action_pos} << ", "
+                  << KV{"troupe_id", action.action.troupe_id} << '}';
     }
     __builtin_unreachable();
 }
