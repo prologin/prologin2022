@@ -14,8 +14,15 @@ void PlayerInfo::init_troupes(Map& map, etat_nid nid)
         troupes_[i] = troupe{
             head, body, 1, inverse_dir(dir), 0, 0, i + 1,
         };
-		
-		map.mark_troupe(troupes_[i], *this);
+
+        map.mark_troupe(troupes_[i], *this);
+
+        // Log event
+        internal_action action;
+        action.type = troupe_respawn;
+        action.action.troupe_id = troupes_[i].id;
+        action.action.action_pos = troupes_[i].maman;
+        add_internal_action(action);
     }
 }
 
