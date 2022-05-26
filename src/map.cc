@@ -170,7 +170,29 @@ void Map::load_map_cells(std::istream& stream)
 
 bool Map::case_mortelle(const position& pos) const
 {
-    return get_cell(pos).canard_sur_case || !case_praticable(pos);
+    return !case_praticable(pos) || get_cell(pos).canard_sur_case;
+}
+
+std::vector<direction> Map::directions_non_mortelles(const position& pos) const
+{
+    std::vector<direction> directions;
+    if (!inside_map(pos))
+        return directions;
+    
+    direction dirs[] = {
+        EST,
+        OUEST,
+        NORD,
+        SUD};
+
+    for (direction dir: dirs) {
+        if (!case_mortelle(pos + get_delta_pos(dir)))
+            directions.push_back(dir);
+    }
+
+    // TODO:
+    // Ajouter Haut/Bas
+    return directions;
 }
 
 Map::Map(std::istream& stream)

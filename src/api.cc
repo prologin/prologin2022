@@ -109,8 +109,56 @@ int Api::inventaire(int taille)
 
 std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
 {
-    // TODO
-    abort();
+    std::vector<direction> result;
+    if (!inside_map(depart) || !inside_map(arrivee))
+        return result;
+    auto map = game_state_->get_map();
+    bool visite[2][HAUTEUR][LARGEUR];
+    direction back[2][HAUTEUR][LARGEUR];
+    for (int niveau = -1; niveau <= 0; niveau++) {
+        for (int ligne = 0; ligne < HAUTEUR; ligne++) {
+            for (int colonne = 0; colonne < LARGEUR; colonne++) {
+                position pos = {
+                    .colonne = colonne,
+                    .ligne = ligne,
+                    .niveau = niveau };
+                visite[niveau+1][ligne][colonne] = map.case_mortelle(pos);
+            }
+        }
+    }
+    int z = arrivee.niveau;
+    int y = arrivee.ligne;
+    int x = arrivee.colonne;
+    visite[z+1][y][x] = false;
+    std::queue<position> queue;
+    bool found = false;
+    while (!queue.empty()) {
+        position point = queue.front();
+        queue.pop();
+        if (visite[point.niveau+1][point.ligne][point.colonne])
+            continue;
+        if (point == depart) {
+            found = true;
+            break;
+        }
+        visite[point.niveau+1][point.ligne][point.colonne] = true;
+        std::vector<direction> nexts = map.directions_non_mortelles(point);
+        for (direction nextdir : nexts) {
+            position nextpos = point + get_delta_pos(nextdir);
+            back[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = inverse_dir(nextdir);
+            queue.push(nextpos);
+        }
+    }
+    
+    if (!found)
+        return result;
+    position traverser = depart;
+    while (traverser != arrivee) {
+        direction way = back[traverser.niveau+1][traverser.ligne][traverser.colonne];
+        result.push_back(way);
+        traverser = traverser + get_delta_pos(way);
+    }
+    return result;
 }
 
 int gain(int nb_pains)
