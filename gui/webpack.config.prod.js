@@ -1,5 +1,5 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const TerserJSPlugin = require('terser-webpack-plugin')
+const { ESBuildMinifyPlugin } = require('esbuild-loader')
 
 module.exports = {
     mode: 'production',
@@ -13,9 +13,11 @@ module.exports = {
         }]
     },
     optimization: {
-        minimizer: [new TerserJSPlugin({
-            extractComments: false,
-        })]
+        minimizer: [
+            new ESBuildMinifyPlugin({
+                keepNames: true,
+            }),
+        ]
     },
     plugins: [
         new CopyWebpackPlugin({
