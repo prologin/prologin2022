@@ -283,6 +283,10 @@ static std::ostream& operator<<(std::ostream& ss, internal_action action)
             return ss << '{' << KV{"action_type", "\"respawn\""} << ", "
                 << KV{"pos", action.action.action_pos} << ", "
                 << KV{"troupe_id", action.action.troupe_id} << '}';
+        case auto_move:
+            return ss << '{' << KV{"action_type", "\"auto_move\""} << ", "
+                << KV{"dir", action.action.action_dir} << ", "
+                << KV{"troupe_id", action.action.troupe_id} << '}';
         case leave_bread:
             return ss << '{' << KV{"action_type", "\"leave\""} << ", "
                 << KV{"troupe_id", action.action.troupe_id} << '}';

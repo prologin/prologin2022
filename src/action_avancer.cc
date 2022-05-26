@@ -32,9 +32,6 @@ void ActionAvancer::apply_on(GameState* st) const
     auto player = st->get_player_ptr(player_id_);
     auto trp = player->get_troupe(id_);
 
-    // Gere la mort de la troupe
-    move_troupe(*trp, dir_, st->get_map(), *player);
-
     // Log action.
     internal_action action;
     action.type = standard_action;
@@ -43,4 +40,7 @@ void ActionAvancer::apply_on(GameState* st) const
     action.action.action_dir = dir_;
     action.action.action_pos = {-1, -1, -1};
     player->add_internal_action(action);
+
+    // Gere la mort de la troupe
+    move_troupe(*trp, dir_, st->get_map(), *player);
 }
