@@ -204,7 +204,7 @@ def nearest(troupe_id, condition):
         #print(file.qsize())
         position = file.get()
         if condition(position):
-            print("End nearest, found")
+            #print("End nearest, found")
             flag = True
             break
         x, y, z = position
@@ -219,7 +219,7 @@ def nearest(troupe_id, condition):
                 file.put((rx, ry, rz))
     
     if file.empty() and not flag:
-        print("Not found")
+        #print("Not found")
         return None, None
     
     chemin = []
@@ -313,31 +313,31 @@ def jouer_tour():
         troupe = get_troupe_by_id(troupe_id)
         while troupe.pts_action > 0:
             #display_map()
-            print(troupe.pts_action, "pts remaining")            
+            #print(troupe.pts_action, "pts remaining")            
             if troupe.inventaire > 0:
-                print(troupe.inventaire, "pains in inventory, trying to get to our nest")
+                #print(troupe.inventaire, "pains in inventory, trying to get to our nest")
                 if not step_to(troupe, lambda pos: mon_nid(pos)):
-                    print("Can't get to my nest ! Trying to reach a free nest")
+                    #print("Can't get to my nest ! Trying to reach a free nest")
                     while troupe.pts_action > 0:
                         if not step_to(troupe, lambda pos: nid_libre(pos)):
-                            print("Can't reach it ! Trying to grow")
+                            #print("Can't reach it ! Trying to grow")
                             if grandir(troupe_id) != erreur.OK:
-                                print("Can't grow ! Trying to move")
+                                #print("Can't grow ! Trying to move")
                                 dirs = canmove(troupe.maman)
                                 if len(dirs) == 0:
-                                    print("Can't move ! *dies*")
+                                    #print("Can't move ! *dies*")
                                     break
                                 avancer(troupe_id, dirs[0][0])
                         troupe = get_troupe_by_id(troupe_id)
             else:
-                print("No pain in inventory. Searching for some")
+                #print("No pain in inventory. Searching for some")
                 if not step_to(troupe, lambda pos:beaucoup_pains(pos)):
-                    print("Can't get to bread. Trying to grow")
+                    #print("Can't get to bread. Trying to grow")
                     if grandir(troupe_id) != erreur.OK:
-                        print("Can't grow. Trying to move")
+                        #print("Can't grow. Trying to move")
                         dirs = canmove(troupe.maman)
                         if len(dirs) == 0:
-                            print("Can't move. *dies*")
+                            #print("Can't move. *dies*")
                             break
                         avancer(troupe_id, dirs[0][0])
 
