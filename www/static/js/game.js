@@ -155,9 +155,21 @@ class Game {
 
     }
 
+    displayMapChanges() {
+
+    }
+
+    displayDucks(index) {
+        const roundData = this.dump[index].players;
+        for (const player of roundData) {
+            const troupes = player.troupes;
+            console.log(troupes);
+        }
+    }
 
     jumpToRound(index) {
-        //displayChanges(index);
+        this.displayMapChanges(index);
+        this.displayDucks(index);
     }
 
     displaySimpleMap(mapString) {
@@ -282,6 +294,12 @@ class Duckling extends PIXI.AnimatedSprite {
             south: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_S_3.png`)],
+            east: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_1.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_2.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_E_3.png`)],
+            west: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_1.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_2.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_W_3.png`)],
         }
         super(spriteSheet['south'], true);
         this.spriteSheet = spriteSheet;
