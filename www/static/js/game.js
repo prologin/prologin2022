@@ -198,7 +198,7 @@ function createSprite(texture, x, y) {
 }
 
 function map_char_to_sprite(input_char, i, j) {
-    let texture = textures.grass[0];
+    let texture = undefined;
     switch (input_char) {
         case ' ':
         case '.':
@@ -224,10 +224,12 @@ function map_char_to_sprite(input_char, i, j) {
             break;
         default:
             if ('0' <= input_char && input_char <= '9') {
-                return createAnimatedSprite(textures.old, i, j);
+                texture = texture.old[0];
             }
     }
-    return createSprite(texture, i, j);
+    if (texture !== undefined) {
+        return createSprite(texture, i, j);
+    }
 }
 
 class Papy extends PIXI.AnimatedSprite {
