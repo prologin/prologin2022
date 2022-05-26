@@ -8,6 +8,7 @@
 import sys
 from tkinter import Canvas, Frame, StringVar, Tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
+from tkinter.messagebox import showinfo
 from tkinter.ttk import Button, OptionMenu, Style
 
 from validator import verify_map
@@ -250,77 +251,52 @@ class Grid():
     #
 
     def save_grid(self):
+        grid_text = ""
+        # Serialize the grid and catch raw and list outputs
+        for row, row_data in enumerate(self.grid):
+            current_line = ""
+            for col, cell in enumerate(row_data):
+                conf = get_type_conf(cell.cell_type)
+                data = [row, col]
+
+                # Add extra infos if necessary
+                if 'extra' in conf:
+                    data += [conf['default'][field]
+                             for field in conf['extra']]
+
+                # Serialization of the grid
+                if 'ascii' in conf['serialize']:
+                    current_line += conf['serialize']['ascii']
+
+            grid_text += current_line + '\n'
+
+        grid_text_array = [line for line in grid_text.split('\n') if line != '']
+        try:
+            verify_map(grid_text_array)
+        except AssertionError as error:
+            print(error)
+            showinfo(title="Erreur de sauvegarde", message=f"La sauvegarde de la map a échoué. Celle-ci ne réponds pas au règles de validation d'une map. Erreur : {error}")
+            return
+
         filename = asksaveasfilename()
         if not filename:
             return
 
+        # Init raw and list outputs datas
+        raw_output = dict()
+        list_output = dict()
+
+        for name, conf in CELL_TYPES.items():
+            if conf['serialize']['method'] == 'raw':
+                default_data = [0, 0] + ([0] * len(conf['extra'])
+                                         if 'extra' in conf else [])
+                raw_output[conf['serialize']['order']] = default_data
+            elif conf['serialize']['method'] == 'list':
+                list_output[conf['serialize']['order']] = []
+
+
         with open(filename, 'w+') as f:
-            # Init raw and list outputs datas
-            raw_output = dict()
-            list_output = dict()
-
-            for name, conf in CELL_TYPES.items():
-                if conf['serialize']['method'] == 'raw':
-                    default_data = [0, 0] + ([0] * len(conf['extra'])
-                                             if 'extra' in conf else [])
-                    raw_output[conf['serialize']['order']] = default_data
-                elif conf['serialize']['method'] == 'list':
-                    list_output[conf['serialize']['order']] = []
-
-            # Serialize the grid and catch raw and list outputs
-            for row, row_data in enumerate(self.grid):
-                for col, cell in enumerate(row_data):
-                    conf = get_type_conf(cell.cell_type)
-                    data = [row, col]
-
-                    # Add extra infos if necessary
-                    if 'extra' in conf:
-                        data += [conf['default'][field]
-                                 for field in conf['extra']]
-
-                    # Serialization of the grid
-                    if 'ascii' in conf['serialize']:
-                        f.write(conf['serialize']['ascii'])
-                    elif 'ascii_space' in conf['serialize']:
-                        f.write(conf['serialize']['ascii_space'])
-                        if not col == MAP_SIZE-1:
-                            f.write(' ')
-
-                f.write('\n')
-
-            # Serialize the grid and catch raw and list outputs
-            for row, row_data in enumerate(self.plant_grid):
-                for col, plant in enumerate(row_data):
-                    if not plant:
-                        continue
-                    conf = get_type_conf(plant.type)
-                    data = [col, row]
-
-                    # Add extra infos if necessary
-                    if 'extra' in conf:
-                        data += [conf['default'][field]
-                                 for field in conf['extra']]
-
-                    # Register for raw and list outputs
-                    if conf['serialize']['method'] == 'raw':
-                        raw_output[conf['serialize']['order']] = data
-                    elif conf['serialize']['method'] == 'list':
-                        list_output[conf['serialize']['order']].append(data)
-
-
-
-            # Serialize raw and list outputs
-            order_keys = sorted(list(raw_output.keys()) +
-                                list(list_output.keys()))
-
-            for order in order_keys:
-                if order in raw_output:
-                    f.write('{}\n'.format(
-                        ' '.join(map(str, raw_output[order]))))
-                else:
-                    f.write('{}\n'.format(len(list_output[order])))
-                    for item in list_output[order]:
-                        f.write('{}\n'.format(' '.join(map(str, item))))
+            f.write(grid_text)
 
     def load_grid(self, filename=None):
         if filename is None:
@@ -345,7 +321,9 @@ class Grid():
 
         # Read the grid
         for row_pos in range(MAP_SIZE):
-            for col_pos, char in enumerate(f.readline()):
+            for col_pos in range(MAP_SIZE):
+                char = grid[row_pos][col_pos]
+
                 self.grid[row_pos][col_pos].set(ascii_chars[char])
 
             ## Read raw and list infos
