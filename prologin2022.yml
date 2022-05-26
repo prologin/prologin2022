@@ -273,6 +273,22 @@ function:
     fct_ret_type: int
     fct_arg:
       - [nb_pains, int, "Nombre de miches de pain déposées"]
+
+  -
+    fct_name: inventaire
+    fct_summary: Renvoie la taille de l'inventaire d'une troupe de taille donnée
+    fct_ret_type: int
+    fct_arg:
+      - [taille, int, "Taille de la troupe"]
+
+  -
+    fct_name: trouver_chemin
+    fct_summary: Trouve un plus court chemin ouvert entre deux positions
+    fct_ret_type: direction array
+    fct_arg:
+      - [depart, position, "Position de départ"]
+      - [arrivee, position, "Position d'arrivée"]
+
 # Autres
   -
     fct_name: moi
