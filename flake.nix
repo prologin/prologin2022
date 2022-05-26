@@ -33,6 +33,7 @@
             '';
           };
 
+          # TODO: use proper buildPythonPackage and imports
           map-editor-2022 = final.stdenv.mkDerivation {
             name = "map-editor-2022";
             src = ./editor;
@@ -46,6 +47,7 @@
               install -Dm755 $src/map_editor.py $out/bin/map_editor
               # uses nativeBuildInputs to add to PYTHONPATH wrapperscript
               wrapPythonPrograms
+              cp -rf $src/validator.py $out/bin
             '';
 
             pythonPath = with final.python3Packages; [
