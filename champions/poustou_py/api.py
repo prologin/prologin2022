@@ -31,10 +31,10 @@ INTERVALLE_DISTRIB = 5
 FREQ_TUNNEL = 1
 
 # Nombre de déplacements que peut faire une troupe en un tour
-PTS_ACTION = 20
+PTS_ACTION = 5
 
 # Nombre de points de mouvement requis pour incrémenter la taille
-COUT_CROISSANCE = 11
+COUT_CROISSANCE = 3
 
 # Coût en score de la pose de buisson
 COUT_BUISSON = 3
@@ -46,18 +46,17 @@ TOUR_FERMETURE = 100
 # Erreurs possibles après avoir effectué une action
 class erreur(IntEnum):
     OK = 0  # <- L'action a été effectuée avec succès
-    JOUEUR_INVALIDE = 1  # <- Mauvais numéro de joueur
-    TROUPE_INVALIDE = 2  # <- Mauvais identifiant de troupe
-    HORS_TOUR = 3  # <- Aucune action n'est possible hors de joueur_tour
-    MOUVEMENTS_INSUFFISANTS = 4  # <- Il ne reste plus assez de points de mouvements pour effectuer l'action demandée
-    TROP_GRANDI = 5  # <- La troupe a déjà trop grandi pendant le tour
-    TROP_CREUSE = 6  # <- Trop de trous ont déjà été creusés pendant le tour
-    NON_CREUSABLE = 7  # <- Il n'est pas possible de creuser à la position demandée
-    NON_CONSTRUCTIBLE = 8  # <- La zone demandée n'est pas constructible
-    SCORE_INSUFFISANT = 9  # <- Le joueur n'a pas assez de points pour construire un buisson
-    POSITION_INVALIDE = 10  # <- La position demandée est hors du parc
-    DIRECTION_INVALIDE = 11  # <- La direction spécifiée n'existe pas.
-    PIGEON_INVALIDE = 12  # <- Le pigeon spécifié n'existe pas.
+    TROUPE_INVALIDE = 1  # <- Mauvais identifiant de troupe
+    HORS_TOUR = 2  # <- Aucune action n'est possible hors de joueur_tour
+    MOUVEMENTS_INSUFFISANTS = 3  # <- Il ne reste plus assez de points de mouvements pour effectuer l'action demandée
+    TROP_GRANDI = 4  # <- La troupe a déjà trop grandi pendant le tour
+    TROP_CREUSE = 5  # <- Trop de trous ont déjà été creusés pendant le tour
+    NON_CREUSABLE = 6  # <- Il n'est pas possible de creuser à la position demandée
+    NON_CONSTRUCTIBLE = 7  # <- La zone demandée n'est pas constructible
+    SCORE_INSUFFISANT = 8  # <- Le joueur n'a pas assez de points pour construire un buisson
+    POSITION_INVALIDE = 9  # <- La position demandée est hors du parc
+    DIRECTION_INVALIDE = 10  # <- La direction spécifiée n'existe pas.
+    PIGEON_INVALIDE = 11  # <- Le pigeon spécifié n'existe pas.
 
 
 # Directions possibles
