@@ -43,12 +43,15 @@ public:
 
     // Rounds
     int get_round() const;
-    int get_turn() const;
     void next_round();
-    void next_turn();
     bool is_finished() const;
     // The identifier of the player playing in the current turn.
     int turn_player_id() const;
+
+    // Turns
+    int get_turn() const;
+    void next_turn();
+    void reset_turn();
 
     bool is_init() const;
     void set_init(bool init);

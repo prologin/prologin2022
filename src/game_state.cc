@@ -132,6 +132,11 @@ void GameState::next_turn()
     turn_++;
 }
 
+void GameState::reset_turn()
+{
+    turn_ = 0;
+}
+
 int GameState::turn_player_id() const
 {
     return turn_ % player_count();

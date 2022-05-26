@@ -165,6 +165,7 @@ void Rules::start_of_round() {}
 void Rules::end_of_round()
 {
     api_->game_state().next_round();
+    api_->game_state().reset_turn();
 }
 
 int Rules::get_round() const
