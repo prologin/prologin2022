@@ -1,6 +1,7 @@
 #include "troupe.hh"
-
 #include "api.hh"
+#include "constant.hh"
+#include "player_info.hh"
 
 #define INV_MAX(A) ((A)-1)
 
@@ -44,6 +45,12 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
     *player_info.canards_additionnels(trp.id) = std::queue<position>();
     for (auto i = 1; i < TAILLE_DEPART; ++i)
         player_info.enfiler_canard(trp.id);
+}
+
+void die(troupe& trp, PlayerInfo& player, Map& map)
+{
+	map.delete_troupe(trp);
+	respawn(trp, player, map);
 }
 
 void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
@@ -108,23 +115,78 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
     auto delta = get_delta_pos(dir);
     trp.dir = dir;
     if (!inside_map(trp.maman + delta) || map.case_mortelle(trp.maman + delta))
-    {
-        map.delete_troupe(trp);
-        respawn(trp, player, map);
-    }
+		die(trp, player, map);
     else
     {
-        map.get_cell(trp.canards.back()).canard_sur_case = false;
+		map.unmark_canard(trp.canards.back());
         for (int i = trp.taille - 1; i > 0; --i)
             trp.canards[i] = trp.canards[i - 1];
         trp.canards[0] += delta;
         trp.maman = trp.canards[0];
 
-        map.get_cell(trp.maman).canard_sur_case = true;
+		map.mark_canard(trp.canards.back(), player, trp.id);
         player.spawn_canard(trp.id, map);
 
         prendre_pain(trp, map, player);
         capturer_nid(trp, map, player);
         deposer_nid(trp, map, player);
     }
+}
+
+int get_head(int index)
+{
+	return (index / 3) * 3;
+}
+
+int get_carrier(int index)
+{
+	return get_head(index) + 2; 
+}
+
+int troupe_get_splitting_index(troupe& trp, const position& canard)
+{
+	for (int i = 1 ; i < trp.taille; ++i)
+		if (trp.canards[i] == canard)
+				return i;
+	return -1;
+}
+
+void drop_bread_from(const int start, const int end, troupe& trp, Map& map)
+{
+	for (int i = get_carrier(start); i < end; i += 3)
+	{
+		if (trp.inventaire <= 0)
+			continue;
+		map.get_cell(trp.canards[i]).etat.nb_pains += 1;
+		trp.inventaire--;
+	}
+}
+
+void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
+				const position& canard, Map& map)
+{
+	troupe& trp = *(player_info.get_troupe(troupe_id));
+	//Find the bad canard
+	if (canard == trp.maman)
+	{
+		drop_bread_from(0, trp.taille, trp, map);
+		die(trp, player_info, map);
+		return;
+	}
+
+	int splitting_index = troupe_get_splitting_index(trp, canard);
+	if (splitting_index == -1)
+		return; // Split not anymore in troupe
+
+	drop_bread_from(splitting_index, trp.taille, trp, map);	
+
+	for (int i = trp.taille - 1; i >= splitting_index; i--)
+	{
+		map.unmark_canard(trp.canards[i]);
+		trp.canards.pop_back();
+		trp.taille -= 1;
+	}	
+
+	if (trp.taille < TAILLE_MIN)
+		die(trp, player_info, map);
 }

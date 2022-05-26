@@ -5,6 +5,9 @@
 #include <vector>
 
 #include "constant.hh"
+#include "player_info.hh"
+
+class PlayerInfo;
 
 class PlayerInfo; // forward decl
 
@@ -17,8 +20,9 @@ typedef struct Case
     bool point_spawn;        ///< La case est un point de spawn
     bool
         canard_sur_case; ///< Indique la presence ou non d'un canard sur la case
-
     bool case_praticable() const;
+	int troupe_id; ///< Id de la troupe ayant un canard sur la case -1 sinon
+	PlayerInfo *player_info;
 } Case;
 
 class Map
@@ -36,11 +40,11 @@ public:
     bool case_mortelle(const position& pos) const;
     std::vector<direction> directions_non_mortelles(const position& pos) const;
 
-    void mark_troupe(const troupe& trp);
+    void mark_troupe(const troupe& trp, PlayerInfo& player);
     void delete_troupe(const troupe& trp);
 
-    void mark_canard(const position& pos);
-    void unmark_canard(const position& pos);
+    void mark_canard(const position& pos, PlayerInfo& player, int troupe_id);
+	void unmark_canard(const position& pos);
 
     void changer_barrieres();
     void decrementer_papy(PlayerInfo& player);

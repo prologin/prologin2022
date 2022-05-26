@@ -1,7 +1,7 @@
 #include "player_info.hh"
 #include "position.hh"
 
-void PlayerInfo::init_troupes(const Map& map, etat_nid nid)
+void PlayerInfo::init_troupes(Map& map, etat_nid nid)
 {
     auto dir = nid == JOUEUR_0 ? NORD : SUD;
     for (int i = 0; i < NB_TROUPES; i++, dir = clockwise_dir(dir))
@@ -14,10 +14,12 @@ void PlayerInfo::init_troupes(const Map& map, etat_nid nid)
         troupes_[i] = troupe{
             head, body, 1, inverse_dir(dir), 0, 0, i + 1,
         };
+		
+		map.mark_troupe(troupes_[i], *this);
     }
 }
 
-PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
+PlayerInfo::PlayerInfo(std::shared_ptr<rules::Player> player, Map& map,
                        etat_nid player_nid_id)
     : rules_player_(std::move(player))
     , score_(0)
@@ -199,7 +201,7 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
         return;
     auto last = q->front();
     q->pop();
-    map.mark_canard(last);
+    map.mark_canard(last, *this, troupe_id);
     get_troupe(troupe_id)->taille++;
     get_troupe(troupe_id)->canards.push_back(last);
 }

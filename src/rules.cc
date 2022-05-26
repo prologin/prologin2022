@@ -23,7 +23,6 @@ Rules::Rules(const rules::Options opt)
             champion_dll_->get<f_champion_partie_init>("partie_init");
         champion_jouer_tour_ =
             champion_dll_->get<f_champion_jouer_tour>("jouer_tour");
-        champion_partie_fin_ =
             champion_dll_->get<f_champion_partie_fin>("partie_fin");
     }
 

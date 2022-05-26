@@ -43,7 +43,8 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
         << line;
 }
 
-void place_trp(troupe* trp, std::vector<position> pos, Map& map)
+void place_trp(troupe* trp, std::vector<position> pos, Map& map,
+				PlayerInfo& player)
 {
     map.delete_troupe(*trp);
     trp->canards.clear();
@@ -51,7 +52,7 @@ void place_trp(troupe* trp, std::vector<position> pos, Map& map)
     for (size_t i = 0; i < pos.size(); ++i)
         trp->canards.push_back(pos[i]);
     trp->maman = trp->canards[0];
-    map.mark_troupe(*trp);
+    map.mark_troupe(*trp, player);
 }
 
 erreur test_move_troupe(PlayerInfo* player, std::unique_ptr<Api>& api, int id,
@@ -69,7 +70,7 @@ erreur test_move_troupe(PlayerInfo* player, std::unique_ptr<Api>& api, int id,
     return err;
 }
 
-void troup_hardcoded_setup(troupe* trp, Map& map)
+void troup_hardcoded_setup(troupe* trp, PlayerInfo& player, Map& map)
 {
     map.delete_troupe(*trp);
     trp->canards.reserve(5);
@@ -79,7 +80,7 @@ void troup_hardcoded_setup(troupe* trp, Map& map)
     trp->canards[3] = {.colonne = 24, .ligne = 38, .niveau = 0};
     trp->canards[4] = {.colonne = 23, .ligne = 38, .niveau = 0};
     trp->maman = trp->canards[0];
-    map.mark_troupe(*trp);
+    map.mark_troupe(*trp, player);
 }
 
 } // namespace
@@ -91,7 +92,7 @@ TEST_F(ApiTest, ActionAvancerAutorisee)
     int original = trp->pts_actions;
     auto former_size = trp->canards.size();
 
-    troup_hardcoded_setup(trp, player.api->game_state().get_map());
+    troup_hardcoded_setup(trp, *player.info, player.api->game_state().get_map());
 
     auto err =
         test_move_troupe(player.info, player.api, 1, EST, true, __LINE__);
@@ -125,7 +126,7 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBuisson)
     };
 
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     std::vector<position> former = trp->canards;
     int former_inv = trp->inventaire;
     auto err = player.api->avancer(1, SUD);
@@ -146,7 +147,7 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurBarriere)
     };
 
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     std::vector<position> former = trp->canards;
     int former_inv = trp->inventaire;
 
@@ -178,8 +179,8 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurCanard)
     troupe* trp = player.info->get_troupe(1);
 
     place_trp(players[1].info->get_troupe(1), new_pos2,
-              players[1].api->game_state().get_map());
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+              players[1].api->game_state().get_map(), *player.info);
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
 
     int former_inv = trp->inventaire;
     std::vector<position> former = trp->canards;
@@ -201,7 +202,7 @@ TEST_F(ApiTest, ActionAvancerTueAvecInventaire)
     };
 
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
 
     trp->inventaire = 3;
     std::vector<position> former = trp->canards;
@@ -217,7 +218,8 @@ TEST_F(ApiTest, ActionAvancerAvecSpawn)
 {
     auto& player = players[0];
     auto trp = player.info->get_troupe(1);
-    troup_hardcoded_setup(trp, player.api->game_state().get_map());
+    troup_hardcoded_setup(trp, *player.info,
+					player.api->game_state().get_map());
 
     auto former_size = trp->canards.size();
 
@@ -243,7 +245,7 @@ TEST_F(ApiTest, ActionAvancerCaptureNid)
     position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
 
     player.api->avancer(1, EST);
@@ -267,7 +269,7 @@ TEST_F(ApiTest, ActionAvancerDeposerNid)
     troupe* trp = player.info->get_troupe(1);
     trp->inventaire = 2;
 
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
     map.get_cell(nid).nid = player.info->get_player_nid_id();
 
@@ -293,7 +295,7 @@ TEST_F(ApiTest, ActionAvancerDeposerNidInvVide)
     position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
     map.get_cell(nid).nid = player.info->get_player_nid_id();
 
@@ -319,7 +321,7 @@ TEST_F(ApiTest, ActionAvancerCaptureEtDeposerNid)
     position nid = {.colonne = 33, .ligne = 36, .niveau = 0};
 
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
 
     player.api->avancer(1, EST);
@@ -340,7 +342,7 @@ TEST_F(ApiTest, ActionAvancerRamasserPains)
 
     position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 1;
@@ -364,7 +366,7 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPlein)
 
     position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 15;
@@ -389,7 +391,7 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
 
     position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
     troupe* trp = player.info->get_troupe(1);
-    place_trp(trp, new_pos, player.api->game_state().get_map());
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 15;

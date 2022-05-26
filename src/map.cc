@@ -1,8 +1,8 @@
 #include <utils/log.hh>
 
-#include "map.hh"
 #include "position.hh"
-#include "player_info.hh"
+#include "map.hh"
+#include "troupe.hh"
 
 bool Case::case_praticable() const
 {
@@ -10,14 +10,20 @@ bool Case::case_praticable() const
              (etat.contenu == BARRIERE && barriere == FERMEE));
 }
 
-void Map::mark_canard(const position& pos)
+void Map::mark_canard(const position& pos, PlayerInfo& player, int troupe_id)
 {
-    get_cell(pos).canard_sur_case = true;
+	Case& cell = get_cell(pos);
+	cell.troupe_id = troupe_id; 
+	cell.player_info = &player;
+    cell.canard_sur_case = true;
 }
 
 void Map::unmark_canard(const position& pos)
 {
-    get_cell(pos).canard_sur_case = false;
+	Case& cell = get_cell(pos);
+	cell.troupe_id = -1; 
+	cell.player_info = nullptr;
+    cell.canard_sur_case = false;
 }
 
 bool Map::case_praticable(const position& pos) const
@@ -236,10 +242,10 @@ void Map::delete_troupe(const troupe& trp)
         unmark_canard(canard);
 }
 
-void Map::mark_troupe(const troupe& trp)
+void Map::mark_troupe(const troupe& trp, PlayerInfo& player)
 {
     for (auto& canard : trp.canards)
-        mark_canard(canard);
+        mark_canard(canard, player, trp.id);
 }
 
 void Map::changer_barrieres()
@@ -250,8 +256,14 @@ void Map::changer_barrieres()
         if (get_cell(pos).barriere == FERMEE)
             status = OUVERTE;
         else
+		{
             status = FERMEE;
-        get_cell(pos).barriere = status;
+			Case& cell = get_cell(pos);
+			if (cell.player_info != nullptr)
+				troupe_split_at(cell.troupe_id, *(cell.player_info),
+								pos, *this);	
+		}
+		get_cell(pos).barriere = status;
     }
 }
 

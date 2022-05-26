@@ -10,10 +10,12 @@
 #include "history.hh"
 #include "map.hh"
 
+class Map;
+
 class PlayerInfo
 {
 public:
-    PlayerInfo(std::shared_ptr<rules::Player> player, const Map& map,
+    PlayerInfo(std::shared_ptr<rules::Player> player, Map& map,
                etat_nid player_nid_id);
 
     // Id
@@ -66,7 +68,7 @@ public:
     bool cancel();
 
 private:
-    void init_troupes(const Map& map, etat_nid);
+    void init_troupes(Map& map, etat_nid);
 
     std::shared_ptr<rules::Player> rules_player_;
     std::vector<internal_action> internal_hist_;
@@ -78,3 +80,4 @@ private:
     std::array<std::queue<position>, NB_TROUPES> canards_additionnels_;
     etat_nid player_nid_id_;
 };
+

@@ -2,11 +2,12 @@
 // Copyright (c) 2015 Association Prologin <association@prologin.org>
 
 #include "game_state.hh"
+#include "constant.hh"
 
 namespace
 {
 std::array<PlayerInfo, 2> init_players(const rules::Players& players,
-                                       const Map& map)
+                                       Map& map)
 {
     std::vector<PlayerInfo> result;
     std::array<etat_nid, 2> joueurs = {JOUEUR_0, JOUEUR_1};
@@ -117,10 +118,9 @@ int GameState::get_round() const
 
 void GameState::next_round()
 {
-    round_++;
-
-    if (round_ == ROUND_FERMETURE)
+	if (round_ == ROUND_FERMETURE)
         map_.changer_barrieres();
+    round_++;
 }
 
 int GameState::round_player_id() const
