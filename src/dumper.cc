@@ -309,8 +309,8 @@ static std::ostream& operator<<(std::ostream& ss, internal_action action)
                   << KV{"dir", action.action.action_dir} << ", "
                   << KV{"troupe_id", action.action.troupe_id} << '}';
     case take_bread:
-        return ss << '{' << KV{"action_type", "\"take\""} << ", "
-                  << KV{"pos", action.action.troupe_id} << '}';
+        return ss << '{' << KV{"action_type", "\"take_break\""} << ", "
+                  << KV{"pos", action.action.action_pos} << '}';
     case leave_bread:
         return ss << '{' << KV{"action_type", "\"leave\""} << ", "
                   << KV{"troupe_id", action.action.troupe_id} << '}';

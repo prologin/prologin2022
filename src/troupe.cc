@@ -21,7 +21,7 @@ int get_carrier(int index)
 }
 
 void drop_bread_from(const int start, const int end, troupe& trp, Map& map,
-				PlayerInfo& player_info)
+                     PlayerInfo& player_info)
 {
     for (int i = get_carrier(start); i < end; i += 3)
     {
@@ -40,7 +40,7 @@ void drop_bread_from(const int start, const int end, troupe& trp, Map& map,
 
 void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
-	// We suppose that the bread has already been dropped
+    // We suppose that the bread has already been dropped
 
     // Determining the spawn_point
     direction dir = trp.dir;
@@ -73,14 +73,14 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 void die(troupe& trp, PlayerInfo& player, Map& map)
 {
     map.delete_troupe(trp);
-	drop_bread_from(0, trp.taille, trp, map, player);
+    drop_bread_from(0, trp.taille, trp, map, player);
     respawn(trp, player, map);
 }
 
 void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
 {
     auto nb_pains = map.get_cell(trp.maman).etat.nb_pains;
-	INFO("%d, %d, %d", trp.taille, trp.inventaire, get_inv_max(trp.taille));
+    INFO("%d, %d, %d", trp.taille, trp.inventaire, get_inv_max(trp.taille));
     if (trp.inventaire < get_inv_max(trp.taille) && nb_pains > 0)
     {
         auto amount = nb_pains;
@@ -92,7 +92,7 @@ void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
             // Log event
             internal_action action;
             action.type = take_bread;
-            action.action.troupe_id = trp.id;
+            action.action.action_pos = trp.maman;
             player.add_internal_action(action);
         }
 
@@ -169,7 +169,6 @@ int troupe_get_splitting_index(troupe& trp, const position& canard)
             return i;
     return -1;
 }
-
 
 void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
                      const position& canard, Map& map)
