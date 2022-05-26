@@ -10,6 +10,8 @@ from tkinter import Canvas, Frame, StringVar, Tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter.ttk import Button, OptionMenu, Style
 
+from validator import verify_map
+
 import yaml
 from PIL import Image, ImageTk
 
@@ -324,26 +326,27 @@ class Grid():
         if filename is None:
             filename = askopenfilename()
 
+
         # Index of characters to consider in the grid
         ascii_chars = {conf['serialize']['ascii']: name
                       for name, conf in CELL_TYPES.items()
                       if conf['serialize']['method'] == 'ascii'}
 
+        grid = ""
         with open(filename, 'r') as f:
-            # Read the grid
-            for row_pos in range(MAP_SIZE):
-                for col_pos, char in enumerate(f.readline()):
-                    if char == '\n':
-                        continue
+            grid = [line.split('\n')[0] for line in f.readlines()]
 
-                    if char not in ascii_chars:
-                        print(f"Error: invalid character : {char}")
-                        sys.exit(1)
+        try:
+            # all validation rules are checked here
+            verify_map(grid)
+        except AssertionError as error:
+            print(error)
+            sys.exit(1)
 
-                    if not self.inside_grid(row_pos, col_pos):
-                        print(f"Error: not within maps limits")
-
-                    self.grid[row_pos][col_pos].set(ascii_chars[char])
+        # Read the grid
+        for row_pos in range(MAP_SIZE):
+            for col_pos, char in enumerate(f.readline()):
+                self.grid[row_pos][col_pos].set(ascii_chars[char])
 
             ## Read raw and list infos
             #for name in from_raw_or_list:
