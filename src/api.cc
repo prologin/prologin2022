@@ -104,6 +104,8 @@ int Api::gain(int nb_pains)
 
 int Api::inventaire(int taille)
 {
+    if (taille < 0)
+        return 0;
     return taille/3;
 }
 
