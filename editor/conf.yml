@@ -56,11 +56,57 @@ cell_types:
     #        method: ascii_range
     #        from: '0'
     #        to: '9'
-    old:
-        sprite: bg/papy.png
+    old_0:
+        sprite: bg/old_1.png
         serialize:
             method: ascii
             ascii: '0'
+
+    old_1:
+        sprite: bg/old_2.png
+        serialize:
+            method: ascii
+            ascii: '1'
+    old_2:
+        sprite: bg/old_3.png
+        serialize:
+            method: ascii
+            ascii: '2'
+    old_3:
+        sprite: bg/old_4.png
+        serialize:
+            method: ascii
+            ascii: '3'
+    old_4:
+        sprite: bg/old_1.png
+        serialize:
+            method: ascii
+            ascii: '4'
+    old_5:
+        sprite: bg/old_2.png
+        serialize:
+            method: ascii
+            ascii: '5'
+    old_6:
+        sprite: bg/old_3.png
+        serialize:
+            method: ascii
+            ascii: '6'
+    old_7:
+        sprite: bg/old_4.png
+        serialize:
+            method: ascii
+            ascii: '7'
+    old_8:
+        sprite: bg/old_1.png
+        serialize:
+            method: ascii
+            ascii: '8'
+    old_9:
+        sprite: bg/old_2.png
+        serialize:
+            method: ascii
+            ascii: '9'
 
     hole:
         sprite: bg/trou.png
