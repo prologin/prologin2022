@@ -19,21 +19,19 @@ $(function () {
     $.getScript('/static/js/pixi.min.js').done(function() {
         $.getScript('/static/js/game.js')
         .done(function() {
-            console.log(PIXI.Application)
-            let game = new create_game();
+            let game = create_game();
             game.addToDOM($replay_view[0]);
 
             // Load dump
             const dump_url = `${window.location.href}dump`;
             fetch(dump_url).then(response => {
                 if (response.status !== 200)
-                    console.error('no dump found', res);
+                    console.error('no dump found', response);
                 response.text().then(data => {
                     data = data.substring(0, data.length - 1).replaceAll('\n', ',');
                     dump_data = JSON.parse(`{"dump": [${data}]}`)["dump"];
                     console.log('dump loaded');
-                    game.displayRound(dump_data[current_turn]);
-                    game.startGameLoop();
+                    game.setupGame(dump_data);
                 });
             });
 
@@ -51,14 +49,14 @@ $(function () {
                     return;
                 current_turn -= 1;
                 $turnLabel.text(current_turn);
-                game.displayRound(dump_data[current_turn]);
+                game.jumpToRound(current_turn);
             };
             $next[0].onclick = e => {
                 if (current_turn == 400)
                     return;
                 current_turn += 1;
                 $turnLabel.text(current_turn);
-                game.displayRound(dump_data[current_turn]);
+                game.jumpToRound(current_turn);
             };
 
             $turnSlider.change(function (e) {
@@ -69,7 +67,7 @@ $(function () {
 
                 // Trigger update iff the event was trigger by the UI
                 if (e.originalEvent)
-                    game.displayRound(dump_data[current_turn]);
+                    game.jumpToRound(current_turn);
             });
         });
     });
