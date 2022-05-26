@@ -115,6 +115,11 @@ int GameState::get_round() const
     return round_;
 }
 
+int GameState::get_turn() const
+{
+    return turn_;
+}
+
 void GameState::next_round()
 {
     if (round_ == ROUND_FERMETURE)
