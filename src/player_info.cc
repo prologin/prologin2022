@@ -22,6 +22,7 @@ void PlayerInfo::init_troupes(Map& map, etat_nid nid)
         action.type = troupe_respawn;
         action.action.troupe_id = troupes_[i].id;
         action.action.action_pos = troupes_[i].maman;
+        action.action.action_dir = inverse_dir(dir);
         add_internal_action(action);
     }
 }

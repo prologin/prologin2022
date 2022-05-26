@@ -36,6 +36,7 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
     action.type = troupe_respawn;
     action.action.troupe_id = trp.id;
     action.action.action_pos = trp.maman;
+    action.action.action_dir = inverse_dir(dir);
     player_info.add_internal_action(action);
 
     trp.taille = 1;
