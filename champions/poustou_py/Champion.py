@@ -199,11 +199,13 @@ def nearest(troupe_id, condition):
             #direction.HAUT : (0, 0, 1),
             #direction.BAS  : (0, 0, -1)
         }
+    flag = False
     while not file.empty():
         #print(file.qsize())
         position = file.get()
         if condition(position):
             print("End nearest, found")
+            flag = True
             break
         x, y, z = position
         if not traversable_(position):
@@ -216,7 +218,7 @@ def nearest(troupe_id, condition):
                 from_dir[rz][ry][rx] = inv(dir)
                 file.put((rx, ry, rz))
     
-    if file.empty():
+    if file.empty() and not flag:
         print("Not found")
         return None, None
     
@@ -245,7 +247,7 @@ def plus_pains():
 
 def beaucoup_pains(pos):
     #best, score = plus_pains()
-    return info_case(pos).nb_pains > 0
+    return info_case(pos).nb_pains > 0 and traversable(pos)
 
 
 
@@ -316,15 +318,17 @@ def jouer_tour():
                 print(troupe.inventaire, "pains in inventory, trying to get to our nest")
                 if not step_to(troupe, lambda pos: mon_nid(pos)):
                     print("Can't get to my nest ! Trying to reach a free nest")
-                    if not step_to(troupe, lambda pos: nid_libre(pos)):
-                        print("Can't reach it ! Trying to grow")
-                        if grandir(troupe_id) != erreur.OK:
-                            print("Can't grow ! Trying to move")
-                            dirs = canmove(troupe.maman)
-                            if len(dirs) == 0:
-                                print("Can't move ! *dies*")
-                                break
-                            avancer(troupe_id, dirs[0][0])
+                    while troupe.pts_action > 0:
+                        if not step_to(troupe, lambda pos: nid_libre(pos)):
+                            print("Can't reach it ! Trying to grow")
+                            if grandir(troupe_id) != erreur.OK:
+                                print("Can't grow ! Trying to move")
+                                dirs = canmove(troupe.maman)
+                                if len(dirs) == 0:
+                                    print("Can't move ! *dies*")
+                                    break
+                                avancer(troupe_id, dirs[0][0])
+                        troupe = get_troupe_by_id(troupe_id)
             else:
                 print("No pain in inventory. Searching for some")
                 if not step_to(troupe, lambda pos:beaucoup_pains(pos)):
