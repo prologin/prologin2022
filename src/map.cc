@@ -190,8 +190,15 @@ std::vector<direction> Map::directions_non_mortelles(const position& pos) const
             directions.push_back(dir);
     }
 
-    // TODO:
-    // Ajouter Haut/Bas
+	if (pos.niveau == 0) {
+		if (get_cell(pos).etat.contenu == TROU && get_cell(pos + get_delta_pos(BAS)).etat.contenu == TUNNEL)
+			directions.push_back(BAS);
+	}
+	else
+	{
+		if (get_cell(pos + get_delta_pos(HAUT)).etat.contenu == TROU)
+			directions.push_back(HAUT);
+	}
     return directions;
 }
 

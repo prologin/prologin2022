@@ -128,17 +128,12 @@ std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
             }
         }
     }
-    int z = arrivee.niveau;
-    int y = arrivee.ligne;
-    int x = arrivee.colonne;
-    visite[z+1][y][x] = false;
     std::queue<position> queue;
+    queue.push(arrivee);
     bool found = false;
     while (!queue.empty()) {
         position point = queue.front();
         queue.pop();
-        if (visite[point.niveau+1][point.ligne][point.colonne])
-            continue;
         if (point == depart) {
             found = true;
             break;
@@ -147,11 +142,41 @@ std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
         std::vector<direction> nexts = map.directions_non_mortelles(point);
         for (direction nextdir : nexts) {
             position nextpos = point + get_delta_pos(nextdir);
-            back[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = inverse_dir(nextdir);
-            queue.push(nextpos);
+            if (!visite[nextpos.niveau+1][nextpos.ligne][nextpos.colonne]) {
+				back[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = inverse_dir(nextdir);
+				visite[nextpos.niveau+1][nextpos.ligne][nextpos.colonne] = true;
+            	queue.push(nextpos);
+			}
         }
     }
     
+    for (int y = 0; y < HAUTEUR; y++) {
+		for (int x = 0; x < LARGEUR; x++) {
+			if (y == arrivee.ligne && x == arrivee.colonne)
+				std::cout << 'X';
+			else 
+			{
+				direction thing = back[1][y][x];
+				switch (thing) {
+					case NORD:
+						std::cout << 'v';
+						break;
+					case EST:
+						std::cout << '>';
+						break;
+					case SUD:
+						std::cout << '^';
+						break;
+					case OUEST:
+						std::cout << '<';
+						break;
+				}
+			}
+		}
+		std::cout << std::endl;
+	}
+	    
+
     if (!found)
         return result;
     position traverser = depart;
