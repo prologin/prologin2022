@@ -35,5 +35,5 @@
 
 # Javascript package manager 
 node_modules/
-
+dist/
 
