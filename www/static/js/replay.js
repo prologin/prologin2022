@@ -16,9 +16,10 @@ $(function () {
 
     $replay_view.hide();
 
-    $.getScript('/static/js/out.js')
+    $.getScript('/static/js/game.js')
     .done(function() {
-        let game = create_game();
+        console.log(PIXI.Application)
+        let game = new create_game();
         game.addToDOM($replay_view[0]);
 
         // Load dump

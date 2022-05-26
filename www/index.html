@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>demo</title>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js" integrity="sha256-ivk71nXhz9nsyFDoYoGf2sbjrR9ddh+XDkCcfZxjvcM=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" integrity="sha512-i8+QythOYyQke6XbStjt9T4yQHhhM+9Y9yTY1fOxoDQwsQpKMEpIoSQZ8mVomtnVCf9PBvoQDnKl06gGOOD19Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+      <div id="replay" data-match-id="70" data-match-dump-url="/matches/70/dump/" data-match-info-url="/api/matches/70/">
+      <div id="replay-board"></div>
+      <div id="replay-legend">
+        
+          <div class="replay-player" id="replay_p139" data-id="139"></div>
+        
+          <div class="replay-player" id="replay_p140" data-id="140"></div>
+        
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          <button class="btn btn-default btn-xs" id="replay-playpause"><i class="fa"></i> <span>Lecture</span></button>
+          <button class="btn btn-default btn-xs" id="replay-previous"><i class="fa fa-caret-left"></i></button>
+          <button class="btn btn-default btn-xs" id="replay-next"><i class="fa fa-caret-right"></i></button>
+        </div>
+        <div class="col-xs-2">
+          Tour <span id="replay-turn-label">0</span>
+        </div>
+        <div class="col-xs-8">
+          <input id="replay-turn-slider" type="range">
+        </div>
+      </div>
+      <p class="text-muted small" style="margin-top: 1em">
+        <strong>Navigation clavier</strong>&nbsp;:
+        lecture/pause avec <kbd>Espace</kbd>&nbsp;;
+        étape précédente/suivante avec <kbd>←</kbd> et <kbd>→</kbd>, combinés à <kbd>Shift</kbd> pour sauter 10 étapes&nbsp;;
+        première étape <kbd>a</kbd>, dernière étape <kbd>e</kbd>.
+      </p>
+      <div id="replay_view" style="display: block;">
+      </div>
+    </div>
+    <script src="static/js/replay.js"></script>
+  </body>
+</html>

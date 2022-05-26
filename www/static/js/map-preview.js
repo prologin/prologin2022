@@ -5,7 +5,7 @@ $(function () {
 
     $preview.hide();
 
-    $.getScript('/static/js/out.js')
+    $.getScript('/static/js/game.js')
     .done(function() {
         let game = create_game();
         let map = $map_content[0].textContent.replaceAll('\n', '');

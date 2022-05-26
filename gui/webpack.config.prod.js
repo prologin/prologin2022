@@ -1,24 +1,8 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { ESBuildMinifyPlugin } = require('esbuild-loader')
+const RawBundlerPlugin = require('webpack-raw-bundler');
 
 module.exports = {
     mode: 'production',
-    module: {
-        rules: [{
-            test: /\.(js)$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader'
-            }
-        }]
-    },
-    optimization: {
-        minimizer: [
-            new ESBuildMinifyPlugin({
-                keepNames: true,
-            }),
-        ]
-    },
     plugins: [
         new CopyWebpackPlugin({
             patterns: [{
@@ -26,5 +10,9 @@ module.exports = {
                 from: 'assets'
             }]
         }),
+        new RawBundlerPlugin({
+            bundles: [ "out.js" ],
+            "out.js": [ 'src/*.js' ]
+        })
     ]
 }

@@ -18,8 +18,8 @@
     "jquery": "^2.1.3"
   },
   "scripts": {
-    "production": "webpack --mode production --config webpack.config.prod.js && cp dist/main.js ../www/static/js/out.js && cp -r dist/assets ../www/static/img/assets",
-    "build": "webpack --mode development --config webpack.config.dev.js",
+    "production": "webpack --config webpack.config.prod.js && cp dist/main.js ../www/static/js/out.js && cp -r dist/assets ../www/static/img/assets",
+    "build": "webpack --config webpack.config.dev.js",
     "dev": "webpack-dev-server --config webpack.config.dev.js",
     "clean": "rm -rf dist && rm -rf ../www/static/img/assets/ && rm -f ../www/static/js/out.js"
   },
@@ -29,10 +29,11 @@
     "@babel/preset-env": "^7.18.2",
     "babel-loader": "^8.2.5",
     "copy-webpack-plugin": "^11.0.0",
-    "html-webpack-plugin": "^5.5.0",
     "esbuild-loader": "^2.19.0",
+    "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.9.0"
+    "webpack-dev-server": "^4.9.0",
+    "webpack-raw-bundler": "^1.3.6"
   }
 }
