@@ -6,12 +6,6 @@
 
 void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 {
-    // Log event
-    internal_action action;
-    action.type = troupe_respawn;
-    action.action.troupe_id = trp.id;
-    player_info.add_internal_action(action);
-
     // Dropping the bread
     for (auto i = 0; i < trp.inventaire; ++i)
         map.get_cell(trp.canards[trp.taille - 1 - i]).etat.nb_pains += 1;
@@ -27,6 +21,13 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 
     // Mark the new position
     map.get_cell(trp.maman).canard_sur_case = true;
+
+    // Log event
+    internal_action action;
+    action.type = troupe_respawn;
+    action.action.troupe_id = trp.id;
+    action.action.action_pos = trp.maman;
+    player_info.add_internal_action(action);
 
     trp.canards = {trp.maman};
     trp.pts_actions = 0;
@@ -64,7 +65,7 @@ void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
             internal_action action;
             action.type = leave_bread;
             action.action.troupe_id = trp.id;
-            player_info.add_internal_action(action);
+            player.add_internal_action(action);
         }
         player.increase_score(gain(trp.inventaire));
         trp.inventaire = 0;
