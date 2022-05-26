@@ -59,6 +59,13 @@ void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
 {
     if (map.get_cell(trp.maman).nid == player.get_player_nid_id())
     {
+        if (trp.inventaire) {
+            // Log event
+            internal_action action;
+            action.type = leave_bread;
+            action.action.troupe_id = trp.id;
+            player_info.add_internal_action(action);
+        }
         player.increase_score(gain(trp.inventaire));
         trp.inventaire = 0;
     }
