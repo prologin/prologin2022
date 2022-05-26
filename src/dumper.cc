@@ -309,6 +309,9 @@ static std::ostream& operator<<(std::ostream& ss, internal_action action)
         case spread_bread:
             return ss << '{' << KV{"action_type", "\"spread_bread\""} << ", "
                 << KV{"pos", action.action.action_pos} << '}';
+        case capture_nest:
+            return ss << '{' << KV{"action_type", "\"capture_nest\""} << ", "
+                << KV{"pos", action.action.action_pos} << '}';
         case flag:
             return ss << '{' << KV{"action_type", "\"debug\""} << ", "
                 << KV{"pos", action.flag.pos} << ", "

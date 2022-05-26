@@ -17,6 +17,7 @@ enum internal_action_type
     spread_bread,
     leave_bread,
     auto_move,
+    capture_nest,
 };
 
 typedef struct flag_info

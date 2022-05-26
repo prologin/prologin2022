@@ -71,8 +71,15 @@ void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
 
 void capturer_nid(troupe& trp, Map& map, PlayerInfo& player)
 {
-    if (map.get_cell(trp.maman).nid == LIBRE)
+    if (map.get_cell(trp.maman).nid == LIBRE) {
         map.get_cell(trp.maman).nid = player.get_player_nid_id();
+
+        // Log event
+        internal_action action;
+        action.type = capture_nest;
+        action.action.action_pos = trp.maman;
+        player.add_internal_action(action);
+    }
 }
 
 void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
