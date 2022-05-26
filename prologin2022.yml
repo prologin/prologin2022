@@ -40,11 +40,11 @@ constant:
     cst_comment: Nombre de tunnels qu'un joueur peut creuser par tour
   -
     cst_name: PTS_ACTION
-    cst_val: 20
+    cst_val: 5
     cst_comment: Nombre de déplacements que peut faire une troupe en un tour
   -
     cst_name: COUT_CROISSANCE
-    cst_val: 11
+    cst_val: 3
     cst_comment: Nombre de points de mouvement requis pour incrémenter la taille
   -
     cst_name: COUT_BUISSON

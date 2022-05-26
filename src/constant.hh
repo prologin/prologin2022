@@ -30,10 +30,10 @@
 #define FREQ_TUNNEL 1
 
 /// Nombre de déplacements que peut faire une troupe en un tour
-#define PTS_ACTION 20
+#define PTS_ACTION 5
 
 /// Nombre de points de mouvement requis pour incrémenter la taille
-#define COUT_CROISSANCE 11
+#define COUT_CROISSANCE 3
 
 /// Coût en score de la pose de buisson
 #define COUT_BUISSON 3
