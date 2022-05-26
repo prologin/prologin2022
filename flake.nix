@@ -32,6 +32,30 @@
               cp -r _build/html $out
             '';
           };
+
+          map-editor-2022 = final.stdenv.mkDerivation {
+            name = "map-editor-2022";
+            src = ./editor;
+
+            buildPhase = " ";
+            installPhase = ''
+              mkdir -p $out/bin/bg
+              cp -rf $src/conf.yml $out/bin/
+              cp -rf $src/bg $out/bin
+
+              install -Dm755 $src/map_editor.py $out/bin/map_editor
+              # uses nativeBuildInputs to add to PYTHONPATH wrapperscript
+              wrapPythonPrograms
+            '';
+
+            pythonPath = with final.python3Packages; [
+              tkinter
+              pyyaml
+              pillow
+            ];
+            nativeBuildInputs = [ final.python3Packages.wrapPython ];
+
+          };
         };
       };
 
@@ -47,7 +71,7 @@
         in
         rec {
           packages = {
-            inherit (pkgs) prologin2022 prologin2022-docs;
+            inherit (pkgs) prologin2022 prologin2022-docs map-editor-2022;
           };
 
           defaultPackage = self.packages.${system}.prologin2022;
