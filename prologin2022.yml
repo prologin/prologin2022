@@ -51,9 +51,9 @@ constant:
     cst_val: 3
     cst_comment: Coût en score de la pose de buisson
   -
-    cst_name: TOUR_FERMETURE
-    cst_val: 200
-    cst_comment: Tour au moment duquel les barrières s'ouvrent ou se ferment
+    cst_name: ROUND_FERMETURE
+    cst_val: 99
+    cst_comment: Round à la fin duquel les barrières s'ouvrent ou se ferment
 
 enum:
   - enum_name: erreur
