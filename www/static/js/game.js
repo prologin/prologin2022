@@ -59,7 +59,7 @@ class Barrier extends PIXI.Sprite {
     constructor(x, y, isOpen) {
         super(isOpen ? textures.barrier_open : textures.barrier_closed);
         this.posX = x;
-        this.posY = y;
+        this.posY = y
         this.y = calculateY(y);
         this.x = calculateX(x);
         this.width = SPRITE_WIDTH;
@@ -100,13 +100,13 @@ class Game {
         this.nests = [];
         this.bushes = [];
         this.setupMap();
+        this.displayDucks(0);
     }
 
     setupMap() {
         const totalSize = MAP_SIZE * MAP_SIZE;
         const lowerMapString = this.dump[0].map.cells.substr(0, totalSize);
         const upperMapString = this.dump[0].map.cells.substr(totalSize, totalSize * 2);
-
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 const sprite = createSprite(textures.grass[Math.floor(Math.random() * 3)], i, j);
@@ -160,11 +160,26 @@ class Game {
     }
 
     displayDucks(index) {
+        this.clearDucks();
         const roundData = this.dump[index].players;
-        for (const player of roundData) {
-            const troupes = player.troupes;
-            console.log(troupes);
+        for (let i = 0, k = 0; i < roundData.length; i++) {
+            for (let j = 0; j < roundData[i].troupes.length; j++, k++) {
+                this.troupes[k] = [];
+                const troupe = roundData[i].troupes[j];
+                const duck = new Duck(troupe.maman.colonne, troupe.maman.ligne, troupe.dir);
+                duck.display(this.app);
+                this.troupes[k].push(duck);
+            }
         }
+    }
+
+    clearDucks() {
+        for (const troupe of this.troupes) {
+            for (const duck of troupe) {
+                this.app.stage.removeChild(duck);
+            }
+        }
+        this.troupes = [];
     }
 
     jumpToRound(index) {
@@ -263,21 +278,33 @@ class Papy extends PIXI.AnimatedSprite {
 }
 
 class Duck extends PIXI.AnimatedSprite {
-    constructor(x, y) {
-        const spriteSheet = {
-            north: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_1.png`),
+    constructor(x, y, dir) {
+        const spriteSheet = [
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_3.png`)],
-            south: [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_S_1.png`),
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_S_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_S_2.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_S_3.png`)],
-        }
-        super(spriteSheet['south'], true);
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_E_1.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_E_2.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_E_3.png`)],
+            [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_W_1.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_W_2.png`),
+                   new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_W_3.png`)],
+        ]
+        super(spriteSheet[dir], true);
         this.spriteSheet = spriteSheet;
         this.animationSpeed = 0.1;
         this.loop = false;
         this.y = calculateY(y);
         this.x = calculateX(x);
+        this.width = SPRITE_WIDTH;
+        this.height = SPRITE_HEIGHT;
+    }
+
+    changeOrientation(dir) {
+        this.textures = this.spriteSheet[0];
     }
 
     display(app) {
@@ -307,6 +334,25 @@ class Duckling extends PIXI.AnimatedSprite {
         this.loop = false;
         this.y = calculateY(y);
         this.x = calculateX(x);
+        this.width = SPRITE_WIDTH;
+        this.height = SPRITE_HEIGHT;
+    }
+
+    changeOrientation(dir) {
+        switch (dir) {
+            case 0:
+                this.textures = this.spriteSheet.south;
+                break;
+            case 1:
+                this.textures = this.spriteSheet.south;
+                break;
+            case 2:
+                this.textures = this.spriteSheet.east;
+                break;
+            case 3:
+                this.textures = this.spriteSheet.west;
+                break;
+        }
     }
 
     display(app) {
