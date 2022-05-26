@@ -198,7 +198,7 @@ function createSprite(texture, x, y) {
 }
 
 function map_char_to_sprite(input_char, i, j) {
-    let texture = texture.grass[0];
+    let texture = textures.grass[0];
     switch (input_char) {
         case ' ':
         case '.':
