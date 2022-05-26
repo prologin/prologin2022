@@ -49,8 +49,8 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 
 void die(troupe& trp, PlayerInfo& player, Map& map)
 {
-	map.delete_troupe(trp);
-	respawn(trp, player, map);
+    map.delete_troupe(trp);
+    respawn(trp, player, map);
 }
 
 void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
@@ -78,7 +78,8 @@ void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
 
 void capturer_nid(troupe& trp, Map& map, PlayerInfo& player)
 {
-    if (map.get_cell(trp.maman).nid == LIBRE) {
+    if (map.get_cell(trp.maman).nid == LIBRE)
+    {
         map.get_cell(trp.maman).nid = player.get_player_nid_id();
 
         // Log event
@@ -107,7 +108,7 @@ void deposer_nid(troupe& trp, Map& map, PlayerInfo& player)
 }
 
 void move_troupe(troupe& trp, const direction& dir, Map& map,
-                 PlayerInfo& player)
+                 PlayerInfo& player, internal_action action)
 {
     // Action points shall always be removed - even if the troup dies
     player.remove_pts_actions(trp.id, 1);
@@ -115,16 +116,19 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
     auto delta = get_delta_pos(dir);
     trp.dir = dir;
     if (!inside_map(trp.maman + delta) || map.case_mortelle(trp.maman + delta))
-		die(trp, player, map);
+        die(trp, player, map);
     else
     {
-		map.unmark_canard(trp.canards.back());
+        map.unmark_canard(trp.canards.back());
+        // add the internal action only if the player can actually move
+        player.add_internal_action(action);
+
         for (int i = trp.taille - 1; i > 0; --i)
             trp.canards[i] = trp.canards[i - 1];
         trp.canards[0] += delta;
         trp.maman = trp.canards[0];
 
-		map.mark_canard(trp.canards.back(), player, trp.id);
+        map.mark_canard(trp.canards.back(), player, trp.id);
         player.spawn_canard(trp.id, map);
 
         prendre_pain(trp, map, player);
@@ -135,58 +139,58 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
 
 int get_head(int index)
 {
-	return (index / 3) * 3;
+    return (index / 3) * 3;
 }
 
 int get_carrier(int index)
 {
-	return get_head(index) + 2; 
+    return get_head(index) + 2;
 }
 
 int troupe_get_splitting_index(troupe& trp, const position& canard)
 {
-	for (int i = 1 ; i < trp.taille; ++i)
-		if (trp.canards[i] == canard)
-				return i;
-	return -1;
+    for (int i = 1; i < trp.taille; ++i)
+        if (trp.canards[i] == canard)
+            return i;
+    return -1;
 }
 
 void drop_bread_from(const int start, const int end, troupe& trp, Map& map)
 {
-	for (int i = get_carrier(start); i < end; i += 3)
-	{
-		if (trp.inventaire <= 0)
-			continue;
-		map.get_cell(trp.canards[i]).etat.nb_pains += 1;
-		trp.inventaire--;
-	}
+    for (int i = get_carrier(start); i < end; i += 3)
+    {
+        if (trp.inventaire <= 0)
+            continue;
+        map.get_cell(trp.canards[i]).etat.nb_pains += 1;
+        trp.inventaire--;
+    }
 }
 
 void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
-				const position& canard, Map& map)
+                     const position& canard, Map& map)
 {
-	troupe& trp = *(player_info.get_troupe(troupe_id));
-	//Find the bad canard
-	if (canard == trp.maman)
-	{
-		drop_bread_from(0, trp.taille, trp, map);
-		die(trp, player_info, map);
-		return;
-	}
+    troupe& trp = *(player_info.get_troupe(troupe_id));
+    // Find the bad canard
+    if (canard == trp.maman)
+    {
+        drop_bread_from(0, trp.taille, trp, map);
+        die(trp, player_info, map);
+        return;
+    }
 
-	int splitting_index = troupe_get_splitting_index(trp, canard);
-	if (splitting_index == -1)
-		return; // Split not anymore in troupe
+    int splitting_index = troupe_get_splitting_index(trp, canard);
+    if (splitting_index == -1)
+        return; // Split not anymore in troupe
 
-	drop_bread_from(splitting_index, trp.taille, trp, map);	
+    drop_bread_from(splitting_index, trp.taille, trp, map);
 
-	for (int i = trp.taille - 1; i >= splitting_index; i--)
-	{
-		map.unmark_canard(trp.canards[i]);
-		trp.canards.pop_back();
-		trp.taille -= 1;
-	}	
+    for (int i = trp.taille - 1; i >= splitting_index; i--)
+    {
+        map.unmark_canard(trp.canards[i]);
+        trp.canards.pop_back();
+        trp.taille -= 1;
+    }
 
-	if (trp.taille < TAILLE_MIN)
-		die(trp, player_info, map);
+    if (trp.taille < TAILLE_MIN)
+        die(trp, player_info, map);
 }

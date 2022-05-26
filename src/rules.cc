@@ -142,15 +142,16 @@ void Rules::end_of_player_turn(unsigned int player_key)
     player.sync_score();
     // If the player has not consumed all his action points yet, make it move
     for (auto& trp : player.troupes())
-        while (player.pts_actions(trp.id)) {
+        while (player.pts_actions(trp.id))
+        {
             // Log event
             internal_action action;
             action.type = auto_move;
             action.action.troupe_id = trp.id;
             action.action.action_dir = trp.dir;
-            player.add_internal_action(action);
 
-            move_troupe(trp, trp.dir, api_->game_state().get_map(), player);
+            move_troupe(trp, trp.dir, api_->game_state().get_map(), player,
+                        action);
         }
 
     api_->game_state().set_init(false);

@@ -6,7 +6,7 @@
 #include "position.hh"
 
 void move_troupe(troupe& trp, const direction& dir, Map& map,
-                 PlayerInfo& player);
+                 PlayerInfo& player, internal_action action);
 
 void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
-				const position& canard, Map& map);
+                     const position& canard, Map& map);
