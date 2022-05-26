@@ -295,21 +295,21 @@ TEST_F(ApiTest, ApiTrouverChemin)
     for (const auto& player : players)
     {
         position start = {
-            .niveau = 0,
+            .colonne = 23,
             .ligne = 16,
-            .colonne = 23 };
+            .niveau = 0};
         position end = {
-            .niveau = 0,
+            .colonne = 28,
             .ligne = 14,
-            .colonne = 28 };
+            .niveau = 0};
 
-        vector<direction> got = player.api->trouver_chemin(start, end);
-        vector<direction> expected = {
+	std::vector<direction> got = player.api->trouver_chemin(start, end);
+	std::vector<direction> expected = {
             NORD, NORD, NORD, NORD, EST, EST, SUD, EST, EST, SUD, SUD, SUD, SUD, SUD, EST };
 
-        ASSERT_TRUE(got.size() == expected.size());
+        ASSERT_EQ(got.size(), expected.size());
         for (int i = 0; i < got.size(); i++) {
-            ASSERT_TRUE(got[i] == expected[i]);
+            ASSERT_EQ(got[i], expected[i]);
         }
     }
 }
