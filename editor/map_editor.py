@@ -143,6 +143,10 @@ class Grid():
                                   command=self.load_grid)
         self.load_button.pack(in_=self.menu, side='right')
 
+        self.quit_button = Button(master, text='Quit',
+                                  command=self.quit)
+        self.quit_button.pack(in_=self.menu, side='left')
+
         # Place the canvas
         self.canvas = Canvas(master,
                              width=MAP_CELL_SIZE * MAP_SIZE,
@@ -179,6 +183,9 @@ class Grid():
         self.dd_symetry.pack(side='right')
 
         self.draw()
+
+    def quit(self):
+        sys.exit(0)
 
     def draw(self):
         for row in self.grid:
