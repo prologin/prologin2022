@@ -8,37 +8,55 @@
   };
 
   outputs = { self, stechec2, nixpkgs, futils }:
-    futils.lib.eachDefaultSystem (system:
-      let
-        lib = stechec2.lib."${system}";
-        pkgs = import nixpkgs { inherit system;  };
-      in
-        rec {
-          packages = futils.lib.flattenTree {
-            prologin2022 = lib.mkStechec2Game {
-              name = "prologin2022";
-              game = ./.;
-              version = "1.0";
-              stechec2 = stechec2.defaultPackage."${system}";
-            };
+    let
+      inherit (nixpkgs) lib;
+      inherit (lib) recursiveUpdate;
+      inherit (futils.lib) eachDefaultSystem;
 
-            docs = pkgs.stdenv.mkDerivation {
-              name = "prologin2022-docs";
-
-              src = ./doc;
-              buildInputs = [ pkgs.python3Packages.sphinx ];
-              buildFlags = [ "html" ];
-
-              installPhase = ''
-                cp -r _build/html $out
-              '';
-            };
+      anySystemOutputs = {
+        overlay = final: prev: {
+          prologin2022 = final.mkStechec2Game {
+            name = "prologin2022";
+            game = ./.;
+            version = "1.0";
           };
 
-          defaultPackage = packages.prologin2022;
+          prologin2022-docs = final.stdenv.mkDerivation {
+            name = "prologin2022-docs";
+
+            src = ./doc;
+            buildInputs = [ final.python3Packages.sphinx ];
+            buildFlags = [ "html" ];
+
+            installPhase = ''
+              cp -r _build/html $out
+            '';
+          };
+        };
+      };
+
+      multipleSystemsOutpus = eachDefaultSystem (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              stechec2.overlay
+              self.overlay
+            ];
+          };
+        in
+        rec {
+          packages = {
+            inherit (pkgs) prologin2022 prologin2022-docs;
+          };
+
+          defaultPackage = self.packages.${system}.prologin2022;
+
           devShell = pkgs.mkShell {
             buildInputs = [ stechec2.defaultPackage."${system}" pkgs.python3Packages.sphinx ];
           };
         }
-    );
+      );
+     in
+     recursiveUpdate anySystemOutputs multipleSystemsOutpus;
 }
