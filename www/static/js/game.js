@@ -11,7 +11,7 @@ const ASSET_ROOT = "/static/img/assets/"
 
 const NB_ROUNDS = 200;
 
-const MAX_SPEED = 25;
+const MAX_SPEED = 15;
 
 const textures = {
     grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
@@ -37,7 +37,7 @@ const textures = {
 let speed = 1;
 
 function animationDuration() {
-    return 1 + MAX_SPEED - speed;
+    return 1;
 }
 
 
@@ -130,15 +130,15 @@ class Game {
     setupGame(stechecDump) {
         this.dump = stechecDump;
         this.papys = [];
-        this.troupes = [];
+        this.troupes = [[], [], [], []];
         this.barriers = [];
         this.nests = [];
         this.bushes = [];
         this.setupMap();
-        this.displayDucks(0);
+        //this.displayDucks(0);
         this.turn = 0;
         this.paused = false;
-        this.action_index = false;
+        this.action_index = 0;
         this.frame = 0;
         this.bread = [];
     }
@@ -296,19 +296,19 @@ class Game {
         this.displayDucks(index);
     }
 
-    async gameLoop(delta) {
-        if (this.pause || this.turn >= 400)
-            return;
+    gameLoop(delta) {
+
         const actions = this.getTurnActions();
-        if (actions.length === 0 || this.action_index >= actions.length) {
-            this.displayMapChanges(this.turn);
-            this.displayDucks(this.turn);
-            this.turn += 1;
-            this.action_index = 0;
+
+        const curr_action = actions[this.action_index];
+
+        if (curr_action === undefined) {
             this.frame = 0;
+            this.action_index = 0;
+            this.turn += 1;
             return;
         }
-        const curr_action = actions[this.action_index];
+
         switch (curr_action.action_type) {
             case 'auto_move':
                 this.avancer(this.frame, curr_action.player_id, curr_action.dir, curr_action.troupe_id);
@@ -316,16 +316,42 @@ class Game {
             case 'avancer':
                 this.avancer(this.frame, curr_action.player_id, curr_action.direction, curr_action.troupe_id);
                 break;
+            case 'respawn':
+                this.respawn(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
+                break;
+            case 'nouveau_canard':
+                this.new_duck(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
+                break;
         }
+
         this.frame += 1;
 
-        if (this.frame >= animationDuration()) {
+        if (true || this.frame >= animationDuration()) {
             this.frame = 0;
             this.action_index += 1;
         }
     }
 
-    startReplay() {
+    respawn(frame, player_id, troupe_id, pos) {
+        if (this.troupes[troupe_id - 1 + 2 * player_id]) {
+            for(let troupe of this.troupes[troupe_id - 1 + 2 * player_id]) {
+                this.app.stage.removeChild(troupe);
+            }
+        }
+        this.troupes[troupe_id - 1 + 2 * player_id] = [new Duck(pos.colonne, pos.ligne, 1)];
+        this.troupes[troupe_id - 1 + 2 * player_id][0].display(this.app);
+    }
+
+
+    new_duck(frame, player_id, troupe_id, pos) {
+        const index = (troupe_id - 1) + 2 * player_id;
+        //TODO Direction
+        this.troupes[index].push(new Duckling(pos.colonne, pos.ligne, 1));
+        this.troupes[index][this.troupes[index].length - 1].display(this.app);
+    }
+
+    async startReplay() {
+        //this.app.ticker.maxFPS = 10;
         this.app.ticker.add(delta => this.gameLoop(delta));
     }
 
@@ -337,11 +363,25 @@ class Game {
     }
 
     avancer(frame, player_id, dir, troupe_id) {
-        const troupe = this.troupes[troupe_id + player_id * 2];
-        /*
-        if (frame === 0) {
-        }*/
+        const troupe = this.troupes[(troupe_id - 1) + player_id * 2];
 
+        for (let i = troupe.length - 1; i >= 1; i--) {
+            troupe[i].x = troupe[i-1].x;
+            troupe[i].y = troupe[i-1].y;
+            troupe[i].posX = troupe[i-1].posX;
+            troupe[i].posY = troupe[i-1].posY;
+            troupe[i].changeOrientation(troupe[i-1].dir);
+        }
+
+        const endpos = this.calculateEndPosition([troupe[0].posX, troupe[0].posY], dir);
+
+        troupe[0].x = calculateX(endpos[0]);
+        troupe[0].y = calculateY(endpos[1]);
+        troupe[0].posX = endpos[0];
+        troupe[0].posY = endpos[1];
+        troupe[0].changeOrientation(dir);
+
+        /*
         for (let i = 1; i < troupe.length; i++) {
             const start_pos = [troupe[i].posX, troupe[i].posY];
             const end_pos = [troupe[i-1].posX, troupe[i-1].posY];
@@ -368,6 +408,7 @@ class Game {
             troupe[0].posX = end_pos[0];
             troupe[0].posY = end_pos[1];
         }
+    */
     }
 
     calculateEndPosition(start, dir) {

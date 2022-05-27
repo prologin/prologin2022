@@ -51,6 +51,7 @@ $(function () {
                 current_turn -= 1;
                 $turnLabel.text(current_turn);
                 game.jumpToRound(current_turn);
+                console.log(dump_data);
             };
 
             $playPause[0].onclick = e => {
