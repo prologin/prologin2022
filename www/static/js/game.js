@@ -65,6 +65,17 @@ function calculateX(x) {
    return x * SPRITE_WIDTH;
 }
 
+function colorToHTML(color) {
+    switch (color) {
+        case 1:
+            return 0x3333FF;
+        case 2:
+            return 0xFFFF00;
+        case 3:
+            return 0xFF9999;
+    }
+}
+
 
 class Barrier extends PIXI.Sprite {
     constructor(x, y, isOpen) {
@@ -142,6 +153,7 @@ class Game {
         this.action_index = 0;
         this.frame = 0;
         this.bread = [];
+        this.pigeons = [];
     }
 
     setupMap() {
@@ -154,6 +166,7 @@ class Game {
                 this.app.stage.addChild(sprite);
             }
         }
+
 
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
@@ -292,9 +305,17 @@ class Game {
         this.troupes = [];
     }
 
+    clearPigeons() {
+        for (const pigeon of this.pigeons) {
+            this.app.stage.removeChild(pigeon);
+        }
+        this.pigeons = [];
+    }
+
     jumpToRound(index) {
         this.displayMapChanges(index);
         this.displayDucks(index);
+        this.clearPigeons();
     }
 
     gameLoop(delta) {
@@ -306,6 +327,7 @@ class Game {
         if (curr_action === undefined) {
             this.frame = 0;
             this.action_index = 0;
+            this.clearPigeons();
             this.turn += 1;
             return;
         }
@@ -319,6 +341,9 @@ class Game {
                 break;
             case 'capture_nest':
                 this.captureNest(this.frame, curr_action.player_id, curr_action.pos);
+                break;
+            case 'debug':
+                this.createDebugPigeon(curr_action.player_id, curr_action.pos, curr_action.debug);
                 break;
             case 'respawn':
                 this.respawn(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
@@ -342,6 +367,24 @@ class Game {
             this.frame = 0;
             this.action_index += 1;
         }
+    }
+
+    createDebugPigeon(player_id, pos, debug) {
+        for (let i = 0; i < this.pigeons.length ; i++) {
+            if (pos.colonne == this.pigeons[i].posX && pos.ligne == this.pigeons[i].posY) {
+                if (debug === 0) {
+                    this.app.stage.removeChild(this.pigeons[i]);
+                    this.pigeons[i].remove(i);
+                } else {
+                    this.pigeons[i].tint = colorToHTML(debug);
+                }
+                return;
+            }
+        }
+        const pigeon = createSprite(textures.pigeon, pos.colonne, pos.ligne);
+        pigeon.tint = colorToHTML(debug);
+        this.app.stage.addChild(pigeon);
+        this.pigeons.push(pigeon);
     }
 
     captureNest(frame, player_id, pos) {
