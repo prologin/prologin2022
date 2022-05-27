@@ -420,3 +420,26 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
     ASSERT_EQ(14, map.get_cell(pains).etat.nb_pains);
     ASSERT_EQ(2, trp->inventaire);
 }
+
+TEST_F(ApiTest, ActionAvancerCanardSurLuiMeMe)
+{
+	auto& player = players[0];
+    std::vector<position> new_pos = {
+        {.colonne = 26, .ligne = 37, .niveau = 0},
+        {.colonne = 25, .ligne = 37, .niveau = 0},
+        {.colonne = 24, .ligne = 37, .niveau = 0},
+        {.colonne = 23, .ligne = 37, .niveau = 0},
+        {.colonne = 22, .ligne = 37, .niveau = 0},
+        {.colonne = 21, .ligne = 37, .niveau = 0},
+    };
+
+    troupe* trp = player.info->get_troupe(1);
+    place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
+	
+	player.api->avancer(1, EST);
+	player.api->avancer(1, EST);
+	auto err = player.api->avancer(1, OUEST);
+	
+	assert_troupe_died(err, player.api->game_state(), *player.info, new_pos, trp,
+					0, __LINE__);
+}

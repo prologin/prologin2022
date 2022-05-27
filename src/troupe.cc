@@ -156,7 +156,7 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
         trp.canards[0] += delta;
         trp.maman = trp.canards[0];
 
-        map.mark_canard(trp.canards.back(), player, trp.id);
+        map.mark_canard(trp.maman, player, trp.id);
         player.spawn_canard(trp.id, map);
 
         prendre_pain(trp, map, player);
