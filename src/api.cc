@@ -144,6 +144,13 @@ std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
         }
         visite[point.niveau+1][point.ligne][point.colonne] = true;
         std::vector<direction> nexts = map.directions_non_mortelles(point);
+		
+		direction checkdirs[] = {NORD, SUD, EST, OUEST, HAUT, BAS};
+		for (direction dir : checkdirs) {
+			if (point + get_delta_pos(dir) == depart)
+				nexts.push_back(dir);
+		}
+
         for (direction nextdir : nexts) {
             position nextpos = point + get_delta_pos(nextdir);
             if (!visite[nextpos.niveau+1][nextpos.ligne][nextpos.colonne]) {
