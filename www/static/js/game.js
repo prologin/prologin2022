@@ -337,6 +337,7 @@ class Game {
     }
 
     jumpToRound(index) {
+        this.turn = index;
         this.displayMapChanges(index);
         this.displayDucks(index);
         this.clearPigeons();
