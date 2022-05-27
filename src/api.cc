@@ -105,7 +105,7 @@ int Api::gain(int nb_pains)
 
 int Api::inventaire(int taille)
 {
-	return get_inv_max(taille);
+    return get_inv_max(taille);
 }
 
 std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
@@ -149,33 +149,6 @@ std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
         }
     }
     
-    for (int y = 0; y < HAUTEUR; y++) {
-        for (int x = 0; x < LARGEUR; x++) {
-            if (y == arrivee.ligne && x == arrivee.colonne)
-                std::cout << 'X';
-            else 
-            {
-                direction thing = back[1][y][x];
-                switch (thing) {
-                    case NORD:
-                        std::cout << 'v';
-                        break;
-                    case EST:
-                        std::cout << '>';
-                        break;
-                    case SUD:
-                        std::cout << '^';
-                        break;
-                    case OUEST:
-                        std::cout << '<';
-                        break;
-                }
-            }
-        }
-        std::cout << std::endl;
-    }
-
-
     if (!found)
         return result;
     position traverser = depart;
