@@ -93,6 +93,7 @@ inline direction flatten_dir(direction dir)
     case BAS:
         return SUD;
     }
+    return dir;
 }
 
 inline direction clockwise_dir(direction dir)
