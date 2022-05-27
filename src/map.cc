@@ -83,9 +83,9 @@ void Map::load_map_cells(std::istream& stream)
         if (!std::getline(stream, line))
             FATAL("map: couldn't read from the input stream (line %d)",
                   ligne + 1);
-        if (line.size() != LARGEUR)
-            FATAL("map: line %d has %d columns, expected %d", ligne,
-                  line.size(), LARGEUR);
+        // if (line.size() != LARGEUR)
+        //     FATAL("map: line %d has %d columns, expected %d", ligne,
+        //           line.size(), LARGEUR);
         for (int colonne = 0; colonne < LARGEUR; colonne++)
         {
             bool border = (colonne == 0 || colonne == LARGEUR - 1) ||
