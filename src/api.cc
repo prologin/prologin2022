@@ -119,6 +119,11 @@ std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
     for (int niveau = -1; niveau <= 0; niveau++) {
         for (int ligne = 0; ligne < HAUTEUR; ligne++) {
             for (int colonne = 0; colonne < LARGEUR; colonne++) {
+				if ((niveau == depart.niveau && colonne == depart.colonne && ligne == depart.ligne)
+				||  (niveau == arrivee.niveau && colonne == arrivee.colonne && ligne == arrivee.ligne)) {
+					visite[niveau+1][ligne][colonne] = false;
+					continue;
+				}
                 position pos = {
                     .colonne = colonne,
                     .ligne = ligne,
