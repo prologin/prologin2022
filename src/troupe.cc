@@ -5,20 +5,44 @@
 
 #define INV_MAX(A) ((A)-1)
 
-void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
+int get_inv_max(int taille)
 {
-    // Dropping the bread
-    for (auto i = 0; i < trp.inventaire; ++i)
+    if (taille < 0)
+        return 0;
+    return taille / 3;
+}
+
+int get_head(int index)
+{
+    return (index / 3) * 3;
+}
+
+int get_carrier(int index)
+{
+    return get_head(index) + 2;
+}
+
+void drop_bread_from(const int start, const int end, troupe& trp, Map& map,
+				PlayerInfo& player_info)
+{
+    for (int i = get_carrier(start); i < end; i += 3)
     {
-        map.get_cell(trp.canards[trp.taille - 1 - i]).etat.nb_pains += 1;
+        if (trp.inventaire <= 0)
+            continue;
+        map.get_cell(trp.canards[i]).etat.nb_pains += 1;
+        trp.inventaire--;
 
         // Log event
         internal_action action;
         action.type = spread_bread;
-        action.action.action_pos = trp.canards[trp.taille - 1 - i];
+        action.action.action_pos = trp.canards[i];
         player_info.add_internal_action(action);
     }
-    trp.inventaire = 0;
+}
+
+void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
+{
+	// We suppose that the bread has already been dropped
 
     // Determining the spawn_point
     direction dir = trp.dir;
@@ -50,6 +74,7 @@ void respawn(troupe& trp, PlayerInfo& player_info, Map& map)
 void die(troupe& trp, PlayerInfo& player, Map& map)
 {
     map.delete_troupe(trp);
+	drop_bread_from(0, trp.taille, trp, map, player);
     respawn(trp, player, map);
 }
 
@@ -137,16 +162,6 @@ void move_troupe(troupe& trp, const direction& dir, Map& map,
     }
 }
 
-int get_head(int index)
-{
-    return (index / 3) * 3;
-}
-
-int get_carrier(int index)
-{
-    return get_head(index) + 2;
-}
-
 int troupe_get_splitting_index(troupe& trp, const position& canard)
 {
     for (int i = 1; i < trp.taille; ++i)
@@ -155,16 +170,6 @@ int troupe_get_splitting_index(troupe& trp, const position& canard)
     return -1;
 }
 
-void drop_bread_from(const int start, const int end, troupe& trp, Map& map)
-{
-    for (int i = get_carrier(start); i < end; i += 3)
-    {
-        if (trp.inventaire <= 0)
-            continue;
-        map.get_cell(trp.canards[i]).etat.nb_pains += 1;
-        trp.inventaire--;
-    }
-}
 
 void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
                      const position& canard, Map& map)
@@ -173,7 +178,7 @@ void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
     // Find the bad canard
     if (canard == trp.maman)
     {
-        drop_bread_from(0, trp.taille, trp, map);
+        drop_bread_from(0, trp.taille, trp, map, player_info);
         die(trp, player_info, map);
         return;
     }
@@ -182,7 +187,7 @@ void troupe_split_at(const int troupe_id, PlayerInfo& player_info,
     if (splitting_index == -1)
         return; // Split not anymore in troupe
 
-    drop_bread_from(splitting_index, trp.taille, trp, map);
+    drop_bread_from(splitting_index, trp.taille, trp, map, player_info);
 
     for (int i = trp.taille - 1; i >= splitting_index; i--)
     {

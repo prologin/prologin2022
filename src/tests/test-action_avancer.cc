@@ -1,7 +1,9 @@
+#include <cstddef>
 #include <utils/log.hh>
 
 #include "../constant.hh"
 #include "../position.hh"
+#include "../troupe.hh"
 #include "test-helpers.hh"
 
 namespace
@@ -27,14 +29,26 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
 {
     ASSERT_EQ(OK, err) << "failed line " << line;
 
+	ASSERT_EQ(trp->taille, trp->canards.size()); // Coherance test
+
     for (auto& pos : former)
         ASSERT_FALSE(game_state.get_map().get_cell(pos).canard_sur_case)
             << line;
+	for (auto i = 0lu; i < former.size(); ++i)
+	{
+		INFO("%d, %d", i, get_carrier(i));
+		if (former_inv > 0 && i == static_cast<size_t>(get_carrier(i)))
+		{
+			ASSERT_EQ(1, game_state.get_map().get_cell(former[i]).etat.nb_pains)
+            	<< line;
+			former_inv--;
+		}
+		else	
+        	ASSERT_EQ(0, game_state.get_map().get_cell(former[i]).etat.nb_pains)
+            	<< line;
+	}
 
-    for (unsigned long i = former.size() - former_inv; i < former.size(); i++)
-        ASSERT_EQ(1, game_state.get_map().get_cell(former[i]).etat.nb_pains)
-            << line;
-
+	ASSERT_EQ(0, former_inv);
     ASSERT_EQ(0, trp->inventaire) << line;
     ASSERT_EQ(static_cast<size_t>(1), player.get_troupe(1)->canards.size())
         << line;
@@ -190,7 +204,7 @@ TEST_F(ApiTest, ActionAvancerTueLaTroupeSurCanard)
                        trp, former_inv, __LINE__);
 }
 
-TEST_F(ApiTest, ActionAvancerTueAvecInventaire)
+TEST_F(ApiTest, Actio1AvancerTueAvecInventaire)
 {
     auto& player = players[0];
     std::vector<position> new_pos = {
@@ -199,12 +213,13 @@ TEST_F(ApiTest, ActionAvancerTueAvecInventaire)
         {.colonne = 14, .ligne = 38, .niveau = 0},
         {.colonne = 13, .ligne = 38, .niveau = 0},
         {.colonne = 12, .ligne = 38, .niveau = 0},
+        {.colonne = 11, .ligne = 38, .niveau = 0},
     };
 
     troupe* trp = player.info->get_troupe(1);
     place_trp(trp, new_pos, player.api->game_state().get_map(), *player.info);
 
-    trp->inventaire = 3;
+    trp->inventaire = 2;
     std::vector<position> former = trp->canards;
     int former_inv = trp->inventaire;
 

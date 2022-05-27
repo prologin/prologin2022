@@ -4,6 +4,7 @@
 #include "api.hh"
 #include "constant.hh"
 #include "position.hh"
+#include "troupe.hh"
 #include "utils.hh"
 
 #include <memory>
@@ -104,9 +105,7 @@ int Api::gain(int nb_pains)
 
 int Api::inventaire(int taille)
 {
-    if (taille < 0)
-        return 0;
-    return taille / 3;
+	return get_inv_max(taille);
 }
 
 std::vector<direction> Api::trouver_chemin(position depart, position arrivee)
