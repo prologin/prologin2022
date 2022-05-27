@@ -11,7 +11,7 @@ const ASSET_ROOT = "/static/img/assets/"
 
 const NB_ROUNDS = 200;
 
-const MAX_SPEED = 15;
+const MAX_SPEED = 20;
 
 const textures = {
     grass: [new PIXI.Texture.from(`${ASSET_ROOT}/grass/grass_1.png`),
@@ -34,10 +34,10 @@ const textures = {
     bread: new PIXI.Texture.from(`${ASSET_ROOT}/bread.png`),
 };
 
-let speed = 1;
+let speed = 10;
 
 function animationDuration() {
-    return 1;
+    return 1 + MAX_SPEED - speed;
 }
 
 
@@ -318,15 +318,16 @@ class Game {
                 break;
             case 'respawn':
                 this.respawn(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
+                this.frame = animationDuration();
                 break;
             case 'nouveau_canard':
                 this.new_duck(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
+                this.frame = animationDuration();
                 break;
         }
 
         this.frame += 1;
-
-        if (true || this.frame >= animationDuration()) {
+        if (this.frame >= animationDuration()) {
             this.frame = 0;
             this.action_index += 1;
         }
@@ -351,7 +352,6 @@ class Game {
     }
 
     async startReplay() {
-        //this.app.ticker.maxFPS = 10;
         this.app.ticker.add(delta => this.gameLoop(delta));
     }
 
@@ -365,21 +365,41 @@ class Game {
     avancer(frame, player_id, dir, troupe_id) {
         const troupe = this.troupes[(troupe_id - 1) + player_id * 2];
 
+        if (frame == 0) {
+            troupe[0].changeOrientation(dir);
+        }
         for (let i = troupe.length - 1; i >= 1; i--) {
-            troupe[i].x = troupe[i-1].x;
-            troupe[i].y = troupe[i-1].y;
-            troupe[i].posX = troupe[i-1].posX;
-            troupe[i].posY = troupe[i-1].posY;
-            troupe[i].changeOrientation(troupe[i-1].dir);
+            const startpos = [calculateX(troupe[i].posX), calculateY(troupe[i].posY)];
+            const endpos = [calculateX(troupe[i-1].posX), calculateY(troupe[i-1].posY)];
+
+
+            troupe[i].x = ((1 + frame) * (endpos[0] - startpos[0]) / animationDuration() + startpos[0]);
+            troupe[i].y = ((1 + frame) * (endpos[1] - startpos[1]) / animationDuration() + startpos[1]);
+            if (frame + 1 == animationDuration()) {
+                troupe[i].posX = troupe[i-1].posX;
+                troupe[i].posY = troupe[i-1].posY;
+            }
+            troupe[i].gotoAndPlay(frame % 3);
+
+            if (frame == 0) {
+                troupe[i].changeOrientation(troupe[i-1].dir);
+            }
         }
 
-        const endpos = this.calculateEndPosition([troupe[0].posX, troupe[0].posY], dir);
 
-        troupe[0].x = calculateX(endpos[0]);
-        troupe[0].y = calculateY(endpos[1]);
-        troupe[0].posX = endpos[0];
-        troupe[0].posY = endpos[1];
-        troupe[0].changeOrientation(dir);
+
+        const endposN = this.calculateEndPosition([troupe[0].posX, troupe[0].posY], dir);
+
+        const startpos = [calculateX(troupe[0].posX), calculateY(troupe[0].posY)];
+        const endpos = [calculateX(endposN[0]), calculateY(endposN[1])];
+
+        troupe[0].x = ((1 + frame) * (endpos[0] - startpos[0]) / animationDuration() + startpos[0]);
+        troupe[0].y = ((1 + frame) * (endpos[1] - startpos[1]) / animationDuration() + startpos[1]);
+        if (frame + 1 == animationDuration()) {
+            troupe[0].posX = endposN[0];
+            troupe[0].posY = endposN[1];
+        }
+        troupe[0].gotoAndPlay(frame % 3);
 
         /*
         for (let i = 1; i < troupe.length; i++) {
@@ -401,8 +421,6 @@ class Game {
         start_pos[0] = calculateX(start_pos[0]);
         start_pos[1] = calculateY(start_pos[1]);
 
-        troupe[0].x = ((1 + frame) * (end_pos[0] - start_pos[0]) / animationDuration() + start_pos[0]);
-        troupe[0].y = ((1 + frame) * (end_pos[1] - start_pos[1]) / animationDuration() + start_pos[1]);
 
         if (frame + 1 == animationDuration()) {
             troupe[0].posX = end_pos[0];
