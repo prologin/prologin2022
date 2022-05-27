@@ -14,6 +14,16 @@ FAQ La baguette légendaire
 4. Relire votre code
 5. Contacter un orga
 
+Sujet
+=====
+
+Comment obtenir les points de spawn ?
+-------------------------------------
+
+Il n'y a aucune fonction de l'api permettant d'obtenir la position des points
+de spawn. Cependant, il y a plusieurs moyens de les récupérer. L'un d'eux est
+de regarder la position des mamans canard dans la fonction ``partie_init``
+avec un appel à la fonction ``troupes_joueur``.
 
 Bug/Question/Technique
 =====
