@@ -69,50 +69,51 @@ Vous devez lancer depuis votre ligne de commande stechec2
 N'hésitez pas à rapporter aux organisateurs tous les problèmes ou bugs que vous
 pourriez rencontrer lors de l'exécution de stechec2.
 
-Interface graphique (GUI)
--------------------------
+..
+  Interface graphique (GUI)
+  -------------------------
 
-TODO(rework this part depending on how the GUI works)
+  TODO(rework this part depending on how the GUI works)
 
-.. warning::
+  .. warning::
 
-  La GUI n'est pas encore fonctionnelle. Nous y travaillons.
+    La GUI n'est pas encore fonctionnelle. Nous y travaillons.
 
-Pour utiliser la GUI pendant que vous lancez votre match, rajoutez à la fin de
-votre ``config.yml`` ::
+  Pour utiliser la GUI pendant que vous lancez votre match, rajoutez à la fin de
+  votre ``config.yml`` ::
 
-  spectators:
-    - /opt/prologin2022-gui.so
+    spectators:
+      - /opt/prologin2022-gui.so
 
-Si vous préférez regarder le replay à la fin, ajoutez ::
+  Si vous préférez regarder le replay à la fin, ajoutez ::
 
-  dump: dump.json
+    dump: dump.json
 
-Ceci crée un fichier `dump.json` dans le répertoire courant, que vous pouvez
-visualiser avec ::
+  Ceci crée un fichier `dump.json` dans le répertoire courant, que vous pouvez
+  visualiser avec ::
 
-  prologin2019-replay dump.json
+    prologin2019-replay dump.json
 
-Jouer contre son propre champion
---------------------------------
+  Jouer contre son propre champion
+  --------------------------------
 
-Pour jouer contre votre propre intelligence artificielle vous devez mettre
-comme champion la GUI
+  Pour jouer contre votre propre intelligence artificielle vous devez mettre
+  comme champion la GUI
 
-::
+  ::
 
-  clients:
-    - ./champion.so
-    - /opt/prologin2019-gui.so
+    clients:
+      - ./champion.so
+      - /opt/prologin2019-gui.so
 
-Il ne faut pas oublier de rajouter dans le fichier
+  Il ne faut pas oublier de rajouter dans le fichier
 
-::
+  ::
 
-  time: -1
+    time: -1
 
-Afin de préciser que c'est un joueur humain et ainsi ne pas prendre en compte
-les contraintes de temps.
+  Afin de préciser que c'est un joueur humain et ainsi ne pas prendre en compte
+  les contraintes de temps.
 
 Débugger
 ========

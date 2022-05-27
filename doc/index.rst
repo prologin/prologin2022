@@ -9,11 +9,7 @@ Pages:
 
 .. toctree::
    :maxdepth: 1
-
-   finale
-   rendu
    faq-candidat
    faq-debug
-   faq-plantage
    stechec2
    api

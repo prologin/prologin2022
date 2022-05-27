@@ -1,7 +1,6 @@
 .. SPDX-License-Identifier: GPL-2.0-or-later
    Copyright 2022 Association Prologin <info@prologin.org>
 
-TODO(change this as relevant, may involve getting some of it from the subject)
 
 Le début des ennuis
 ===================

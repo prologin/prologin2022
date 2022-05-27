@@ -15,17 +15,13 @@ FAQ La baguette légendaire
 5. Contacter un orga
 
 
-Sujet
+Bug/Question/Technique
 =====
 
-TODO
+Les questions, rapports de bug et problèmes techniques peuvent être posés aux
+organisateurs principalement sur Redmine via l'ouverture d'un ticket.
 
-GUI
-===
-
-TODO
-
-**Appuyez sur H avant de poser une question !**
+`Lien du Redmine <https://redmine.finale.prologin.org>`_
 
 Erreurs fréquentes
 ==================
@@ -36,3 +32,30 @@ Erreurs fréquentes
       le serveur (donc pour les tournois).
 - Si vous faites des fichiers annexes, n'oubliez pas de les mettre en plus dans
   le Makefile après ``champion.*`` dans ``CHAMPIONS_FILES``
+
+Plantage avec stechec
+---------------------
+
+1. Lire le message d’erreur de stechec
+2. Vérifier que les chemins de vos sources sont les bons dans le
+   Makefile et surtout config.yml.
+3. \*\* Tout appel à une fonction de l’API avant partie_init() fera une
+   segfault. \*\* Par exemple en C/C++, faire int moi = moi(); en
+   variable globale entraînera un segfault.
+4. En **python**, votre prologin.py doit être dans le dossier dans
+   lequel vous lancez stechec.
+5. Appelez un.e organisateurice. Ne soyez pas timide, on est aussi là
+   pour vous aider. :-)
+
+Plantage avec le serveur de finale (et/ou votre champion fait n’importe quoi sur le serveur)
+--------------------------------------------------------------------------------------------
+
+1. Vérifiez, quand vous faîtes ‘make tar’, que vos fichiers sont bien
+   inclus dans le bidule.tar.
+2. Ne modifiez pas les fichiers de l’api (api.*, prologin.hh,
+   prologin.h, interface.*)
+3. Vérifiez qu’il n’y a pas d’ouverture de fichiers dans votre code.
+4. Vérifiez que dans votre Makefile, vos fichiers à vous sont bien
+   inclus au bon endroit.
+5. Appelez un.e organisateurice. Ne soyez pas timide, on est aussi là
+   pour vous aider. :-)

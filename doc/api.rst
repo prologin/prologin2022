@@ -1,6 +1,3 @@
-.. SPDX-License-Identifier: GPL-2.0-or-later
-   Copyright 2022 Association Prologin <info@prologin.org>
-
 ===
 API
 ===
@@ -53,12 +50,12 @@ Constantes
     Nombre de tunnels qu'un joueur peut creuser par tour
 .. c:var:: PTS_ACTION
 
-  :Valeur: 20
+  :Valeur: 5
   :Description:
     Nombre de déplacements que peut faire une troupe en un tour
 .. c:var:: COUT_CROISSANCE
 
-  :Valeur: 11
+  :Valeur: 3
   :Description:
     Nombre de points de mouvement requis pour incrémenter la taille
 .. c:var:: COUT_BUISSON
@@ -66,11 +63,11 @@ Constantes
   :Valeur: 3
   :Description:
     Coût en score de la pose de buisson
-.. c:var:: TOUR_FERMETURE
+.. c:var:: ROUND_FERMETURE
 
-  :Valeur: 100
+  :Valeur: 99
   :Description:
-    Tour au moment duquel les barrières s'ouvrent ou se ferment
+    Round à la fin duquel les barrières s'ouvrent ou se ferment
 
 Énumérations
 ============
@@ -82,8 +79,6 @@ Constantes
   :Valeurs:
       :OK:
         L'action a été effectuée avec succès
-      :JOUEUR_INVALIDE:
-        Mauvais numéro de joueur
       :TROUPE_INVALIDE:
         Mauvais identifiant de troupe
       :HORS_TOUR:
@@ -102,6 +97,10 @@ Constantes
         Le joueur n'a pas assez de points pour construire un buisson
       :POSITION_INVALIDE:
         La position demandée est hors du parc
+      :DIRECTION_INVALIDE:
+        La direction spécifiée n'existe pas.
+      :PIGEON_INVALIDE:
+        Le pigeon spécifié n'existe pas.
 .. c:type:: direction
 
   :Description:
@@ -377,6 +376,23 @@ Fonctions
 
 
     :param nb_pains: Nombre de miches de pain déposées
+
+.. c:function:: int inventaire(int taille)
+
+    Renvoie la taille de l'inventaire d'une troupe de taille donnée
+
+
+
+    :param taille: Taille de la troupe
+
+.. c:function:: direction array trouver_chemin(position depart, position arrivee)
+
+    Trouve un plus court chemin ouvert entre deux positions. Renvoie une liste vide si les deux positions sont égales ou si aucun chemin n'existe.
+
+
+
+    :param depart: Position de départ
+    :param arrivee: Position d'arrivée
 
 .. c:function:: int moi()
 

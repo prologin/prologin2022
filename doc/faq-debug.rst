@@ -88,7 +88,8 @@ alourdit votre programme inutilement !**
 
 Cette option est déjà activée par stechec2.
 
-## Python
+Python
+------
 
 Le debugger utilisé pour le langage Python s’appelle pdb. Il permet de
 s’arrêter à un point donné dans votre programme et d’analyser son
