@@ -302,7 +302,6 @@ class Game {
                     duckling.display(this.app);
                     this.troupes[k].push(duckling);
                 }
-                console.log(this.troupes[k])
             }
         }
     }
@@ -365,6 +364,7 @@ class Game {
                 this.avancer(this.frame, curr_action.player_id, curr_action.dir, curr_action.troupe_id);
                 break;
             case 'avancer':
+                console.log(curr_action);
                 this.avancer(this.frame, curr_action.player_id, curr_action.direction, curr_action.troupe_id);
                 break;
             case 'capture_nest':
@@ -538,10 +538,9 @@ class Game {
                 this.app.stage.addChild(sprite);
             }
         }
-
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
-                const char_index = i * MAP_SIZE + j;
+                const char_index = j * MAP_SIZE + i;
                 const sprite = map_char_to_sprite(mapString.charAt(char_index), i, j);
                 this.app.stage.addChild(sprite);
             }
