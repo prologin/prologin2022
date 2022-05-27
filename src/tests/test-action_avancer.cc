@@ -61,6 +61,9 @@ void place_trp(troupe* trp, std::vector<position> pos, Map& map,
 				PlayerInfo& player)
 {
     map.delete_troupe(*trp);
+	auto size = player.canards_additionnels(1)->size();
+	for (auto i = 0lu; i < size; ++i)
+		player.canards_additionnels(1)->pop();
     trp->canards.clear();
     trp->taille = pos.size();
     for (size_t i = 0; i < pos.size(); ++i)
@@ -96,8 +99,7 @@ void troup_hardcoded_setup(troupe* trp, PlayerInfo& player, Map& map)
     trp->maman = trp->canards[0];
     map.mark_troupe(*trp, player);
 }
-
-} // namespace
+}
 
 TEST_F(ApiTest, ActionAvancerAutorisee)
 {
@@ -385,12 +387,12 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPlein)
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 15;
-    trp->inventaire = 5;
+    trp->inventaire = 1;
 
     player.api->avancer(1, EST);
 
     EXPECT_EQ(15, map.get_cell(pains).etat.nb_pains);
-    ASSERT_EQ(5, trp->inventaire);
+    ASSERT_EQ(1, trp->inventaire);
 }
 
 TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
@@ -402,6 +404,7 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
         {.colonne = 24, .ligne = 37, .niveau = 0},
         {.colonne = 23, .ligne = 37, .niveau = 0},
         {.colonne = 22, .ligne = 37, .niveau = 0},
+        {.colonne = 21, .ligne = 37, .niveau = 0},
     };
 
     position pains = {.colonne = 27, .ligne = 37, .niveau = 0};
@@ -410,10 +413,10 @@ TEST_F(ApiTest, ActionAvancerRamasserPainsInvPresquePlein)
     auto& map = player.api->game_state().get_map();
 
     map.get_cell(pains).etat.nb_pains = 15;
-    trp->inventaire = 3;
+    trp->inventaire = 1;
 
     player.api->avancer(1, EST);
 
-    ASSERT_EQ(13, map.get_cell(pains).etat.nb_pains);
-    ASSERT_EQ(5, trp->inventaire);
+    ASSERT_EQ(14, map.get_cell(pains).etat.nb_pains);
+    ASSERT_EQ(2, trp->inventaire);
 }

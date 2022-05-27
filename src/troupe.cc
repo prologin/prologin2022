@@ -3,8 +3,6 @@
 #include "constant.hh"
 #include "player_info.hh"
 
-#define INV_MAX(A) ((A)-1)
-
 int get_inv_max(int taille)
 {
     if (taille < 0)
@@ -81,11 +79,12 @@ void die(troupe& trp, PlayerInfo& player, Map& map)
 void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
 {
     auto nb_pains = map.get_cell(trp.maman).etat.nb_pains;
-    if (trp.inventaire < INV_MAX(trp.taille) && nb_pains > 0)
+	INFO("%d, %d, %d", trp.taille, trp.inventaire, get_inv_max(trp.taille));
+    if (trp.inventaire < get_inv_max(trp.taille) && nb_pains > 0)
     {
         auto amount = nb_pains;
-        if (INV_MAX(trp.taille) - trp.inventaire < amount)
-            amount = INV_MAX(trp.taille) - trp.inventaire;
+        if (get_inv_max(trp.taille) - trp.inventaire < amount)
+            amount = get_inv_max(trp.taille) - trp.inventaire;
 
         if (amount)
         {

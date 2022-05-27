@@ -25,16 +25,49 @@ void assert_troupe_died(erreur err, GameState& game_state, PlayerInfo& player,
         << line;
 }
 
+void assert_troupe_moved(troupe& trp_after, troupe& trp_before, direction dir,
+                         int line)
+{
+    auto delta = get_delta_pos(dir);
+    ASSERT_EQ(trp_before.maman + delta, trp_after.maman)
+        << "First Duck did not move accordingly line: " << line;
+
+    for (int i = trp_before.taille - 1; i > 0; --i)
+    {
+        ASSERT_EQ(trp_before.canards[i - 1], trp_after.canards[i])
+            << "Duck number " << i
+            << ", did not move accordingly, line: " << line;
+    }
+}
+
 void place_trp(troupe* trp, std::vector<position> pos, Map& map,
 				PlayerInfo& player)
 {
     map.delete_troupe(*trp);
+	auto size = player.canards_additionnels(1)->size();
+	for (auto i = 0lu; i < size; ++i)
+		player.canards_additionnels(1)->pop();
     trp->canards.clear();
     trp->taille = pos.size();
     for (size_t i = 0; i < pos.size(); ++i)
         trp->canards.push_back(pos[i]);
     trp->maman = trp->canards[0];
     map.mark_troupe(*trp, player);
+}
+
+erreur test_move_troupe(PlayerInfo* player, std::unique_ptr<Api>& api, int id,
+                        direction dir, bool moved, int line)
+{
+    auto before = *(player->get_troupe(id));
+
+    auto err = api->avancer(id, dir);
+
+    troupe after = *(player->get_troupe(id));
+
+    // ASSERT_EQ(err == OK, moved) << "failed line: " << line;
+    if (moved)
+        assert_troupe_moved(after, before, dir, line);
+    return err;
 }
 
 void troup_hardcoded_setup(troupe* trp, PlayerInfo& player, Map& map)
@@ -49,7 +82,6 @@ void troup_hardcoded_setup(troupe* trp, PlayerInfo& player, Map& map)
     trp->maman = trp->canards[0];
     map.mark_troupe(*trp, player);
 }
-
 } // namespace
 
 TEST_F(ApiTest, BarriereSplitLaTroupeSansPains)

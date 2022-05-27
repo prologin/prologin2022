@@ -1,3 +1,5 @@
+#pragma once
+
 #include <array>
 #include <fstream>
 #include <gtest/gtest.h>
@@ -30,6 +32,7 @@ static GameState* make_test_gamestate(std::string map_path,
     return new GameState(map_stream, players);
 }
 } // namespace
+
 
 class ApiTest : public ::testing::Test
 {
