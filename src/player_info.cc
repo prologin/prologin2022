@@ -22,6 +22,7 @@ void PlayerInfo::init_troupes(Map& map, etat_nid nid)
         action.type = troupe_respawn;
         action.action.troupe_id = troupes_[i].id;
         action.action.action_pos = troupes_[i].maman;
+        action.action.action_dir = inverse_dir(dir);
         add_internal_action(action);
     }
 }
@@ -213,7 +214,7 @@ void PlayerInfo::spawn_canard(int troupe_id, Map& map)
     get_troupe(troupe_id)->canards.push_back(last);
 
     internal_action action;
-    action.type = troupe_respawn;
+    action.type = new_duck;
     action.action.troupe_id = troupe_id;
     action.action.action_pos = last;
     add_internal_action(action);
