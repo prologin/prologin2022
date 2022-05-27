@@ -32,6 +32,7 @@ const textures = {
     barrier_open: new PIXI.Texture.from(`${ASSET_ROOT}/barrier/gate.png`),
     hole: new PIXI.Texture.from(`${ASSET_ROOT}/trou.png`),
     bread: new PIXI.Texture.from(`${ASSET_ROOT}/bread.png`),
+    rock: new PIXI.Texture.from(`${ASSET_ROOT}/rock.png`),
 };
 
 let speed = 10;
