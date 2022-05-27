@@ -9,6 +9,7 @@ Pages:
 
 .. toctree::
    :maxdepth: 1
+
    faq-candidat
    faq-debug
    stechec2
