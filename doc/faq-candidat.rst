@@ -60,3 +60,9 @@ Plantage avec le serveur de finale (et/ou votre champion fait n’importe quoi s
 5. Appelez un.e organisateurice. Ne soyez pas timide, on est aussi là
    pour vous aider. :-)
 
+Créer ses propres maps
+======================
+
+Il est possible de créer vos propre maps en utilisant l'éditeur de map qui vous est fourni.
+Celui-ci est accessible via la command ``map_editor``. Vous pouvez utiliser les maps ainsi
+créées pour tester vos champions ou pour les publier sur https://finale.prologin.org/maps/new/.
