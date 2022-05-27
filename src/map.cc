@@ -1,7 +1,7 @@
 #include <utils/log.hh>
 
-#include "position.hh"
 #include "map.hh"
+#include "position.hh"
 #include "troupe.hh"
 
 bool Case::case_praticable() const
@@ -12,17 +12,17 @@ bool Case::case_praticable() const
 
 void Map::mark_canard(const position& pos, PlayerInfo& player, int troupe_id)
 {
-	Case& cell = get_cell(pos);
-	cell.troupe_id = troupe_id; 
-	cell.player_info = &player;
+    Case& cell = get_cell(pos);
+    cell.troupe_id = troupe_id;
+    cell.player_info = &player;
     cell.canard_sur_case = true;
 }
 
 void Map::unmark_canard(const position& pos)
 {
-	Case& cell = get_cell(pos);
-	cell.troupe_id = -1; 
-	cell.player_info = nullptr;
+    Case& cell = get_cell(pos);
+    cell.troupe_id = -1;
+    cell.player_info = nullptr;
     cell.canard_sur_case = false;
 }
 
@@ -185,20 +185,19 @@ std::vector<direction> Map::directions_non_mortelles(const position& pos) const
     std::vector<direction> directions;
     if (!inside_map(pos))
         return directions;
-    
-    direction dirs[] = {
-        EST,
-        OUEST,
-        NORD,
-        SUD};
 
-    for (direction dir: dirs) {
+    direction dirs[] = {EST, OUEST, NORD, SUD};
+
+    for (direction dir : dirs)
+    {
         if (!case_mortelle(pos + get_delta_pos(dir)))
             directions.push_back(dir);
     }
 
-    if (pos.niveau == 0) {
-        if (get_cell(pos).etat.contenu == TROU && get_cell(pos + get_delta_pos(BAS)).etat.contenu == TUNNEL)
+    if (pos.niveau == 0)
+    {
+        if (get_cell(pos).etat.contenu == TROU &&
+            get_cell(pos + get_delta_pos(BAS)).etat.contenu == TUNNEL)
             directions.push_back(BAS);
     }
     else
@@ -211,8 +210,6 @@ std::vector<direction> Map::directions_non_mortelles(const position& pos) const
 
 Map::Map(std::istream& stream)
 {
-    INFO("Loading map");
-
     for (int niveau = -1; niveau <= 0; niveau++)
     {
         for (int ligne = 0; ligne < HAUTEUR; ligne++)
@@ -256,14 +253,14 @@ void Map::changer_barrieres()
         if (get_cell(pos).barriere == FERMEE)
             status = OUVERTE;
         else
-		{
+        {
             status = FERMEE;
-			Case& cell = get_cell(pos);
-			if (cell.player_info != nullptr)
-				troupe_split_at(cell.troupe_id, *(cell.player_info),
-								pos, *this);	
-		}
-		get_cell(pos).barriere = status;
+            Case& cell = get_cell(pos);
+            if (cell.player_info != nullptr)
+                troupe_split_at(cell.troupe_id, *(cell.player_info), pos,
+                                *this);
+        }
+        get_cell(pos).barriere = status;
     }
 }
 

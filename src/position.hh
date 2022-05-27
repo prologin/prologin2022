@@ -84,6 +84,17 @@ inline direction inverse_dir(direction dir)
     __builtin_unreachable();
 }
 
+inline direction flatten_dir(direction dir)
+{
+    switch (dir)
+    {
+    case HAUT:
+        return NORD;
+    case BAS:
+        return SUD;
+    }
+}
+
 inline direction clockwise_dir(direction dir)
 {
     switch (dir)
