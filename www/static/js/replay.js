@@ -1,5 +1,6 @@
 let dump_data = undefined;
 let current_turn = 0;
+let pause = true;
 
 $(function () {
     let $replay = $('#replay'),
@@ -51,6 +52,11 @@ $(function () {
                 $turnLabel.text(current_turn);
                 game.jumpToRound(current_turn);
             };
+
+            $playPause[0].onclick = e => {
+                game.startReplay(current_turn);
+            };
+
             $next[0].onclick = e => {
                 if (current_turn == 400)
                     return;
