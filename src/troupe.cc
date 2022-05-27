@@ -89,11 +89,14 @@ void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
 
         if (amount)
         {
-            // Log event
-            internal_action action;
-            action.type = take_bread;
-            action.action.action_pos = trp.maman;
-            player.add_internal_action(action);
+            for (int i = 0; i < amount; ++i)
+            {
+                // Log event
+                internal_action action;
+                action.type = take_bread;
+                action.action.action_pos = trp.maman;
+                player.add_internal_action(action);
+            }
         }
 
         trp.inventaire += amount;
