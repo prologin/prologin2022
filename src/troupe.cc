@@ -80,7 +80,7 @@ void die(troupe& trp, PlayerInfo& player, Map& map)
 void prendre_pain(troupe& trp, Map& map, PlayerInfo& player)
 {
     auto nb_pains = map.get_cell(trp.maman).etat.nb_pains;
-    INFO("%d, %d, %d", trp.taille, trp.inventaire, get_inv_max(trp.taille));
+    //INFO("%d, %d, %d", trp.taille, trp.inventaire, get_inv_max(trp.taille));
     if (trp.inventaire < get_inv_max(trp.taille) && nb_pains > 0)
     {
         auto amount = nb_pains;
