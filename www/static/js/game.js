@@ -135,8 +135,8 @@ class Game {
         this.nests = [];
         this.bushes = [];
         this.setupMap();
-        //this.displayDucks(0);
-        this.turn = 0;
+        this.displayDucks(0);
+        this.turn = 1;
         this.paused = false;
         this.action_index = 0;
         this.frame = 0;
@@ -206,7 +206,7 @@ class Game {
                 switch (symbol) {
                     case '#':
                         let bush = this.findBushByCoords(i, j);
-                        if (bush == null) {
+                        if (bush === null) {
                             bush = new Bush(i, j);
                             bush.display(this.app);
                             this.bushes.push(bush);
@@ -214,7 +214,7 @@ class Game {
                         break;
                     case 'B':
                     case 'b':
-                        //Custom logic
+                        //TODO Custom logic
                         break;
                 }
             }
@@ -324,12 +324,39 @@ class Game {
                 this.new_duck(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
                 this.frame = animationDuration();
                 break;
+            case 'add_bread':
+                this.addBread(this.frame, curr_action.pos, curr_action.player_id);
+                break;
+            case 'take_bread':
+                this.takeBread(this.frame, curr_action.pos, curr_action.player_id);
+                break;
         }
 
         this.frame += 1;
         if (this.frame >= animationDuration()) {
             this.frame = 0;
             this.action_index += 1;
+        }
+    }
+
+    addBread(frame, pos, player_id) {
+        for (let papy of this.papys) {
+            if (papy.posX === pos.colonne && papy.posY === pos.ligne) {
+                papy.throwBread();
+                const bread = new Bread(pos.colonne, pos.ligne);
+                this.bread.push(bread);
+                bread.display(this.app);
+                papy.rerender(this.app);
+                return;
+            }
+        }
+    }
+
+    takeBread(frame, pos, player_id) {
+        for (let bread of this.bread) {
+            if (bread.posX === pos.colonne && bread.posY === pos.ligne) {
+                this.app.stage.removeChild(bread);
+            }
         }
     }
 
@@ -365,7 +392,7 @@ class Game {
     avancer(frame, player_id, dir, troupe_id) {
         const troupe = this.troupes[(troupe_id - 1) + player_id * 2];
 
-        if (frame == 0) {
+        if (frame === 0) {
             troupe[0].changeOrientation(dir);
         }
         for (let i = troupe.length - 1; i >= 1; i--) {
@@ -375,13 +402,13 @@ class Game {
 
             troupe[i].x = ((1 + frame) * (endpos[0] - startpos[0]) / animationDuration() + startpos[0]);
             troupe[i].y = ((1 + frame) * (endpos[1] - startpos[1]) / animationDuration() + startpos[1]);
-            if (frame + 1 == animationDuration()) {
+            if (frame + 1 === animationDuration()) {
                 troupe[i].posX = troupe[i-1].posX;
                 troupe[i].posY = troupe[i-1].posY;
             }
             troupe[i].gotoAndPlay(frame % 3);
 
-            if (frame == 0) {
+            if (frame === 0) {
                 troupe[i].changeOrientation(troupe[i-1].dir);
             }
         }
@@ -395,38 +422,11 @@ class Game {
 
         troupe[0].x = ((1 + frame) * (endpos[0] - startpos[0]) / animationDuration() + startpos[0]);
         troupe[0].y = ((1 + frame) * (endpos[1] - startpos[1]) / animationDuration() + startpos[1]);
-        if (frame + 1 == animationDuration()) {
+        if (frame + 1 === animationDuration()) {
             troupe[0].posX = endposN[0];
             troupe[0].posY = endposN[1];
         }
         troupe[0].gotoAndPlay(frame % 3);
-
-        /*
-        for (let i = 1; i < troupe.length; i++) {
-            const start_pos = [troupe[i].posX, troupe[i].posY];
-            const end_pos = [troupe[i-1].posX, troupe[i-1].posY];
-            end_pos[0] = calculateX(end_pos[0]);
-            end_pos[1] = calculateY(end_pos[1]);
-            start_pos[0] = calculateX(start_pos[0]);
-            start_pos[1] = calculateY(start_pos[1]);
-            troupe[i].x = ((1 + frame) * (end_pos[0] - start_pos[0]) / animationDuration() + start_pos[0]);
-            troupe[i].y = ((1 + frame) * (end_pos[1] - start_pos[1]) / animationDuration() + start_pos[1]);
-        }
-
-
-        const start_pos = [troupe[0].posX, troupe[0].posY];
-        const end_pos = this.calculateEndPosition(start_pos, dir);
-        end_pos[0] = calculateX(end_pos[0]);
-        end_pos[1] = calculateY(end_pos[1]);
-        start_pos[0] = calculateX(start_pos[0]);
-        start_pos[1] = calculateY(start_pos[1]);
-
-
-        if (frame + 1 == animationDuration()) {
-            troupe[0].posX = end_pos[0];
-            troupe[0].posY = end_pos[1];
-        }
-    */
     }
 
     calculateEndPosition(start, dir) {
@@ -526,6 +526,11 @@ class Papy extends PIXI.AnimatedSprite {
     }
 
     display(app) {
+        app.stage.addChild(this);
+    }
+
+    rerender(app) {
+        app.stage.removeChild(this);
         app.stage.addChild(this);
     }
 
