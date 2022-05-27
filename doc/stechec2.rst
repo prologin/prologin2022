@@ -50,7 +50,7 @@ Prenons un exemple (qui devrait par ailleurs satisfaire vos besoins)
 
 ::
 
-  rules: libprologin2022.so
+  rules: /run/current-system/sw/lib/libprologin2022.so
   verbose: 3
   clients:
     - ./champion.so
