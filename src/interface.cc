@@ -90,6 +90,16 @@ extern "C" int api_gain(int nb_pains)
     return api->gain(nb_pains);
 }
 
+extern "C" int api_inventaire(int taille)
+{
+    return api->inventaire(taille);
+}
+
+extern "C" std::vector<direction> api_trouver_chemin(position depart, position arrivee)
+{
+    return api->trouver_chemin(depart, arrivee);
+}
+
 extern "C" int api_moi()
 {
     return api->moi();

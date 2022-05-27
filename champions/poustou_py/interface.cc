@@ -173,6 +173,13 @@ std::vector<action_hist> api_historique();
 /// rapporterait s'ils étaient tous déposés d'un coup dans un nid
 int api_gain(int nb_pains);
 
+/// Renvoie la taille de l'inventaire d'une troupe de taille donnée
+int api_inventaire(int taille);
+
+/// Trouve un plus court chemin ouvert entre deux positions. Renvoie une liste
+/// vide si les deux positions sont égales ou si aucun chemin n'existe.
+std::vector<direction> api_trouver_chemin(position depart, position arrivee);
+
 /// Renvoie votre numéro de joueur.
 int api_moi();
 
@@ -974,6 +981,42 @@ static PyObject* p_gain(PyObject* /* self */, PyObject* args)
     }
 }
 
+// Python native wrapper for function inventaire.
+// Renvoie la taille de l'inventaire d'une troupe de taille donnée
+static PyObject* p_inventaire(PyObject* /* self */, PyObject* args)
+{
+    PyObject* arg_taille;
+    if (!PyArg_ParseTuple(args, "O", &arg_taille))
+    {
+        return nullptr;
+    }
+
+    try {
+        return cxx_to_python<PyObject*, int>(api_inventaire(python_to_cxx<PyObject*, int>(arg_taille)));
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+// Python native wrapper for function trouver_chemin.
+// Trouve un plus court chemin ouvert entre deux positions. Renvoie une liste
+// vide si les deux positions sont égales ou si aucun chemin n'existe.
+static PyObject* p_trouver_chemin(PyObject* /* self */, PyObject* args)
+{
+    PyObject* arg_depart;
+    PyObject* arg_arrivee;
+    if (!PyArg_ParseTuple(args, "OO", &arg_depart, &arg_arrivee))
+    {
+        return nullptr;
+    }
+
+    try {
+        return cxx_to_python_array(api_trouver_chemin(python_to_cxx<PyObject*, position>(arg_depart), python_to_cxx<PyObject*, position>(arg_arrivee)));
+    } catch (...) {
+        return nullptr;
+    }
+}
+
 // Python native wrapper for function moi.
 // Renvoie votre numéro de joueur.
 static PyObject* p_moi(PyObject* /* self */, PyObject* args)
@@ -1270,6 +1313,8 @@ static PyMethodDef api_callback[] = {
     {"debug_poser_pigeon", p_debug_poser_pigeon, METH_VARARGS, "debug_poser_pigeon"},
     {"historique", p_historique, METH_VARARGS, "historique"},
     {"gain", p_gain, METH_VARARGS, "gain"},
+    {"inventaire", p_inventaire, METH_VARARGS, "inventaire"},
+    {"trouver_chemin", p_trouver_chemin, METH_VARARGS, "trouver_chemin"},
     {"moi", p_moi, METH_VARARGS, "moi"},
     {"adversaire", p_adversaire, METH_VARARGS, "adversaire"},
     {"score", p_score, METH_VARARGS, "score"},

@@ -39,8 +39,8 @@ COUT_CROISSANCE = 3
 # Coût en score de la pose de buisson
 COUT_BUISSON = 3
 
-# Tour au moment duquel les barrières s'ouvrent ou se ferment
-TOUR_FERMETURE = 100
+# Round à la fin duquel les barrières s'ouvrent ou se ferment
+ROUND_FERMETURE = 99
 
 
 # Erreurs possibles après avoir effectué une action
