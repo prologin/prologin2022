@@ -44,10 +44,7 @@ Plantage avec stechec
    variable globale entraînera un segfault.
 4. En **python**, votre prologin.py doit être dans le dossier dans
    lequel vous lancez stechec.
-5. Si vous obtenez une erreur de type ``std::bad_function_call``, le problème
-   vient sûrement d'un problème de typage lors de l'appel à une des fonction de
-   l'api. Pensez-bien à vérifier les prototypes des fonctions que vous utilisez.
-6. Appelez un.e organisateurice. Ne soyez pas timide, on est aussi là
+5. Appelez un.e organisateurice. Ne soyez pas timide, on est aussi là
    pour vous aider. :-)
 
 Plantage avec le serveur de finale (et/ou votre champion fait n’importe quoi sur le serveur)
