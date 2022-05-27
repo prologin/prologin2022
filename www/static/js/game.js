@@ -99,6 +99,7 @@ class Barrier extends PIXI.Sprite {
         } else {
             this.texture = textures.barrier_open;
         }
+        this.isOpen = !this.isOpen;
     }
 }
 
@@ -154,6 +155,14 @@ class Game {
         this.frame = 0;
         this.bread = [];
         this.pigeons = [];
+    }
+
+    bindSlider(slider) {
+        this.slider = slider;
+    }
+
+    updateSlider(index) {
+        this.slider.val(index).trigger('change');
     }
 
     setupMap() {
@@ -227,8 +236,22 @@ class Game {
                         }
                         break;
                     case 'B':
+                        for (let barrier of this.barriers) {
+                            if (barrier.getX === i && barrier.getY === j) {
+                                if (!barrier.isOpen) {
+                                    barrier.swap();
+                                }
+                            }
+                        }
+                        break;
                     case 'b':
-                        //TODO Custom logic
+                        for (let barrier of this.barriers) {
+                            if (barrier.getX === i && barrier.getY === j) {
+                                if (barrier.isOpen) {
+                                    barrier.swap();
+                                }
+                            }
+                        }
                         break;
                 }
             }
@@ -279,6 +302,7 @@ class Game {
                     duckling.display(this.app);
                     this.troupes[k].push(duckling);
                 }
+                console.log(this.troupes[k])
             }
         }
     }
@@ -319,6 +343,8 @@ class Game {
     }
 
     gameLoop(delta) {
+        if (this.paused)
+            return;
 
         const actions = this.getTurnActions();
 
@@ -329,6 +355,7 @@ class Game {
             this.action_index = 0;
             this.clearPigeons();
             this.turn += 1;
+            this.updateSlider(this.turn);
             return;
         }
 
@@ -439,7 +466,7 @@ class Game {
     }
 
     async startReplay() {
-        this.app.ticker.add(delta => this.gameLoop(delta));
+        this.app.ticker.add(this.gameLoop, this);
     }
 
     getTurnActions() {

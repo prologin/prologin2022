@@ -22,7 +22,7 @@ $(function () {
         .done(function() {
             let game = create_game();
             game.addToDOM($replay_view[0]);
-
+            game.bindSlider($turnSlider);
             // Load dump
             const dump_url = `${window.location.href}dump`;
             fetch(dump_url).then(response => {
@@ -36,6 +36,8 @@ $(function () {
                 });
             });
 
+            game.paused = true;
+            game.startReplay(current_turn);
             // reveal the UI
             $replay_view.find('canvas').css({
                 'display': 'block',
@@ -55,7 +57,7 @@ $(function () {
             };
 
             $playPause[0].onclick = e => {
-                game.startReplay(current_turn);
+                game.paused = !game.paused;
             };
 
             $next[0].onclick = e => {
