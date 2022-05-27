@@ -316,6 +316,9 @@ class Game {
             case 'avancer':
                 this.avancer(this.frame, curr_action.player_id, curr_action.direction, curr_action.troupe_id);
                 break;
+            case 'capture_nest':
+                this.captureNest(this.frame, curr_action.player_id, curr_action.pos);
+                break;
             case 'respawn':
                 this.respawn(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
                 this.frame = animationDuration();
@@ -324,6 +327,7 @@ class Game {
                 this.new_duck(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
                 this.frame = animationDuration();
                 break;
+            case 'spread_bread':
             case 'add_bread':
                 this.addBread(this.frame, curr_action.pos, curr_action.player_id);
                 break;
@@ -336,6 +340,18 @@ class Game {
         if (this.frame >= animationDuration()) {
             this.frame = 0;
             this.action_index += 1;
+        }
+    }
+
+    captureNest(frame, player_id, pos) {
+        for (let nest of this.nests) {
+            if (nest.posX === pos.colonne && nest.posY === pos.ligne) {
+                if (player_id === 0) {
+                    nest.tint = 0x990000;
+                } else {
+                    nest.tint = 0x3333FF;
+                }
+            }
         }
     }
 
@@ -412,8 +428,6 @@ class Game {
                 troupe[i].changeOrientation(troupe[i-1].dir);
             }
         }
-
-
 
         const endposN = this.calculateEndPosition([troupe[0].posX, troupe[0].posY], dir);
 
