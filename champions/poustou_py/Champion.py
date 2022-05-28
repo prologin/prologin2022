@@ -10,7 +10,7 @@ DIRECTIONS = [
     ]
 
 
-DEBUG = True
+DEBUG = False
 # False pour desactiver debug
 # True pour activer debug
 # 0 pour activer debug si le champion est le joueur 0
