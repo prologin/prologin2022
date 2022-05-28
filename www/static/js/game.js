@@ -471,8 +471,22 @@ class Game {
             return 3;
         } else if (next.ligne > duck.ligne) {
             return 0;
-        } else {
-            return 1;
+        }
+        return 1;
+    }
+
+
+    computeDuckObjectDirection(duck, next) {
+        if (next.posZ > duck.posZ) {
+            return 4;
+        } else if (next.posZ < duck.posZ) {
+            return 5;
+        } else if (next.posX > duck.posX) {
+            return 2;
+        } else if (next.posX < duck.posX) {
+            return 3;
+        } else if (next.posY > duck.posY) {
+            return 0;
         }
         return 1;
     }
@@ -662,8 +676,11 @@ class Game {
 
     new_duck(frame, player_id, troupe_id, pos) {
         const index = (troupe_id - 1) + 2 * player_id;
-        //TODO Direction
-        this.troupes[index].push(new Duckling(pos.colonne, pos.ligne, pos.niveau, 1, player_id));
+        const duck = new Duckling(pos.colonne, pos.ligne, pos.niveau, 1, player_id);
+        duck.dir = this.computeDuckObjectDirection(duck, this.troupes[index][this.troupes[index].length - 1]);
+        if (duck.dir == 4 || duck.dir == 5)
+            duck.isNew = true;
+        this.troupes[index].push(duck);
         const sprite = this.troupes[index][this.troupes[index].length - 1];
         this.displayManager.addSprite(sprite, sprite.posZ);
     }
@@ -674,7 +691,6 @@ class Game {
         while(this.turn <= 400) {
             await new Promise(r => setTimeout(r, 20000));
         }
-        console.log('hey')
     }
 
     async startReplay() {
@@ -695,20 +711,28 @@ class Game {
         }
         if (dir == 5) {
             this.displayManager.goDown(troupe[0]);
-        } else if (dir == 5) {
+            troupe[0].posZ = -1;
+        } else if (dir == 4) {
             this.displayManager.goUp(troupe[0]);
+            troupe[0].posZ = 0;
         }
+
         for (let i = troupe.length - 1; i >= 1; i--) {
-            if (frame === 0) {
+            if (frame === 0 && !troupe[i].isNew) {
                 troupe[i].changeOrientation(troupe[i-1].dir);
             }
+
             const startpos = [calculateX(troupe[i].posX), calculateY(troupe[i].posY)];
             const endpos = [calculateX(troupe[i-1].posX), calculateY(troupe[i-1].posY)];
 
-            if (dir == 5) {
-                this.displayManager.goDown(troupe[0]);
-            } else if (dir == 4) {
-                this.displayManager.goUp(troupe[0]);
+            if (troupe[i].dir == 5) {
+                this.displayManager.goDown(troupe[i]);
+                troupe[i].posZ = -1;
+                troupe[i].isNew = false;
+            } else if (troupe[i].dir == 4) {
+                this.displayManager.goUp(troupe[i]);
+                troupe[i].posZ = 0;
+                troupe[i].isNew = false;
             }
 
 
@@ -724,7 +748,6 @@ class Game {
             troupe[i].gotoAndPlay(frame % 3);
             troupe[i].width = SPRITE_WIDTH;
             troupe[i].height = SPRITE_HEIGHT;
-
         }
 
         const endposN = this.calculateEndPosition([troupe[0].posX, troupe[0].posY], dir);
@@ -898,9 +921,8 @@ class Duck extends PIXI.AnimatedSprite {
     }
 
     changeOrientation(dir) {
-        if (dir == 4 || dir == 5)
-            return;
-        this.textures = this.spriteSheet[dir];
+        if (dir <= 3)
+            this.textures = this.spriteSheet[dir];
         this.dir = dir;
     }
 
@@ -945,6 +967,7 @@ class Duckling extends PIXI.AnimatedSprite {
         this.spriteSheet = spriteSheet;
         this.animationSpeed = 0.1;
         this.loop = false;
+        this.isNew = false;
         this.y = calculateY(y);
         this.x = calculateX(x);
         this.posX = x;
@@ -958,7 +981,8 @@ class Duckling extends PIXI.AnimatedSprite {
     }
 
     changeOrientation(dir) {
-        this.textures = this.spriteSheet[dir];
+        if (dir <= 3)
+            this.textures = this.spriteSheet[dir];
         this.dir = dir;
     }
 }
