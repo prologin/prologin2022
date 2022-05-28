@@ -423,6 +423,24 @@ def jouer_tour():
             troupe = troupes_joueur(moi())[i]
 
 
+    # Essaie de tuer les troupes adverses
+    for troupe in troupes_joueur(adversaire()):
+        x, y, z = troupe.maman
+        cnt = 0
+        cancel = False
+        for dir in DIRECTIONS:
+            if can_move(troupe.maman, dir):
+                dx, dy, dz = delta_pos(dir)
+                ax, ay, az = x + dx, y + dy, z + dz
+                err = construire_buisson((ax, ay, az))
+                if err != erreur.OK:
+                    cancel = True
+                    break
+                else:
+                    cnt += 1
+        if cancel:
+            for _ in range(cnt):
+                annuler()
     display_map()
 
 
