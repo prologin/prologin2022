@@ -454,7 +454,7 @@ class Game {
                 this.app.stage.removeChild(troupe);
             }
         }
-        this.troupes[troupe_id - 1 + 2 * player_id] = [new Duck(pos.colonne, pos.ligne, 1)];
+        this.troupes[troupe_id - 1 + 2 * player_id] = [new Duck(pos.colonne, pos.ligne, 1, player_id)];
         this.troupes[troupe_id - 1 + 2 * player_id][0].display(this.app);
     }
 
@@ -462,7 +462,7 @@ class Game {
     new_duck(frame, player_id, troupe_id, pos) {
         const index = (troupe_id - 1) + 2 * player_id;
         //TODO Direction
-        this.troupes[index].push(new Duckling(pos.colonne, pos.ligne, 1));
+        this.troupes[index].push(new Duckling(pos.colonne, pos.ligne, 1, player_id));
         this.troupes[index][this.troupes[index].length - 1].display(this.app);
     }
 
@@ -625,7 +625,7 @@ class Papy extends PIXI.AnimatedSprite {
 }
 
 class Duck extends PIXI.AnimatedSprite {
-    constructor(x, y, dir) {
+    constructor(x, y, dir, player_id) {
         const spriteSheet = [
             [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_2.png`),
@@ -651,6 +651,8 @@ class Duck extends PIXI.AnimatedSprite {
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
         this.dir = dir;
+        if (player_id === 1)
+            this.tint = 0x3333FF;
     }
 
     changeOrientation(dir) {
@@ -680,7 +682,7 @@ class Bush extends PIXI.Sprite {
 }
 
 class Duckling extends PIXI.AnimatedSprite {
-    constructor(x, y, dir) {
+    constructor(x, y, dir, player_id) {
         const spriteSheet = [
             [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_2.png`),
@@ -706,6 +708,8 @@ class Duckling extends PIXI.AnimatedSprite {
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
         this.dir = dir;
+        if (player_id === 1)
+            this.tint = 0x3333FF;
     }
 
     changeOrientation(dir) {
