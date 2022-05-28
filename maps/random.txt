@@ -1,0 +1,40 @@
+##########S#############################
+#  ... .B.   Xb  b.##   #.#XbBB...#..b.#
+# .B.b # #B...X.X#.#.##.#.. . #  . #b.b#
+#.. .BB.#..NB#.B. BB X.. .  .  #.b#BBb.#
+# 0  Bb B..B .Bb    .X# XBB ..B..#.#B#.#
+#..b .b. b .b.B... # #.  4... BB.b .# ##
+## . X. B##   ##. .bX# .B#b#  ..b#b#b..#
+# b.. .bXb.#... #. X  #BB..b. . Bb... .#
+#  ..#N.#bB ... BbB    #X .#.  . .B.# .#
+#.b B.## B   #.  b bB. B..#.b.  ..BB #B#
+#.  b .#..##B . #  b#bb 2#B.. .    .  B#
+##. ##  #.B#.B..# ..##.Bb. B..b.. ....b#
+# B B ## . ..  b..X.  b.#...B..#b#.   X#
+#X#.  ##0#B B..b#.#X.b#B.. . B#..b.B .##
+## .B.  bb 5#XB b 2 B X.  ...#. .#0B...#
+#b.. B  . ..B b .. #bB... .#b3.XBB X ###
+##.B...BB #.bBb b.X .b B..B.B B#B.  .. #
+#.   BB.bB....  .. . B. .X#b.b  # .#.# #
+#.. . ... .#bB.  ##. bBbB b #b.  ##XX# #
+#..B#   .##. .# b##b   .bB. ##B  X . .##
+#.  B # bb #.BX#   #b.. # X..bb Xb# B###
+#b.#B.B    ## b ... ## X 3#X.  B .  B..#
+#B X.  b .. .b#B  . ##... ..  bb. .  #b#
+#.  bbB.#X . ..b  . b .b.b#.## B#.. .X #
+#...B.B. .bX..B bB #      bb.    #.bB. #
+#.Nb .B# B . .BB.#bX#. bbB. .....#BB.Xb#
+#  bb#b#.. X. ...b B.B.B X. B #.. ..#.X#
+# .B    b bB.. . .#. b.bB#B..B .. b B. #
+#  # ... . BBX.X. ##.#...1 .##  # .BN. #
+#  bb.BX... b  b .  #..#. B B# B.# ..B S
+# B . . .#.. .B.X. b# B  b#...Bbb#b..#.#
+#BB XX..#.. b.  #  b..bB.b1 #. #XB B# B#
+#.X..#B.. X. ##..b   ..B  ## ##.b . .#.#
+#b #b. B..B. bBBB B# .B.  ## .#N..bbB  #
+#bBb...#X .. #..b .   B.B.  # .# X.BBb.#
+# ....b.X.b  b Bb.BB#. . B B#bB..   ...#
+S.  .b#.  b#Bbb. X# B  B...    ...b  B.#
+##. .B XBB  . N.  . .. .. #B. b b .1.. #
+#b#. bb.B     ...Bb....#b#X #..  #. .  #
+###S####################################
