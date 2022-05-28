@@ -291,14 +291,14 @@ class Game {
                 this.troupes[k] = [];
                 // Display the duck.
                 const troupe = roundData[i].troupes[j];
-                const duck = new Duck(troupe.maman.colonne, troupe.maman.ligne, troupe.dir);
+                const duck = new Duck(troupe.maman.colonne, troupe.maman.ligne, troupe.dir, i);
                 duck.display(this.app);
                 this.troupes[k].push(duck);
 
                 // Pushes the ducklings
                 for (let l = 1; l < troupe.canards.length; l++) {
                     const canard = troupe.canards[l];
-                    const duckling = new Duckling(canard.colonne, canard.ligne, this.computeDuckDirection(canard, troupe.canards[l-1]));
+                    const duckling = new Duckling(canard.colonne, canard.ligne, this.computeDuckDirection(canard, troupe.canards[l-1]), i);
                     duckling.display(this.app);
                     this.troupes[k].push(duckling);
                 }
