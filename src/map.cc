@@ -52,13 +52,13 @@ const position& Map::get_spawn_toward(const direction& dir) const
     case HAUT:
     case NORD:
         for (const auto& pos : spawns)
-            if (pos.ligne == 0)
+            if (pos.ligne == HAUTEUR - 1)
                 return pos;
         break;
     case BAS:
     case SUD:
         for (const auto& pos : spawns)
-            if (pos.ligne == HAUTEUR - 1)
+            if (pos.ligne == 0)
                 return pos;
         break;
     case EST:
