@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if [ "$#" -ne 1 ]; then
-  echo "Usage: $0 path/to/dump.json" >&2
-  exit 1
-fi
-
-cp $1 /gui/www/dump
-python3 -m http.server 8742 --bind 0.0.0.0 --directory /gui/www

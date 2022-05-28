@@ -58,6 +58,29 @@
             nativeBuildInputs = [ final.python3Packages.wrapPython ];
 
           };
+
+          viewer-2022 = final.writeShellScriptBin "viewer" ''
+            VIEWER_DIR=$HOME/.viewer
+
+            rm -r "$VIEWER_DIR"
+            mkdir -p "$VIEWER_DIR"
+
+            if [ "$#" -ne 1 ]; then
+              echo "Usage: $0 path/to/dump.json" >&2
+              exit 1
+            fi
+
+            ln -s ${./www/static/css} "$VIEWER_DIR/css"
+            ln -s ${./viewer/fonts} "$VIEWER_DIR/fonts"
+            ln -s ${./viewer/js} "$VIEWER_DIR/js"
+            ln -s ${./viewer/index.html} "$VIEWER_DIR/index.html"
+            mkdir -p "$VIEWER_DIR/static"
+            ln -s ${./www/static/img} "$VIEWER_DIR/static/img"
+            ln -s ${./www/static/js} "$VIEWER_DIR/static/js"
+
+            cp "$1" "$VIEWER_DIR/dump"
+            ${final.python3}/bin/python -m http.server 8742 --bind 0.0.0.0 --directory "$VIEWER_DIR"
+          '';
         };
       };
 
@@ -73,7 +96,7 @@
         in
         rec {
           packages = {
-            inherit (pkgs) prologin2022 prologin2022-docs map-editor-2022;
+            inherit (pkgs) prologin2022 prologin2022-docs map-editor-2022 viewer-2022;
           };
 
           defaultPackage = self.packages.${system}.prologin2022;
