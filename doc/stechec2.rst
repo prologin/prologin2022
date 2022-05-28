@@ -60,6 +60,7 @@ Prenons un exemple (qui devrait par ailleurs satisfaire vos besoins)
     - Player 2
   map: ./map.txt
 
+
 Vous devez lancer depuis votre ligne de commande stechec2
 
 ::
@@ -69,31 +70,22 @@ Vous devez lancer depuis votre ligne de commande stechec2
 N'hésitez pas à rapporter aux organisateurs tous les problèmes ou bugs que vous
 pourriez rencontrer lors de l'exécution de stechec2.
 
+Interface graphique (GUI)
+-------------------------
+
+Si vous préférez regarder le replay à la fin sur votre machine, ajoutez
+::
+
+  dump: dump.json
+
+Ceci crée un fichier `dump.json` dans le répertoire courant, que vous pouvez
+visualiser avec
+
+::
+
+  viewer dump.json
+
 ..
-  Interface graphique (GUI)
-  -------------------------
-
-  TODO(rework this part depending on how the GUI works)
-
-  .. warning::
-
-    La GUI n'est pas encore fonctionnelle. Nous y travaillons.
-
-  Pour utiliser la GUI pendant que vous lancez votre match, rajoutez à la fin de
-  votre ``config.yml`` ::
-
-    spectators:
-      - /opt/prologin2022-gui.so
-
-  Si vous préférez regarder le replay à la fin, ajoutez ::
-
-    dump: dump.json
-
-  Ceci crée un fichier `dump.json` dans le répertoire courant, que vous pouvez
-  visualiser avec ::
-
-    prologin2019-replay dump.json
-
   Jouer contre son propre champion
   --------------------------------
 

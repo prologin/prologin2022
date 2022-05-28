@@ -62,7 +62,7 @@
           viewer-2022 = final.writeShellScriptBin "viewer" ''
             VIEWER_DIR=$HOME/.viewer
 
-            rm -r "$VIEWER_DIR"
+            rm -rf "$VIEWER_DIR"
             mkdir -p "$VIEWER_DIR"
 
             if [ "$#" -ne 1 ]; then
