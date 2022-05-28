@@ -10,7 +10,7 @@ DIRECTIONS = [
     ]
 
 
-DEBUG = 1
+DEBUG = True
 # False pour desactiver debug
 # True pour activer debug
 # 0 pour activer debug si le champion est le joueur 0
@@ -105,11 +105,13 @@ def display_map():
 
 
     
-    for niveau in parc[0:1]:
+    for niveau in parc:
         for ligne in niveau:
             for case in ligne:
                 debug(case, end = '')
             debug()
+        debug('-------------')
+    debug('=============================')
 
 
 def trouver_chemin_arr(pos1, pos2):
@@ -176,6 +178,21 @@ def can_move(pos, dir):
     ax, ay, az = x + dx, y + dy, z + dz
     return case_traversable((ax, ay, az))
 
+
+def chemin_oiseau(pos1, pos2):
+    x1, y1, z1 = pos1
+    x2, y2, z2, = pos2
+    res = []
+
+    # x1,y1 -> x2,y1
+    for x in range(x1, x2+1):
+        res.append((x, y1, z1))
+    # x2,y1 -> x2,y2
+    for y in range(y1, y2+1):
+        res.append((x2, y, z2))
+
+    return res
+
 SPAWN_POINTS = []   # Liste des points d'apparition
 SPAWN_POINT = {}    # Map des directions aux points d'apparition
 NIDS_LIBRES = []    # Liste des nids libres
@@ -184,6 +201,7 @@ TROUS = []          # Liste des trous
 CONSTRUCTIBLES = [] # Liste des cases constructibles
 MES_NIDS = []       # Liste de mes nids
 
+A_CREUSER = []      # Liste des cases a creuser
 
 # Fonction appelée au début de la partie.
 def partie_init():
@@ -236,7 +254,7 @@ def partie_init():
                 PAPYS.append((x, y, 0))
             if case.contenu == type_case.GAZON and case.est_constructible:
                 CONSTRUCTIBLES.append((x, y, 0))
-    
+ 
     debug("Nids :")
     for pos in NIDS_LIBRES:
         debug("  -", end = ' ')
@@ -260,6 +278,16 @@ def partie_init():
         debug("  -", end = ' ')
         afficher_position(pos)
     debug()
+    
+    for i in range(len(TROUS)-1):
+        a = TROUS[i]
+        b = TROUS[i+1]
+        x1, y1, z1 = a
+        x2, y2, z2 = b
+        tunnel = chemin_oiseau((x1, y1, -1), (x2, y2, -1))
+        A_CREUSER.extend(tunnel)
+
+    display_map()
 
 
 
@@ -267,8 +295,10 @@ def partie_init():
 # Fonction appelée à chaque tour.
 def jouer_tour():
 
-    display_map()
-
+    # Creuse un bloc
+    error = 1
+    while error != erreur.OK and len(A_CREUSER) > 0:
+        error = creuser_tunnel(A_CREUSER.pop())
 
     # Mise a jour de la liste des nids encore libres
     global NIDS_LIBRES
@@ -381,11 +411,11 @@ def jouer_tour():
         troupe = troupes_joueur(moi())[i]
         while troupe.pts_action > 0:
             debug("Points restants")
-            for direction in DIRECTIONS:
-                if can_move(troupe.maman, direction):
-                    avancer(troupe.id, direction)
+            for dir in DIRECTIONS:
+                if can_move(troupe.maman, dir):
+                    avancer(troupe.id, dir)
                     debug("Complete vers", end = ' ')
-                    afficher_direction(direction)
+                    afficher_direction(dir)
                     break
             else:
                 debug("Mort inevitable :(")
@@ -393,18 +423,7 @@ def jouer_tour():
             troupe = troupes_joueur(moi())[i]
 
 
-            
-
-
-
-
-
-
-
-
-        
-
-
+    display_map()
 
 
 # Fonction appelée à la fin de la partie.
