@@ -79,6 +79,7 @@
             ln -s ${./www/static/js} "$VIEWER_DIR/static/js"
 
             cp "$1" "$VIEWER_DIR/dump"
+            (sleep 2; ${final.xdg-utils}/bin/xdg-open "http://127.0.0.1:8742")&
             ${final.python3}/bin/python -m http.server 8742 --bind 0.0.0.0 --directory "$VIEWER_DIR"
           '';
         };
