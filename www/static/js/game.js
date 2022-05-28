@@ -652,7 +652,7 @@ class Duck extends PIXI.AnimatedSprite {
         this.height = SPRITE_HEIGHT;
         this.dir = dir;
         if (player_id === 1)
-            this.tint = 0x3333FF;
+            this.tint = 0xAAAAFF;
     }
 
     changeOrientation(dir) {
@@ -709,7 +709,7 @@ class Duckling extends PIXI.AnimatedSprite {
         this.height = SPRITE_HEIGHT;
         this.dir = dir;
         if (player_id === 1)
-            this.tint = 0x3333FF;
+            this.tint = 0xAAAAFF;
     }
 
     changeOrientation(dir) {
