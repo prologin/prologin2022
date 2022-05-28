@@ -53,7 +53,7 @@ void ActionConstruireBuisson::apply_on(GameState* st) const
     action.type = standard_action;
     action.action.action_type = ACTION_CONSTRUIRE;
     action.action.troupe_id = -1;
-    // TODO init action.action.action_dir;
+    action.action.action_dir = static_cast<direction>(0);
     action.action.action_pos = pos_;
     player->add_internal_action(action);
 }
