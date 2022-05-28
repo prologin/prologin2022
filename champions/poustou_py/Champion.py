@@ -1,31 +1,57 @@
 from api import *
 
+DIRECTIONS = [
+    direction.HAUT,
+    direction.BAS,
+    direction.NORD,
+    direction.SUD,
+    direction.EST,
+    direction.OUEST
+    ]
+
 
 DEBUG = 1
+# False pour desactiver debug
+# True pour activer debug
+# 0 pour activer debug si le champion est le joueur 0
+# 1 pour activer debug si le champion est le joueur 1
 def debug(*args, **kwargs):
-	if DEBUG is False:
-		return
-	if DEBUG is True or DEBUG == moi():
-		print(*args, **kwargs)
+    """
+    Debug sur la sortie standard, si actif
+    """
+    if DEBUG is False:
+        return
+    if DEBUG is True or DEBUG == moi():
+        print(*args, **kwargs)
 
 def afficher_position(position, end = '\n'):
-	debug(f"({position[0]}; {position[1]}; {position[2]})", end = end)
+    """
+    api.afficher_position custom, compatible avec la valeur de debug
+    """
+    debug(f"({position[0]}; {position[1]}; {position[2]})", end = end)
 
 def afficher_direction(dir, end = '\n'):
-	if dir == direction.NORD:
-		debug("NORD", end = end)
-	elif dir == direction.SUD:
-		debug("SUD", end = end)
-	elif dir == direction.EST:
-		debug("EST", end = end)
-	elif dir == direction.OUEST:
-		debug("OUEST", end = end)
-	elif dir == direction.HAUT:
-		debug("HAUT", end = end)
-	elif dir == direction.BAS:
-		debug("BAS", end = end)
+    """
+    api.afficher_direction custom, compatible avec la valeur de debug
+    """
+    if dir == direction.NORD:
+        debug("NORD", end = end)
+    elif dir == direction.SUD:
+        debug("SUD", end = end)
+    elif dir == direction.EST:
+        debug("EST", end = end)
+    elif dir == direction.OUEST:
+        debug("OUEST", end = end)
+    elif dir == direction.HAUT:
+        debug("HAUT", end = end)
+    elif dir == direction.BAS:
+        debug("BAS", end = end)
 
 def display_map():
+    """
+    Affiche le niveau principal de la carte en ascii.
+    Compatible avec la valeur de debug
+    """
     def display_case(case):
         contenu = case.contenu
         if contenu == type_case.GAZON:
@@ -87,112 +113,153 @@ def display_map():
 
 
 def trouver_chemin_arr(pos1, pos2):
-	if not case_traversable(pos2):
-		return []
-	return trouver_chemin(pos1, pos2)
+    """
+    api.trouver_chemin custom. Prend en compte la traversabilite de la case d'arrivee
+    """
+    if not case_traversable(pos2):
+        return []
+    return trouver_chemin(pos1, pos2)
 
 def case_traversable(pos):
-	case = info_case(pos)
-	if case.contenu == type_case.BUISSON:
-		return False
-	if case.contenu == type_case.TERRE:
-		return False
-	if case.contenu == type_case.BARRIERE and info_barriere(pos) == etat_barriere.FERMEE:
-		return False
-	for troupe in troupes_joueur(moi()):
-		for canard in troupe.canards:
-			if canard == pos:
-				return False
-	for troupe in troupes_joueur(adversaire()):
-		for canard in troupe.canards:
-			if canard == pos:
-				return False
-	return True
+    """
+    Determine si une case est mortelle.
+    """
+    x, y, z = pos
+    if x < 0 or x >= LARGEUR or y < 0 or y >= LARGEUR or z < -1 or z > 0:
+        return False
+    case = info_case(pos)
+    if case.contenu == type_case.BUISSON:
+        return False
+    if case.contenu == type_case.TERRE:
+        return False
+    if case.contenu == type_case.BARRIERE and info_barriere(pos) == etat_barriere.FERMEE:
+        return False
+    for troupe in troupes_joueur(moi()):
+        for canard in troupe.canards:
+            if canard == pos:
+                return False
+    for troupe in troupes_joueur(adversaire()):
+        for canard in troupe.canards:
+            if canard == pos:
+                return False
+    return True
 
-SPAWN_POINTS = []
-SPAWN_POINT = {}
-NIDS_LIBRES = []
-PAPYS = []
-TROUS = []
-CONSTRUCTIBLES = []
-MES_NIDS = []
+def delta_pos(dir):
+    """
+    Retourne le vecteur unitaire de la direction
+    """
+    if dir == direction.NORD:
+        return (0, 1, 0)
+    if dir == direction.SUD:
+        return (0, -1, 0)
+    if dir == direction.EST:
+        return (1, 0, 0)
+    if dir == direction.OUEST:
+        return (-1, 0, 0)
+    if dir == direction.HAUT:
+        return (0, 0, 1)
+    if dir == direction.BAS:
+        return (0, 0, -1)
+
+def can_move(pos, dir):
+    """
+    Determine s'il est possible de se deplacer dans une direction sans mourir
+    """
+    x, y, z = pos
+    if dir == direction.HAUT:
+        if z == 0 or info_case((x, y, 0)).contenu != type_case.TROU:
+            return False
+    if dir == direction.BAS:
+        if z == -1 or info_case((x, y, 0)).contenu != type_case.TROU:
+            return False
+    dx, dy, dz = delta_pos(dir)
+    ax, ay, az = x + dx, y + dy, z + dz
+    return case_traversable((ax, ay, az))
+
+SPAWN_POINTS = []   # Liste des points d'apparition
+SPAWN_POINT = {}    # Map des directions aux points d'apparition
+NIDS_LIBRES = []    # Liste des nids libres
+PAPYS = []          # Liste des papys 
+TROUS = []          # Liste des trous
+CONSTRUCTIBLES = [] # Liste des cases constructibles
+MES_NIDS = []       # Liste de mes nids
 
 
 # Fonction appelée au début de la partie.
 def partie_init():
 
-	display_map()
+    display_map()
 
-	# Trouve tous les points d'apparitions
-	for troupe in troupes_joueur(moi()):
-		SPAWN_POINTS.append(troupe.maman)
-	for troupe in troupes_joueur(adversaire()):
-		SPAWN_POINTS.append(troupe.maman)
+    # Trouve tous les points d'apparitions
+    for troupe in troupes_joueur(moi()):
+        SPAWN_POINTS.append(troupe.maman)
+    for troupe in troupes_joueur(adversaire()):
+        SPAWN_POINTS.append(troupe.maman)
 
-	debug("Points d'apparition :")
-	for spawn_point in SPAWN_POINTS:
-		debug("  -", end = ' ')
-		afficher_position(spawn_point)
-	debug()
+    debug("Points d'apparition :")
+    for spawn_point in SPAWN_POINTS:
+        debug("  -", end = ' ')
+        afficher_position(spawn_point)
+    debug()
 
 
-	# Lie les points d'apparitions a leur direction
-	for spawn in SPAWN_POINTS:
-		x, y, z = spawn
-		if x == 0:
-			SPAWN_POINT[direction.OUEST] = spawn
-		if x == LARGEUR-1:
-			SPAWN_POINT[direction.EST] = spawn
-		if y == 0:
-			SPAWN_POINT[direction.SUD] = spawn
-			SPAWN_POINT[direction.BAS] = spawn
-		if y == HAUTEUR-1:
-			SPAWN_POINT[direction.NORD] = spawn
-			SPAWN_POINT[direction.HAUT] = spawn
-	
-	debug("Points de reapparition :")
-	for dir, pos in SPAWN_POINT.items():
-		debug("  -", end = ' ')
-		afficher_direction(dir, end = ' : ')
-		afficher_position(pos)
-	debug()
+    # Lie les points d'apparitions a leur direction
+    for spawn in SPAWN_POINTS:
+        x, y, z = spawn
+        if x == 0:
+            SPAWN_POINT[direction.OUEST] = spawn
+        if x == LARGEUR-1:
+            SPAWN_POINT[direction.EST] = spawn
+        if y == 0:
+            SPAWN_POINT[direction.SUD] = spawn
+            SPAWN_POINT[direction.BAS] = spawn
+        if y == HAUTEUR-1:
+            SPAWN_POINT[direction.NORD] = spawn
+            SPAWN_POINT[direction.HAUT] = spawn
+    
+    debug("Points de reapparition :")
+    for dir, pos in SPAWN_POINT.items():
+        debug("  -", end = ' ')
+        afficher_direction(dir, end = ' : ')
+        afficher_position(pos)
+    debug()
 
-	# Trouve tous les nids, les papys, les trous et les cases constructibles.
-	for y in range(HAUTEUR):
-		for x in range(LARGEUR):
-			case = info_case((x, y, 0))
-			if case.contenu == type_case.NID:
-				NIDS_LIBRES.append((x, y, 0))
-			if case.contenu == type_case.TROU:
-				TROUS.append((x, y, 0))
-			if case.contenu == type_case.PAPY:
-				PAPYS.append((x, y, 0))
-			if case.contenu == type_case.GAZON and case.est_constructible:
-				CONSTRUCTIBLES.append((x, y, 0))
-	
-	debug("Nids :")
-	for pos in NIDS_LIBRES:
-		debug("  -", end = ' ')
-		afficher_position(pos)
-	debug()
+    # Trouve tous les nids, les papys, les trous et les cases constructibles.
+    for y in range(HAUTEUR):
+        for x in range(LARGEUR):
+            case = info_case((x, y, 0))
+            if case.contenu == type_case.NID:
+                NIDS_LIBRES.append((x, y, 0))
+            if case.contenu == type_case.TROU:
+                TROUS.append((x, y, 0))
+            if case.contenu == type_case.PAPY:
+                PAPYS.append((x, y, 0))
+            if case.contenu == type_case.GAZON and case.est_constructible:
+                CONSTRUCTIBLES.append((x, y, 0))
+    
+    debug("Nids :")
+    for pos in NIDS_LIBRES:
+        debug("  -", end = ' ')
+        afficher_position(pos)
+    debug()
 
-	debug("Papys :")
-	for pos in PAPYS:
-		debug("  -", end = ' ')
-		afficher_position(pos)
-	debug()
+    debug("Papys :")
+    for pos in PAPYS:
+        debug("  -", end = ' ')
+        afficher_position(pos)
+    debug()
 
-	debug("Trous :")
-	for pos in TROUS:
-		debug("  -", end = ' ')
-		afficher_position(pos)
-	debug()
+    debug("Trous :")
+    for pos in TROUS:
+        debug("  -", end = ' ')
+        afficher_position(pos)
+    debug()
 
-	debug("Cases constructible :")
-	for pos in CONSTRUCTIBLES:
-		debug("  -", end = ' ')
-		afficher_position(pos)
-	debug()
+    debug("Cases constructible :")
+    for pos in CONSTRUCTIBLES:
+        debug("  -", end = ' ')
+        afficher_position(pos)
+    debug()
 
 
 
@@ -200,126 +267,142 @@ def partie_init():
 # Fonction appelée à chaque tour.
 def jouer_tour():
 
-	display_map()
+    display_map()
 
 
-	# Mise a jour de la liste des nids encore libres
-	global NIDS_LIBRES
-	temp = []
-	for nid in NIDS_LIBRES:
-		if info_nid(nid) == etat_nid.LIBRE:
-			temp.append(nid)
-		#elif info_nid(nid) == moi() + 1:
-		#	MES_NIDS.append(nid)
-	NIDS_LIBRES = temp
+    # Mise a jour de la liste des nids encore libres
+    global NIDS_LIBRES
+    temp = []
+    for nid in NIDS_LIBRES:
+        if info_nid(nid) == etat_nid.LIBRE:
+            temp.append(nid)
+        #elif info_nid(nid) == moi() + 1:
+        #    MES_NIDS.append(nid)
+    NIDS_LIBRES = temp
 
-	debug("Mes nids :")
-	for nid in MES_NIDS:
-		debug("  -", end = ' ')
-		afficher_position(nid)
-
-
-	# Cible en priorite les nids libres a proximite
-	for i in range(2):
-		while True:
-			cibles = []
-			troupe = troupes_joueur(moi())[i]
-			for nid in NIDS_LIBRES:
-				chemin = trouver_chemin_arr(troupe.maman, nid)
-				if len(chemin) > 0:
-					cibles.append((chemin, nid))
-		
-			if len(cibles) > 0:
-				cibles.sort(key = lambda p: len(p[0]))
-				chemin, nid = cibles[0]
-				debug(f"Troupe {troupe.id} cible le nid", end = ' ')
-				afficher_position(nid)
-				debug(f"Chemin choisi :", end = ' ')
-				debug(chemin)
-				debug()
-				distance = min(troupe.pts_action, len(chemin))
-				for j in range(distance):
-					avancer(troupe.id, chemin[j])
-				if distance >= troupe.pts_action:
-					break
-				else:
-					NIDS_LIBRES.remove(nid)
-					MES_NIDS.append(nid)
-			else:
-				break
-	
-
-	# Tente de grandir si l'inventaire est pres d'etre rempli
-	for troupe in troupes_joueur(moi()):
-		if inventaire(troupe.taille) < troupe.inventaire + 1:
-			grandir(troupe.id)
-	
-	forbidden = []
-	# Cible la miche de pain / le nid le plus proche si l'inventaire est non vide
-	for i in range(2):
-		while True:
-			troupe = troupes_joueur(moi())[i]
-			smallest = float("inf")
-			cible = []
-			arrivee = (0,0,0)
-			for papy in PAPYS:
-				if papy in forbidden:
-					continue
-				chemin = trouver_chemin_arr(troupe.maman, papy)
-				if len(chemin) <= 0:
-					continue
-				if len(chemin) < smallest:
-					smallest = len(chemin)
-					cible = chemin
-					arrivee = papy
-			if troupe.inventaire > 0:
-				for nid in MES_NIDS:
-					if nid in forbidden:
-						continue
-					chemin = trouver_chemin_arr(troupe.maman, nid)
-					if len(chemin) <= 0:
-						continue
-					if len(chemin) < smallest:
-						smallest = len(chemin)
-						cible = chemin
-						arrivee = nid
-			if len(cible) == 0:
-				break
-			debug("----")
-			debug("Cible", end = ' ')
-			afficher_position(arrivee)
-			debug("Chemin", end = ' : ')
-			debug(cible)
-			distance = min(troupe.pts_action, len(cible))
-			for j in range(distance):
-				avancer(troupe.id, cible[j])
-
-			# Verifie que l'action n'est pas letale
-			for nid in MES_NIDS:
-				if trouver_chemin_arr(troupes_joueur(moi())[i].maman, nid) != []:
-					debug("Non lethal, peut atteindre", end = ' ')
-					afficher_position(nid)
-					break
-			else:
-				for j in range(distance):
-					annuler()
-				forbidden.append(arrivee)
-				debug("Annule pour lethalite")
-				continue
-			if distance >= troupe.pts_action:
-				break
-			
-
-			
+    debug("Mes nids :")
+    for nid in MES_NIDS:
+        debug("  -", end = ' ')
+        afficher_position(nid)
 
 
+    # Cible en priorite les nids libres a proximite
+    for i in range(2):
+        while True:
+            cibles = []
+            troupe = troupes_joueur(moi())[i]
+            for nid in NIDS_LIBRES:
+                chemin = trouver_chemin_arr(troupe.maman, nid)
+                if len(chemin) > 0:
+                    cibles.append((chemin, nid))
+        
+            if len(cibles) > 0:
+                cibles.sort(key = lambda p: len(p[0]))
+                chemin, nid = cibles[0]
+                debug(f"Troupe {troupe.id} cible le nid", end = ' ')
+                afficher_position(nid)
+                debug(f"Chemin choisi :", end = ' ')
+                debug(chemin)
+                debug()
+                distance = min(troupe.pts_action, len(chemin))
+                for j in range(distance):
+                    avancer(troupe.id, chemin[j])
+                if distance >= troupe.pts_action:
+                    break
+                else:
+                    NIDS_LIBRES.remove(nid)
+                    MES_NIDS.append(nid)
+            else:
+                break
+    
+
+    # Tente de grandir si l'inventaire est pres d'etre rempli
+    for troupe in troupes_joueur(moi()):
+        if inventaire(troupe.taille) < troupe.inventaire + 1:
+            grandir(troupe.id)
+    
+    forbidden = [] # Liste des cibles qui se revelent etre fatales
+    # Cible la miche de pain / le nid le plus proche si l'inventaire est non vide
+    for i in range(2):
+        while True:
+            troupe = troupes_joueur(moi())[i]
+            smallest = float("inf")
+            cible = []
+            arrivee = (0,0,0)
+            for papy in PAPYS:
+                if papy in forbidden:
+                    continue
+                chemin = trouver_chemin_arr(troupe.maman, papy)
+                if len(chemin) <= 0:
+                    continue
+                if len(chemin) < smallest:
+                    smallest = len(chemin)
+                    cible = chemin
+                    arrivee = papy
+            if troupe.inventaire > 0:
+                for nid in MES_NIDS:
+                    if nid in forbidden:
+                        continue
+                    chemin = trouver_chemin_arr(troupe.maman, nid)
+                    if len(chemin) <= 0:
+                        continue
+                    if len(chemin) < smallest:
+                        smallest = len(chemin)
+                        cible = chemin
+                        arrivee = nid
+            if len(cible) == 0:
+                # Aucune destination n'est atteignable
+                break
+            debug("----")
+            debug("Cible", end = ' ')
+            afficher_position(arrivee)
+            debug("Chemin", end = ' : ')
+            debug(cible)
+            distance = min(troupe.pts_action, len(cible))
+            for j in range(distance):
+                avancer(troupe.id, cible[j])
+
+            # Verifie que l'action n'est pas letale
+            for nid in MES_NIDS:
+                if trouver_chemin_arr(troupes_joueur(moi())[i].maman, nid) != []:
+                    debug("Destination safe, peut atteindre", end = ' ')
+                    afficher_position(nid)
+                    break
+            else:
+                for j in range(distance):
+                    annuler()
+                forbidden.append(arrivee)
+                debug("Annule car trop dangereux")
+                continue
+            if distance >= troupe.pts_action:
+                break
+
+    for i in range(2):
+        troupe = troupes_joueur(moi())[i]
+        while troupe.pts_action > 0:
+            debug("Points restants")
+            for direction in DIRECTIONS:
+                if can_move(troupe.maman, direction):
+                    avancer(troupe.id, direction)
+                    debug("Complete vers", end = ' ')
+                    afficher_direction(direction)
+                    break
+            else:
+                debug("Mort inevitable :(")
+                break
+            troupe = troupes_joueur(moi())[i]
+
+
+            
 
 
 
 
 
 
-		
+
+
+        
 
 
 
