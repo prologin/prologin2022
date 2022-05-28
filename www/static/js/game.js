@@ -263,10 +263,11 @@ class Game {
         this.barriers = [];
         this.nests = [];
         this.bushes = [];
+        this.rocks = [];
         this.setupMap();
         this.displayDucks(0);
         this.turn = 1;
-        this.paused = false;
+        this.paused = true;
         this.action_index = 0;
         this.frame = 0;
         this.bread = [];
@@ -296,9 +297,10 @@ class Game {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 const dirt = createSprite(textures.dirt, i, j);
-                const rock = createSprite(textures.rock, i, j);
+                const rock = new Rock(i, j);
                 this.displayManager.addBottomSprite(dirt);
                 this.displayManager.addBottomSprite(rock);
+                this.rocks.push(rock);
             }
         }
 
@@ -356,7 +358,7 @@ class Game {
                         let bush = this.findBushByCoords(i, j);
                         if (bush === null) {
                             bush = new Bush(i, j);
-                            this.displayManager.addTopSprite(this.app);
+                            this.displayManager.addTopSprite(bush);
                             this.bushes.push(bush);
                         }
                         break;
@@ -382,6 +384,24 @@ class Game {
             }
         }
 
+        this.clearRocks();
+
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                const char_index = i * MAP_SIZE + j;
+                const symbol = lowerMapString.charAt(char_index);
+                switch (symbol) {
+                    case 't':
+                        break;
+                    case 'T':
+                        const rock = new Rock(i, j);
+                        this.displayManager.addBottomSprite(rock);
+                        this.rocks.push(rock);
+                        break;
+                }
+            }
+        }
+
         this.clearBread();
 
         for (let pain of this.dump[index].map.pains) {
@@ -389,6 +409,13 @@ class Game {
             this.displayManager.addSprite(bread, pain.pos.niveau);
             this.bread.push(bread);
         }
+    }
+
+    clearRocks() {
+        for (let rock of this.rocks) {
+            this.displayManager.removeSprite(rock);
+        }
+        this.rocks = [];
     }
 
 
@@ -461,15 +488,22 @@ class Game {
     }
 
     jumpToRound(index) {
-        this.turn = index;
+        this.turn = index + 1;
+        this.frame = 0;
+        this.action_index = 0;
         this.displayMapChanges(index);
         this.displayDucks(index);
         this.clearPigeons();
     }
 
+    pauseGame() {
+        this.paused = !this.paused;
+    }
+
     gameLoop(delta) {
         if (this.paused)
             return;
+
         const actions = this.getTurnActions();
 
         const curr_action = actions[this.action_index];
@@ -489,7 +523,7 @@ class Game {
                 this.frame = animationDuration();
                 break;
             case 'creuser':
-                this.construire(this.frame, curr_action.position);
+                this.creuser(this.frame, curr_action.position);
                 this.frame = animationDuration();
                 break;
             case 'auto_move':
@@ -533,10 +567,11 @@ class Game {
     }
 
     creuser(frame, position) {
+        console.log(position);
         for (let i = 0; i < this.rocks.length; i++) {
             const rock = this.rocks[i];
             if (rock.posX === position.colonne && rock.posY === position.ligne) {
-                rocks.splice(i, 1);
+                this.rocks.splice(i, 1);
                 this.displayManager.removeSprite(rock);
                 return;
             }
@@ -640,21 +675,25 @@ class Game {
 
     avancer(frame, player_id, dir, troupe_id) {
         const troupe = this.troupes[(troupe_id - 1) + player_id * 2];
-        if (dir == 4) {
+        if (frame === 0) {
+            troupe[0].changeOrientation(dir);
+            console.log(dir);
+        }
+        if (dir == 5) {
             this.displayManager.goDown(troupe[0]);
         } else if (dir == 5) {
             this.displayManager.goUp(troupe[0]);
         }
-        if (frame === 0) {
-            troupe[0].changeOrientation(dir);
-        }
         for (let i = troupe.length - 1; i >= 1; i--) {
+            if (frame === 0) {
+                troupe[i].changeOrientation(troupe[i-1].dir);
+            }
             const startpos = [calculateX(troupe[i].posX), calculateY(troupe[i].posY)];
             const endpos = [calculateX(troupe[i-1].posX), calculateY(troupe[i-1].posY)];
 
-            if (dir == 4) {
+            if (dir == 5) {
                 this.displayManager.goDown(troupe[0]);
-            } else if (dir == 5) {
+            } else if (dir == 4) {
                 this.displayManager.goUp(troupe[0]);
             }
 
@@ -672,9 +711,6 @@ class Game {
             troupe[i].width = SPRITE_WIDTH;
             troupe[i].height = SPRITE_HEIGHT;
 
-            if (frame === 0) {
-                troupe[i].changeOrientation(troupe[i-1].dir);
-            }
         }
 
         const endposN = this.calculateEndPosition([troupe[0].posX, troupe[0].posY], dir);
@@ -740,12 +776,29 @@ function createGame() {
     return new Game();
 }
 
+
+class Rock extends PIXI.Sprite {
+
+    constructor(x, y) {
+        super(textures.rock)
+        this.x = calculateX(x);
+        this.y = calculateY(y);
+        this.width = SPRITE_WIDTH;
+        this.height = SPRITE_HEIGHT;
+        this.posX = x;
+        this.posY = y;
+        this.posZ = -1;
+    }
+}
+
 function createSprite(texture, x, y) {
     let sprite = new PIXI.Sprite(texture);
     sprite.y = calculateY(y);
     sprite.x = calculateX(x);
     sprite.width = SPRITE_WIDTH;
     sprite.height = SPRITE_HEIGHT;
+    this.posX = x;
+    this.posY = y;
     return sprite;
 }
 
@@ -831,6 +884,8 @@ class Duck extends PIXI.AnimatedSprite {
     }
 
     changeOrientation(dir) {
+        if (dir == 4 || dir == 5)
+            return;
         this.textures = this.spriteSheet[dir];
         this.dir = dir;
     }

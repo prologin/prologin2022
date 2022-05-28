@@ -66,7 +66,7 @@ $(function () {
             };
 
             $playPause[0].onclick = e => {
-                game.paused = !game.paused;
+                game.pauseGame();
             };
 
             $next[0].onclick = e => {
