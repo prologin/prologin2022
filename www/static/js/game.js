@@ -665,7 +665,12 @@ class Game {
                 troupe[i].posX = troupe[i-1].posX;
                 troupe[i].posY = troupe[i-1].posY;
             }
+
+            troupe[i].width = SPRITE_WIDTH;
+            troupe[i].height = SPRITE_HEIGHT;
             troupe[i].gotoAndPlay(frame % 3);
+            troupe[i].width = SPRITE_WIDTH;
+            troupe[i].height = SPRITE_HEIGHT;
 
             if (frame === 0) {
                 troupe[i].changeOrientation(troupe[i-1].dir);
