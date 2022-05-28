@@ -13,7 +13,7 @@ $(function () {
 
 
     $replay.append('<div id="replay_view"></div>');
-    $replayLegend.append('<button id="replay-change-level">Changer de niveau</button>');
+    $replayLegend.append('<button class="btn btn-default btn-xs" id="replay-change-level">Changer de niveau</button>');
     let $replay_view = $("#replay_view");
 
     let $changeLevel = $('#replay-change-level');
