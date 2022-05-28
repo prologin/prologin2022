@@ -37,6 +37,12 @@ const textures = {
 
 let speed = 10;
 
+let ticker = PIXI.Ticker.shared;
+
+function get_ticker() {
+    return ticker;
+}
+
 function animationDuration() {
     return 1 + MAX_SPEED - speed;
 }
@@ -500,8 +506,8 @@ class Game {
         this.paused = !this.paused;
     }
 
-    gameLoop(delta) {
-        if (this.paused)
+    gameLoop(delta, useSlider) {
+        if (this.paused || this.turn > 400)
             return;
 
         const actions = this.getTurnActions();
@@ -513,7 +519,8 @@ class Game {
             this.action_index = 0;
             this.clearPigeons();
             this.turn += 1;
-            this.updateSlider(this.turn);
+            if (useSlider)
+                this.updateSlider(this.turn);
             return;
         }
 
@@ -567,7 +574,6 @@ class Game {
     }
 
     creuser(frame, position) {
-        console.log(position);
         for (let i = 0; i < this.rocks.length; i++) {
             const rock = this.rocks[i];
             if (rock.posX === position.colonne && rock.posY === position.ligne) {
@@ -662,6 +668,15 @@ class Game {
         this.displayManager.addSprite(sprite, sprite.posZ);
     }
 
+    async stream() {
+        this.paused = false;
+        ticker.start();
+        while(this.turn <= 400) {
+            await new Promise(r => setTimeout(r, 20000));
+        }
+        console.log('hey')
+    }
+
     async startReplay() {
         this.app.ticker.add(this.gameLoop, this);
     }
@@ -677,7 +692,6 @@ class Game {
         const troupe = this.troupes[(troupe_id - 1) + player_id * 2];
         if (frame === 0) {
             troupe[0].changeOrientation(dir);
-            console.log(dir);
         }
         if (dir == 5) {
             this.displayManager.goDown(troupe[0]);
