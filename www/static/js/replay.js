@@ -8,10 +8,15 @@ $(function () {
         $previous = $('#replay-previous'),
         $next = $('#replay-next'),
         $turnLabel = $('#replay-turn-label'),
-        $turnSlider = $('#replay-turn-slider');
+        $turnSlider = $('#replay-turn-slider'),
+        $replayLegend = $('#replay-legend');
+
 
     $replay.append('<div id="replay_view"></div>');
+    $replayLegend.append('<button id="replay-change-level">Changer de niveau</button>');
     let $replay_view = $("#replay_view");
+
+    let $changeLevel = $('#replay-change-level');
 
     $turnSlider.attr('min', 0).attr('max', 400 - 1).val(0);
 
@@ -45,6 +50,11 @@ $(function () {
                 'max-height': '100%',
                 'margin': 'auto',
             });
+
+            $changeLevel[0].onclick = e => {
+                game.displayManager.changeLevel();
+            };
+
             $replay_view.fadeIn('fast');
 
             $previous[0].onclick = e => {
@@ -53,7 +63,6 @@ $(function () {
                 current_turn -= 1;
                 $turnLabel.text(current_turn);
                 game.jumpToRound(current_turn);
-                console.log(dump_data);
             };
 
             $playPause[0].onclick = e => {

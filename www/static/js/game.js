@@ -113,14 +113,10 @@ class Nest extends PIXI.Sprite {
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
     }
-
-    display(app) {
-        app.stage.addChild(this);
-    }
 }
 
 class Bread extends PIXI.Sprite {
-    constructor(x, y) {
+    constructor(x, y, z) {
         super(textures.bread)
         this.x = calculateX(x);
         this.y = calculateY(y);
@@ -128,6 +124,7 @@ class Bread extends PIXI.Sprite {
         this.height = SPRITE_HEIGHT;
         this.posX = x;
         this.posY = y;
+        this.posZ = z;
     }
 
     display(app) {
@@ -135,9 +132,128 @@ class Bread extends PIXI.Sprite {
     }
 }
 
+class DisplayManager {
+
+    constructor(app) {
+        this.app = app;
+        this.topSprites = [];
+        this.bottomSprites = [];
+        this.showBottom = false;
+    }
+
+    addTopSprite(ent) {
+        this.topSprites.push(ent);
+        if (!this.showBottom)
+            this.app.stage.addChild(ent);
+    }
+
+    addBottomSprite(ent) {
+        this.bottomSprites.push(ent);
+        if (this.showBottom)
+            this.app.stage.addChild(ent);
+    }
+
+    addSprite(ent, level) {
+        if (level === 0)
+            this.addTopSprite(ent);
+        else
+            this.addBottomSprite(ent);
+    }
+
+    rerender(sprite) {
+        if (this.showBottom) {
+            for (const sprite of this.bottomSprites) {
+                this.app.stage.removeChild(sprite);
+                this.app.stage.addChild(sprite);
+                return;
+            }
+        }
+        for (const sprite of this.topSprites) {
+            this.app.stage.addChild(sprite);
+            this.app.stage.addChild(sprite);
+            return;
+        }
+    }
+
+    goUp(sprite) {
+        for (let i = 0; i < this.bottomSprites.length; i++) {
+            const val = this.bottomSprites[i];
+            if (val === sprite) {
+                this.bottomSprites.splice(i, 1);
+                this.app.stage.removeChild(sprite);
+                this.addTopSprite(val);
+                return;
+            }
+        }
+    }
+
+
+    goDown(sprite) {
+        for (let i = 0; i < this.topSprites.length; i++) {
+            const val = this.topSprites[i];
+            if (val === sprite) {
+                this.topSprites.splice(i, 1);
+                this.app.stage.removeChild(sprite);
+                this.addBottomSprite(val);
+                return;
+            }
+        }
+    }
+
+    displayTop() {
+        if (this.showBottom) {
+            for (const sprite of this.bottomSprites) {
+                this.app.stage.removeChild(sprite);
+            }
+        }
+        for (const sprite of this.topSprites) {
+            this.app.stage.addChild(sprite);
+        }
+        this.showBottom = false;
+    }
+
+    displayBottom() {
+        if (this.showBottom) {
+            for (const sprite of this.topSprites) {
+                this.app.stage.removeChild(sprite);
+            }
+        }
+        for (const sprite of this.bottomSprites) {
+            this.app.stage.addChild(sprite);
+        }
+        this.showBottom = true;
+    }
+
+    changeLevel() {
+        if (this.showBottom) {
+            this.displayTop();
+        } else {
+            this.displayBottom();
+        }
+    }
+
+    removeSprite(input) {
+        for (let i = 0; i < this.topSprites.length; i++) {
+            if (this.topSprites[i] === input){
+                this.app.stage.removeChild(this.topSprites[i]);
+                this.topSprites.splice(i, 1);
+                return;
+            }
+        }
+        for (let i = 0; i < this.bottomSprites.length; i++) {
+            if (this.bottomSprites[i] === input){
+                this.app.stage.removeChild(this.bottomSprites[i]);
+                this.bottomSprites.splice(i, 1);
+                return;
+            }
+        }
+    }
+}
+
 class Game {
     constructor() {
         this.app = new PIXI.Application({width: WINDOW_WIDTH, height: WINDOW_HEIGHT});
+        this.displayManager = new DisplayManager(this.app);
     }
 
     setupGame(stechecDump) {
@@ -165,6 +281,7 @@ class Game {
         this.slider.val(index).trigger('change');
     }
 
+
     setupMap() {
         const totalSize = MAP_SIZE * MAP_SIZE;
         const lowerMapString = this.dump[0].map.cells.substr(0, totalSize);
@@ -172,10 +289,18 @@ class Game {
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
                 const sprite = createSprite(textures.grass[Math.floor(Math.random() * 3)], i, j);
-                this.app.stage.addChild(sprite);
+                this.displayManager.addTopSprite(sprite);
             }
         }
 
+        for (let i = 0; i < MAP_SIZE; i++) {
+            for (let j = 0; j < MAP_SIZE; j++) {
+                const dirt = createSprite(textures.dirt, i, j);
+                const rock = createSprite(textures.rock, i, j);
+                this.displayManager.addBottomSprite(dirt);
+                this.displayManager.addBottomSprite(rock);
+            }
+        }
 
         for (let i = 0; i < MAP_SIZE; i++) {
             for (let j = 0; j < MAP_SIZE; j++) {
@@ -184,30 +309,30 @@ class Game {
                 switch (symbol) {
                     case '#':
                         const bush = new Bush(i, j);
-                        bush.display(this.app);
+                        this.displayManager.addTopSprite(bush);
                         this.bushes.push(bush);
                         break;
                     case 'S':
-                        this.app.stage.addChild(createSprite(textures.spawn, i, j));
+                        this.displayManager.addTopSprite(createSprite(textures.spawn, i, j));
                         break;
                     case 'N':
                         const nest = new Nest(i, j, false, false);
-                        nest.display(this.app);
+                        this.displayManager.addTopSprite(nest);
                         this.nests.push(nest);
                         break;
                     case 'B':
                     case 'b':
                         const barrier = new Barrier(i, j, symbol === 'b');
-                        barrier.display(this.app);
+                        this.displayManager.addTopSprite(barrier);
                         this.barriers.push(barrier);
                         break;
                     case 'X':
-                        this.app.stage.addChild(createSprite(textures.hole, i, j));
+                        this.displayManager.addTopSprite(createSprite(textures.hole, i, j));
                         break;
                     default:
                         if ('0' <= symbol && symbol <= '9') {
                             const papy = new Papy(i, j);
-                            papy.display(this.app);
+                            this.displayManager.addTopSprite(papy);
                             this.papys.push(papy);
                             break;
                         }
@@ -231,7 +356,7 @@ class Game {
                         let bush = this.findBushByCoords(i, j);
                         if (bush === null) {
                             bush = new Bush(i, j);
-                            bush.display(this.app);
+                            this.displayManager.addTopSprite(this.app);
                             this.bushes.push(bush);
                         }
                         break;
@@ -261,7 +386,7 @@ class Game {
 
         for (let pain of this.dump[index].map.pains) {
             const bread = new Bread(pain.pos.colonne, pain.pos.ligne);
-            bread.display(this.app);
+            this.displayManager.addSprite(bread, pain.pos.niveau);
             this.bread.push(bread);
         }
     }
@@ -269,7 +394,7 @@ class Game {
 
     clearBread() {
         for(let bread of this.bread) {
-            this.app.stage.removeChild(bread);
+            this.displayManager.removeSprite(bread);
         }
         this.bread = [];
     }
@@ -291,15 +416,15 @@ class Game {
                 this.troupes[k] = [];
                 // Display the duck.
                 const troupe = roundData[i].troupes[j];
-                const duck = new Duck(troupe.maman.colonne, troupe.maman.ligne, troupe.dir, i);
-                duck.display(this.app);
+                const duck = new Duck(troupe.maman.colonne, troupe.maman.ligne, troupe.maman.niveau, troupe.dir, i);
+                this.displayManager.addSprite(duck, duck.posZ);
                 this.troupes[k].push(duck);
 
                 // Pushes the ducklings
                 for (let l = 1; l < troupe.canards.length; l++) {
                     const canard = troupe.canards[l];
-                    const duckling = new Duckling(canard.colonne, canard.ligne, this.computeDuckDirection(canard, troupe.canards[l-1]), i);
-                    duckling.display(this.app);
+                    const duckling = new Duckling(canard.colonne, canard.ligne, canard.niveau, this.computeDuckDirection(canard, troupe.canards[l-1]), i);
+                    this.displayManager.addSprite(duckling, duckling.posZ);
                     this.troupes[k].push(duckling);
                 }
             }
@@ -322,7 +447,7 @@ class Game {
     clearDucks() {
         for (const troupe of this.troupes) {
             for (const duck of troupe) {
-                this.app.stage.removeChild(duck);
+                this.displayManager.removeSprite(duck);
             }
         }
         this.troupes = [];
@@ -330,7 +455,7 @@ class Game {
 
     clearPigeons() {
         for (const pigeon of this.pigeons) {
-            this.app.stage.removeChild(pigeon);
+            this.displayManager.removeSprite(pigeon);
         }
         this.pigeons = [];
     }
@@ -345,7 +470,6 @@ class Game {
     gameLoop(delta) {
         if (this.paused)
             return;
-
         const actions = this.getTurnActions();
 
         const curr_action = actions[this.action_index];
@@ -360,18 +484,27 @@ class Game {
         }
 
         switch (curr_action.action_type) {
+            case 'construire':
+                this.construire(this.frame, curr_action.position);
+                this.frame = animationDuration();
+                break;
+            case 'creuser':
+                this.construire(this.frame, curr_action.position);
+                this.frame = animationDuration();
+                break;
             case 'auto_move':
                 this.avancer(this.frame, curr_action.player_id, curr_action.dir, curr_action.troupe_id);
                 break;
             case 'avancer':
-                console.log(curr_action);
                 this.avancer(this.frame, curr_action.player_id, curr_action.direction, curr_action.troupe_id);
                 break;
             case 'capture_nest':
                 this.captureNest(this.frame, curr_action.player_id, curr_action.pos);
+                this.frame = animationDuration();
                 break;
             case 'debug':
                 this.createDebugPigeon(curr_action.player_id, curr_action.pos, curr_action.debug);
+                this.frame = animationDuration();
                 break;
             case 'respawn':
                 this.respawn(this.frame, curr_action.player_id, curr_action.troupe_id, curr_action.pos);
@@ -384,9 +517,11 @@ class Game {
             case 'spread_bread':
             case 'add_bread':
                 this.addBread(this.frame, curr_action.pos, curr_action.player_id);
+                this.frame = animationDuration();
                 break;
             case 'take_bread':
                 this.takeBread(this.frame, curr_action.pos, curr_action.player_id);
+                this.frame = animationDuration();
                 break;
         }
 
@@ -397,11 +532,29 @@ class Game {
         }
     }
 
+    creuser(frame, position) {
+        for (let i = 0; i < this.rocks.length; i++) {
+            const rock = this.rocks[i];
+            if (rock.posX === position.colonne && rock.posY === position.ligne) {
+                rocks.splice(i, 1);
+                this.displayManager.removeSprite(rock);
+                return;
+            }
+        }
+    }
+
+    construire(frame, position) {
+        let bush = new Bush(position.colonne, position.ligne);
+        this.displayManager.addTopSprite(bush);
+        this.bushes.push(bush);
+    }
+
     createDebugPigeon(player_id, pos, debug) {
         for (let i = 0; i < this.pigeons.length ; i++) {
-            if (pos.colonne == this.pigeons[i].posX && pos.ligne == this.pigeons[i].posY) {
+            if (pos.colonne == this.pigeons[i].posX &&
+                pos.ligne == this.pigeons[i].posY && pos.niveau == this.pigeons[i].posZ) {
                 if (debug === 0) {
-                    this.app.stage.removeChild(this.pigeons[i]);
+                    this.displayManager.removeSprite(this.pigeons[i]);
                     this.pigeons[i].remove(i);
                 } else {
                     this.pigeons[i].tint = colorToHTML(debug);
@@ -410,8 +563,11 @@ class Game {
             }
         }
         const pigeon = createSprite(textures.pigeon, pos.colonne, pos.ligne);
+        pigeon.posX = pos.colonne;
+        pigeon.posY = pos.ligne;
+        pigeon.posZ = pos.niveau;
         pigeon.tint = colorToHTML(debug);
-        this.app.stage.addChild(pigeon);
+        this.displayManager.addSprite(pigeon, pos.niveau);
         this.pigeons.push(pigeon);
     }
 
@@ -429,21 +585,24 @@ class Game {
 
     addBread(frame, pos, player_id) {
         for (let papy of this.papys) {
-            if (papy.posX === pos.colonne && papy.posY === pos.ligne) {
+            if (papy.posX === pos.colonne && papy.posY === pos.ligne && pos.niveau === 0) {
                 papy.throwBread();
                 const bread = new Bread(pos.colonne, pos.ligne);
                 this.bread.push(bread);
-                bread.display(this.app);
-                papy.rerender(this.app);
+                this.displayManager.addSprite(bread, pos.niveau);
+                this.displayManager.rerender(papy);
                 return;
             }
         }
+        const bread = new Bread(pos.colonne, pos.ligne, pos.niveau);
+        this.displayManager.addSprite(bread, pos.niveau);
+        this.bread.push(bread);
     }
 
     takeBread(frame, pos, player_id) {
         for (let bread of this.bread) {
-            if (bread.posX === pos.colonne && bread.posY === pos.ligne) {
-                this.app.stage.removeChild(bread);
+            if (bread.posX === pos.colonne && bread.posY === pos.ligne && bread.posZ === pos.niveau) {
+                this.displayManager.removeSprite(bread);
             }
         }
     }
@@ -451,19 +610,21 @@ class Game {
     respawn(frame, player_id, troupe_id, pos) {
         if (this.troupes[troupe_id - 1 + 2 * player_id]) {
             for(let troupe of this.troupes[troupe_id - 1 + 2 * player_id]) {
-                this.app.stage.removeChild(troupe);
+                this.displayManager.removeSprite(troupe);
             }
         }
-        this.troupes[troupe_id - 1 + 2 * player_id] = [new Duck(pos.colonne, pos.ligne, 1, player_id)];
-        this.troupes[troupe_id - 1 + 2 * player_id][0].display(this.app);
+        this.troupes[troupe_id - 1 + 2 * player_id] = [new Duck(pos.colonne, pos.ligne, pos.niveau, 1, player_id)];
+        const sprite = this.troupes[troupe_id - 1 + 2 * player_id][0];
+        this.displayManager.addSprite(sprite, sprite.posZ);
     }
 
 
     new_duck(frame, player_id, troupe_id, pos) {
         const index = (troupe_id - 1) + 2 * player_id;
         //TODO Direction
-        this.troupes[index].push(new Duckling(pos.colonne, pos.ligne, 1, player_id));
-        this.troupes[index][this.troupes[index].length - 1].display(this.app);
+        this.troupes[index].push(new Duckling(pos.colonne, pos.ligne, pos.niveau, 1, player_id));
+        const sprite = this.troupes[index][this.troupes[index].length - 1];
+        this.displayManager.addSprite(sprite, sprite.posZ);
     }
 
     async startReplay() {
@@ -479,13 +640,23 @@ class Game {
 
     avancer(frame, player_id, dir, troupe_id) {
         const troupe = this.troupes[(troupe_id - 1) + player_id * 2];
-
+        if (dir == 4) {
+            this.displayManager.goDown(troupe[0]);
+        } else if (dir == 5) {
+            this.displayManager.goUp(troupe[0]);
+        }
         if (frame === 0) {
             troupe[0].changeOrientation(dir);
         }
         for (let i = troupe.length - 1; i >= 1; i--) {
             const startpos = [calculateX(troupe[i].posX), calculateY(troupe[i].posY)];
             const endpos = [calculateX(troupe[i-1].posX), calculateY(troupe[i-1].posY)];
+
+            if (dir == 4) {
+                this.displayManager.goDown(troupe[0]);
+            } else if (dir == 5) {
+                this.displayManager.goUp(troupe[0]);
+            }
 
 
             troupe[i].x = ((1 + frame) * (endpos[0] - startpos[0]) / animationDuration() + startpos[0]);
@@ -512,7 +683,11 @@ class Game {
             troupe[0].posX = endposN[0];
             troupe[0].posY = endposN[1];
         }
+        troupe[0].width = SPRITE_WIDTH;
+        troupe[0].height = SPRITE_HEIGHT;
         troupe[0].gotoAndPlay(frame % 3);
+        troupe[0].width = SPRITE_WIDTH;
+        troupe[0].height = SPRITE_HEIGHT;
     }
 
     calculateEndPosition(start, dir) {
@@ -525,7 +700,10 @@ class Game {
                 return [start[0] + 1, start[1]];
             case 3:
                 return [start[0] - 1, start[1]];
-            // TODO Handle the down and up case
+            case 4:
+                return start;
+            case 5:
+                return start;
         }
     }
 
@@ -610,22 +788,13 @@ class Papy extends PIXI.AnimatedSprite {
         this.x = calculateX(x);
     }
 
-    display(app) {
-        app.stage.addChild(this);
-    }
-
-    rerender(app) {
-        app.stage.removeChild(this);
-        app.stage.addChild(this);
-    }
-
     throwBread() {
         this.play();
     }
 }
 
 class Duck extends PIXI.AnimatedSprite {
-    constructor(x, y, dir, player_id) {
+    constructor(x, y, z, dir, player_id) {
         const spriteSheet = [
             [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duck_N_2.png`),
@@ -648,6 +817,7 @@ class Duck extends PIXI.AnimatedSprite {
         this.x = calculateX(x);
         this.posX = x;
         this.posY = y;
+        this.posZ = z;
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
         this.dir = dir;
@@ -682,7 +852,7 @@ class Bush extends PIXI.Sprite {
 }
 
 class Duckling extends PIXI.AnimatedSprite {
-    constructor(x, y, dir, player_id) {
+    constructor(x, y, z, dir, player_id) {
         const spriteSheet = [
             [new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_1.png`),
                    new PIXI.Texture.from(`${ASSET_ROOT}/ducks/duckling_N_2.png`),
@@ -705,6 +875,7 @@ class Duckling extends PIXI.AnimatedSprite {
         this.x = calculateX(x);
         this.posX = x;
         this.posY = y;
+        this.posZ = z;
         this.width = SPRITE_WIDTH;
         this.height = SPRITE_HEIGHT;
         this.dir = dir;
@@ -715,10 +886,6 @@ class Duckling extends PIXI.AnimatedSprite {
     changeOrientation(dir) {
         this.textures = this.spriteSheet[dir];
         this.dir = dir;
-    }
-
-    display(app) {
-        app.stage.addChild(this);
     }
 }
 
