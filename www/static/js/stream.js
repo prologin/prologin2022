@@ -2,9 +2,7 @@ async function load_next_interesting() {
     console.log("downloading next interesting match");
     //const data = await (await window.fetch('/api/matches/interesting/')).json();
     const data = await (await window.fetch('/api/matches/interesting/')).json();
-    dump_value = await (await window.fetch(data.dump_url)).text();
-    const dump_url = `${window.location.href}dump`;
-    const response = await fetch(dump_url);
+    const response = await fetch(data.dump_url);
     if (response.status === 200) {
         let data = await response.text();
         data = data.substring(0, data.length - 1).replaceAll('\n', ',');
