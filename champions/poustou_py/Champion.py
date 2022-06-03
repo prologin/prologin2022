@@ -180,6 +180,10 @@ def can_move(pos, dir):
 
 
 def chemin_oiseau(pos1, pos2):
+    """
+    Retourne la liste des blocs à rendre traversable pour relier les deux
+    positions
+    """
     x1, y1, z1 = pos1
     x2, y2, z2, = pos2
     res = []
@@ -193,54 +197,15 @@ def chemin_oiseau(pos1, pos2):
 
     return res
 
-SPAWN_POINTS = []   # Liste des points d'apparition
-SPAWN_POINT = {}    # Map des directions aux points d'apparition
 NIDS_LIBRES = []    # Liste des nids libres
 PAPYS = []          # Liste des papys 
 TROUS = []          # Liste des trous
-CONSTRUCTIBLES = [] # Liste des cases constructibles
 MES_NIDS = []       # Liste de mes nids
 
 A_CREUSER = []      # Liste des cases a creuser
 
 # Fonction appelée au début de la partie.
 def partie_init():
-
-    display_map()
-
-    # Trouve tous les points d'apparitions
-    for troupe in troupes_joueur(moi()):
-        SPAWN_POINTS.append(troupe.maman)
-    for troupe in troupes_joueur(adversaire()):
-        SPAWN_POINTS.append(troupe.maman)
-
-    debug("Points d'apparition :")
-    for spawn_point in SPAWN_POINTS:
-        debug("  -", end = ' ')
-        afficher_position(spawn_point)
-    debug()
-
-
-    # Lie les points d'apparitions a leur direction
-    for spawn in SPAWN_POINTS:
-        x, y, z = spawn
-        if x == 0:
-            SPAWN_POINT[direction.OUEST] = spawn
-        if x == LARGEUR-1:
-            SPAWN_POINT[direction.EST] = spawn
-        if y == 0:
-            SPAWN_POINT[direction.SUD] = spawn
-            SPAWN_POINT[direction.BAS] = spawn
-        if y == HAUTEUR-1:
-            SPAWN_POINT[direction.NORD] = spawn
-            SPAWN_POINT[direction.HAUT] = spawn
-    
-    debug("Points de reapparition :")
-    for dir, pos in SPAWN_POINT.items():
-        debug("  -", end = ' ')
-        afficher_direction(dir, end = ' : ')
-        afficher_position(pos)
-    debug()
 
     # Trouve tous les nids, les papys, les trous et les cases constructibles.
     for y in range(HAUTEUR):
@@ -252,8 +217,6 @@ def partie_init():
                 TROUS.append((x, y, 0))
             if case.contenu == type_case.PAPY:
                 PAPYS.append((x, y, 0))
-            if case.contenu == type_case.GAZON and case.est_constructible:
-                CONSTRUCTIBLES.append((x, y, 0))
  
     debug("Nids :")
     for pos in NIDS_LIBRES:
@@ -273,12 +236,6 @@ def partie_init():
         afficher_position(pos)
     debug()
 
-    debug("Cases constructible :")
-    for pos in CONSTRUCTIBLES:
-        debug("  -", end = ' ')
-        afficher_position(pos)
-    debug()
-    
     for i in range(len(TROUS)-1):
         a = TROUS[i]
         b = TROUS[i+1]
@@ -446,5 +403,4 @@ def jouer_tour():
 
 # Fonction appelée à la fin de la partie.
 def partie_fin():
-    # TODO
-    pass
+    print("Revanche ?")
